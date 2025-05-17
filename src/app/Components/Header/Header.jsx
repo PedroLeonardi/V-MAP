@@ -1,34 +1,67 @@
+"use client"
+import { useState } from "react";
+import { BsArrowLeftCircle, BsSearch } from "react-icons/bs";
+import { AiFillEnvironment } from "react-icons/ai";
+import { RiDashboardFill } from "react-icons/ri";
+
 export default function Header() {
+    const [open, setOpen] = useState(true);
+
+    const menus = [
+        { title: 'Dashboard' }, 
+        { title: 'Alunos' },
+        { title: 'Percurso' },
+        { title: 'Escolas' },
+        { title: 'Logout' },
+    ]
+
     return (
-        <>
-            <nav className="flex">
-                {/* Sidebar */}
-                <div className="bg-black text-white h-screen md:w-80 fixed left-0 top-0 items-center">
-                    <div className="m-4 flex flex-col items-center">
-                        <h1 className="text-3xl font-extrabold">DASHBOARD</h1>
-                        <div className="w-full border-b border-2 border-white-500 my-2"></div>
-
-                        <ul className="flex flex-col mt-5 text-2xl font-extrabold gap-6 w-full px-4">
-                            <li className="flex items-center gap-2">
-                                <img
-                                    alt="Ícone Aluno"
-                                    className="w-6 h-6"  
-                                />
-                                <a href="#" className="hover:text-gray-300 transition-colors">Aluno</a>
-                            </li>                            <li><a href="#" className="hover:text-gray-300 transition-colors">Rotas</a></li>
-                        </ul>
-                    </div>
+        <nav className="flex">
+            <div className={`bg-gray-950 h-screen p-5 pt-8 ${open ? "w-72" : "w-30"} relative duration-300`}>
+                <BsArrowLeftCircle
+                    className={`bg-black text-white text-3xl rounded-full absolute right-3 top-9 border border-purple-950 cursor-pointer ${!open && "rotate-180"}`}
+                    onClick={() => setOpen(!open)}
+                />
+                
+                <div className="inline-flex items-center">
+                    <AiFillEnvironment className={`
+                        bg-orange-600 
+                        text-white  // Added text color
+                        text-3xl 
+                        rounded 
+                        cursor-pointer 
+                        mr-2 
+                        duration-500 
+                        ${open ? 'rotate-[360deg]' : ''}
+                    `}/>
+                    <h1 className={`text-white origin-left font-extrabold text-2xl duration-300 ${!open && 'scale-0'}`}>
+                        DASHBOARD
+                    </h1>
                 </div>
 
-                {/* Conteúdo Principal */}
-                <div className="ml-0 md:ml-80 flex-1 p-4"> 
-                    Conteúdo principal aqui
+                <div className={`flex items-center rounded-md bg-gray-700 mt-6 ${!open ? 'px-2.5' : 'px-4'} py-2`}>
+                    <BsSearch className={`text-white text-lg block float-left cursor-pointer ${open && 'mr-2'}`}/>
+                    <input 
+                        type={"search"} 
+                        placeholder="Search" 
+                        className={`text-base bg-transparent w-full text-white focus:outline-none ${!open && 'hidden'}`}
+                    />
                 </div>
-            </nav>
 
-
-
-
-        </>
+                <ul className="pt-2">
+                    {menus.map((menu, index) => (
+                        <li 
+                            key={index} 
+                            className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-400 duration-200 hover:text-black rounded-md ${menu.spacing ? 'mt-9' : 'mt-2'}`}
+                        >
+                            <span className="text-2xl block float-left"><RiDashboardFill/></span>
+                            <span className={`text-base font-bold duration-300 ${!open && 'hidden'}`}>
+                                {menu.title}
+                                </span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </nav>
     )
 }
