@@ -18,7 +18,7 @@ export default function Header() {
 
     const menus = [
         { title: 'Dashboard' },
-        { title: 'Alunos', icon: <FaGraduationCap /> },
+        { title: 'Alunose', icon: <FaGraduationCap /> },
         { title: 'Percurso', icon: <FaLocationDot /> },
         { title: 'Escolas', icon: <FaSchool /> },
         { title: 'ChatBox', icon: <IoChatboxEllipses /> },
