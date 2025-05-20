@@ -8,10 +8,10 @@ const knex = knexInstance
 
 const getAll = async () => {
     try {
-        const dataGetAll = await knex("administrador").select('*');
+        const dataGetAll = await knex("aluno").select('*');
         return dataGetAll
     } catch (err){
-        console.error("Houve um erro ao listar todos os Administradores: ", err)
+        console.error("Houve um erro ao listar todos os alunos: ", err)
         return []
     } finally {
         await knex.destroy()
@@ -19,37 +19,37 @@ const getAll = async () => {
 } 
 
 
-const getById = async (id_admin) => {
+const getById = async (id_aluno) => {
     try{
         
-        const dataGetById =  knex("administrador").where({id_admin}).first();
+        const dataGetById =  knex("aluno").where({id_aluno}).first();
         return dataGetById
     } catch (err) {
-        console.error("Houve um erro ao listar elemente pelo ID: ", err)
+        console.error("Houve um erro ao listar um aluno pelo ID: ", err)
         return []
     }  finally {
-        // await knex.destroy();
+        await knex.destroy();
     }
 }
 
 const create = async (data) => {
     try{
-        const dataCreate = knex("administrador").insert(data);
+        const dataCreate = knex("aluno").insert(data);
         return dataCreate
     } catch (err) {
-        console.error ("Houve um erro ao criar um item: ", err)
+        console.error ("Houve um erro ao criar um aluno: ", err)
         return []
     } finally {
         await knex.destroy()
     }
 }
 
-const update = async (id_admin, user) => {
+const update = async (id_aluno, data) => {
     try {
-        const dataUpdate = knex("administrador").where({ id_admin }).update(user);
+        const dataUpdate = knex("aluno").where({ id_aluno }).update(data);
         return dataUpdate 
     } catch (err) {
-        console.error("Houve um erro ao realizar um Update nos itens: ", err)
+        console.error("Houve um erro ao realizar um Update no aluno: ", err)
         return []
     } finally {
         await knex.detroy()        
@@ -57,12 +57,12 @@ const update = async (id_admin, user) => {
 }
 
 
-const deleteRecord = async (id_admin) => {
+const deleteRecord = async (id_aluno) => {
     try{
-        const dataDeleteRecord = knex("administrador").where({ id_admin }).delete();
+        const dataDeleteRecord = knex("aluno").where({ id_aluno }).delete();
         return dataDeleteRecord
     } catch (err) {
-        console.error("Houve um erro ao deletar um item: ", err)
+        console.error("Houve um erro ao deletar um aluno: ", err)
         return []
     } finally {
         await knex.destroy()
