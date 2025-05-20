@@ -1,6 +1,6 @@
 import knex from './connection.js';
 
-const getAllUsers = () => knex('usuario').select('*');
+const getAllUsers = () => knex('adminn').select('*');
 
 const getUserById = (id) => knex('usuario').where({ id }).first();
 

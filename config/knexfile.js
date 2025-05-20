@@ -5,7 +5,7 @@ export default {
             host: 'localhost',
             user: 'root',
             password: '',
-            database: 'TABELA'
-        },
+            database: 'vmap_db'
+        }
     }
 };
