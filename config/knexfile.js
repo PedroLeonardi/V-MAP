@@ -5,10 +5,7 @@ export default {
             host: 'localhost',
             user: 'root',
             password: '',
-            database: 'transporte_escolar'
+            database: 'TABELA'
         },
-        migrations: {
-            directory: '../migrations'
-        }
     }
 };

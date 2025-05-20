@@ -1,8 +1,8 @@
-import userModel from "../models/userModel.js";
+import userModel from "../models/CrudModel.js";
 
 const getUsers = async (req, res) => {
     try {
-        const users = await userModel.getAllUsers();
+        const users = await userModel.getAll();
         res.status(200).json(users);
     } catch (err) {
         res.status(500).json({ error: 'Erro ao buscar usuários' });
@@ -12,7 +12,7 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const id = req.params.id;
-        const user = await userModel.getUserById(req.params.id);
+        const user = await userModel.getById(req.params.id);
 
         if (!user) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
@@ -26,7 +26,7 @@ const getUser = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        await userModel.createUser(req.body);
+        await userModel.create(req.body);
         return res.status(201).json({ message: 'Usuário criado com sucesso' });
     } catch (err) {
         res.status(500).json({ message: 'Erro ao criar usuário' });
@@ -35,7 +35,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        const affected = await userModel.updateUser(req.params.id, req.body);
+        const affected = await userModel.update(req.params.id, req.body);
 
         if (!affected) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
@@ -50,7 +50,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const affected = await userModel.deleteUser(req.params.id);
+        const affected = await userModel.deleteRecord(req.params.id);
 
         if (!affected) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
