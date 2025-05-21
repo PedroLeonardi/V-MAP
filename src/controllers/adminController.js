@@ -13,9 +13,7 @@ const getAdminAll = async (req, res) => {
 const getAdmin = async (req, res) => {
 
     try {
-        const id = parseInt(req.params.id);
-        
-        
+        const id = parseInt(req.params.id);      
         const user = await userModel.getById(id);
         if (!user) {
             return res.status(404).json({ message: 'Usuário não encontrado ' });
@@ -34,6 +32,7 @@ const createAdmin = async (req, res) => {
         return res.status(201).json({ message: 'Usuário criado com sucesso' });
     } catch (err) {
         res.status(500).json({ message: 'Erro ao criar usuário' });
+        console.error(err)
     }
 }
 
@@ -55,7 +54,7 @@ const updateAdmin = async (req, res) => {
 const deleteAdmin = async (req, res) => {
     try {
         const affected = await userModel.deleteRecord( req.params.id);
-
+        console.log(affected)
         if (!affected) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
         }

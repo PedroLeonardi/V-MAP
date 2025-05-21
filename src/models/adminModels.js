@@ -13,22 +13,19 @@ const getAll = async () => {
     } catch (err){
         console.error("Houve um erro ao listar todos os Administradores: ", err)
         return []
-    } finally {
-        await knex.destroy()
-    }
+    } 
+
+    
 } 
 
 
 const getById = async (id_admin) => {
     try{
-        
-        const dataGetById =  knex("administrador").where({id_admin}).first();
+        const dataGetById = await knex("administrador").where({id_admin}).first();
         return dataGetById
     } catch (err) {
         console.error("Houve um erro ao listar elemente pelo ID: ", err)
         return []
-    }  finally {
-        // await knex.destroy();
     }
 }
 
@@ -39,8 +36,6 @@ const create = async (data) => {
     } catch (err) {
         console.error ("Houve um erro ao criar um item: ", err)
         return []
-    } finally {
-        await knex.destroy()
     }
 }
 
@@ -51,8 +46,6 @@ const update = async (id_admin, user) => {
     } catch (err) {
         console.error("Houve um erro ao realizar um Update nos itens: ", err)
         return []
-    } finally {
-        await knex.detroy()        
     }
 }
 
@@ -64,8 +57,6 @@ const deleteRecord = async (id_admin) => {
     } catch (err) {
         console.error("Houve um erro ao deletar um item: ", err)
         return []
-    } finally {
-        await knex.destroy()
     }
 }
 
