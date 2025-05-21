@@ -6,6 +6,10 @@ export default {
             user: 'root',
             password: '',
             database: 'vmap_db'
-        }
+        },
+        pool: {
+            min: 0,
+            max: 10,
+          }
     }
 };
