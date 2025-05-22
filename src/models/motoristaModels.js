@@ -1,62 +1,65 @@
-import config from '../../config/knexfile.js';
-import knexModule from 'knex'
-
-const environment = process.env.NODE_ENV || 'development';
-const knexInstance = knexModule(config[environment]);
-
-const knex = knexInstance
+import knex from '../../config/connection.js';
 
 const getAll = async () => {
-    try {
-        const dataGetAll = await knex("funcionario_motorista").select('*');
-        return dataGetAll
-    } catch (err){
-        console.error("Houve um erro ao listar todos os motoristas: ", err)
-        return []
-    } 
-} 
-
+  try {
+    const motoristas = await knex('funcionario_motorista').select('*');
+    return motoristas;
+  } catch (err) {
+    console.error('Houve um erro ao listar todos os motoristas: ', err);
+    return [];
+  }
+};
 
 const getById = async (id_motorista) => {
-    try{
-        
-        const dataGetById =  knex("funcionario_motorista").where({id_motorista}).first();
-        return dataGetById
-    } catch (err) {
-        console.error("Houve um erro ao listar um motorista pelo ID: ", err)
-        return []
-    }  
-}
+  try {
+    const motorista = await knex('funcionario_motorista').where({ id_motorista }).first();
+    return motorista;
+  } catch (err) {
+    console.error('Houve um erro ao listar um motorista pelo ID: ', err);
+    return null;
+  }
+};
 
 const create = async (data) => {
-    try{
-        const dataCreate = knex("funcionario_motorista").insert(data);
-        return dataCreate
-    } catch (err) {
-        console.error ("Houve um erro ao criar um motorista: ", err)
-        return []
-    } 
-}
+  try {
+    
+    const motoristaExistente = await knex('funcionario_motorista')
+      .where({ cpf_motorista: data.cpf_motorista })
+      .first();
+
+    if (motoristaExistente) {
+      const error = new Error('Motorista com este CPF já está cadastrado');
+      error.statusCode = 400;
+      throw error;  
+    }
+
+    const [id_motorista] = await knex('funcionario_motorista').insert(data);
+    return id_motorista;
+  } catch (err) {
+    console.error('Houve um erro ao criar um motorista: ', err);
+    throw err; 
+  }
+};
+
 
 const update = async (id_motorista, data) => {
-    try {
-        const dataUpdate = knex("funcionario_motorista").where({ id_motorista }).update(data);
-        return dataUpdate 
-    } catch (err) {
-        console.error("Houve um erro ao realizar um Update no motorista: ", err)
-        return []
-    } 
-}
-
+  try {
+    const updatedRows = await knex('funcionario_motorista').where({ id_motorista }).update(data);
+    return updatedRows;
+  } catch (err) {
+    console.error('Houve um erro ao realizar um update no motorista: ', err);
+    return 0;
+  }
+};
 
 const deleteRecord = async (id_motorista) => {
-    try{
-        const dataDeleteRecord = knex("funcionario_motorista").where({ id_motorista }).delete();
-        return dataDeleteRecord
-    } catch (err) {
-        console.error("Houve um erro ao deletar um motorista: ", err)
-        return []
-    } 
-}
+  try {
+    const deletedRows = await knex('funcionario_motorista').where({ id_motorista }).delete();
+    return deletedRows;
+  } catch (err) {
+    console.error('Houve um erro ao deletar um motorista: ', err);
+    return 0;
+  }
+};
 
 export default { getAll, getById, create, update, deleteRecord };
