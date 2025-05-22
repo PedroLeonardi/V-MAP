@@ -3,11 +3,13 @@ import adminRoutes from './router/adminRoute.js'
 import alunoRoute from './router/alunoRoute.js'
 import responsavelRoute from './router/responsavelRoute.js'
 import authRoute from './router/authRoute.js'
+import cors from 'cors';
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // middlewares
 app.use(express.json());
+app.use(cors())
 
 // rotas
 app.get('/', async (req, res) =>{
