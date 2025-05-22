@@ -48,7 +48,8 @@ const create = async (data) => {
             nome: data.nome,
             cpf_aluno: data.cpf_aluno,
             senha: senhaHashed,
-            cpf_responsavel: data.cpf_responsavel
+            cpf_responsavel: data.cpf_responsavel,
+            id_rota_onibus: data.id_rota_onibus
         });
 
         return id_aluno;

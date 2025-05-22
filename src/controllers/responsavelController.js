@@ -1,4 +1,4 @@
-import userModel from "../models/responsavelModels.js";
+import userModel from "../Models/responsavelModels.js";
 
 const getResponsavelAll = async (req, res) => {
     try {

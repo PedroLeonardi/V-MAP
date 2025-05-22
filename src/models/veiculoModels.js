@@ -23,6 +23,22 @@ const getById = async (id_rota_onibus) => {
 
 const create = async (data) => {
   try {
+    const [rotaExist] = await knex.select('veiculos_onibus').where({n_rota: data.n_rota})
+
+    if (rotaExist) {
+      const error = new Error('Rota já existente');
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const [motoristaExist] = await knex.select('veiculos_onibus').where({id_motorista: data.id_motorista})
+
+    if (!motoristaExist) {
+      const error = new Error('Motorista não encontrado');
+      error.statusCode = 400;
+      throw error;
+    }
+
     const [id] = await knex('veiculos_onibus').insert(data);
     return id;
   } catch (err) {
@@ -33,6 +49,7 @@ const create = async (data) => {
 
 const update = async (id_rota_onibus, data) => {
   try {
+
     const affectedRows = await knex('veiculos_onibus').where({ id_rota_onibus }).update(data);
     return affectedRows;
   } catch (err) {

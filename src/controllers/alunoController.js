@@ -1,4 +1,4 @@
-import userModel from "../models/alunoModels.js";
+import userModel from "../Models/alunoModels.js";
 
 const getAlunoAll = async (req, res) => {
     try {
