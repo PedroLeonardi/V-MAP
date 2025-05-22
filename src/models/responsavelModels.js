@@ -39,7 +39,7 @@ const create = async (data) => {
 
     const [id_responsavel] = await knex('responsaveis').insert({
       nome: data.nome,
-      cpf_responsavel: data.cpf_responsavel,
+      cpf_responsavel: data.cpf,
       senha: senhaHashed
     });
 
