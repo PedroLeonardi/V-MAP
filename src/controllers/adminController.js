@@ -46,7 +46,7 @@ const updateAdmin = async (req, res) => {
 
         return res.status(200).json({ message: 'Usuário atualizado com sucesso' });
     } catch (err) {
-        // Corrigido typo no "json"
+        
         res.status(500).json({ message: 'Erro ao atualizar usuário' });
     }
 }
