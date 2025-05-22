@@ -6,12 +6,11 @@ import { toast } from 'sonner'
 import { get } from 'lodash'
 
 export default function VeiculoCadastro() {
-    const [n_rota, setRota] = useState('')
+    const [n_rota, setNRota] = useState('')
+    // const [idMotorista, setIdMotorista] = useState('')
     const [coordenadasInicio, setCoordenadasInicio] = useState('')
     const [coordenadasParadas, setCoordenadasParadas] = useState('')
     const [coordenadasFim, setCoordenadasFim] = useState('')
-    const [cpf, setCPF] = useState('')
-    const [senha, setSenha] = useState('')
     const [loading, setLoading] = useState(false)
 
     async function handleSubmit(e) {
@@ -20,23 +19,20 @@ export default function VeiculoCadastro() {
 
         try {
             const response = await axios.post('http://localhost:3001/veiculo', {
-                n_rota,
                 coordenadas_inicio: coordenadasInicio,
                 coordenadas_paradas: coordenadasParadas,
                 coordenadas_fim: coordenadasFim,
-                cpf,
-                senha
+                n_rota: n_rota,
+                // id_motorista: idMotorista,
             })
+
 
             toast.success('Veículo cadastrado com sucesso.')
             console.log(response.data)
         } catch (err) {
-            const message = get(err, 'response.data.message', '')
-            if (message === 'CPF já cadastrado') {
-                toast.error('CPF já existente')
-            } else {
-                toast.error('Erro ao cadastrar usuário')
-            }
+            console.err('Erro ao cadastrar', err)
+            toast.error('Erro ao cadastrar veículo')
+
         } finally {
             setLoading(false)
         }
@@ -50,12 +46,19 @@ export default function VeiculoCadastro() {
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-4 bg-gray-800 p-6 rounded-lg shadow-md w-80"
             >
-                <input
+                {/* <input
+                    type="text"
+                    value={idMotorista}
+                    onChange={(e) => setIdMotorista(e.target.value)}
+                    placeholder="ID do Motorista"
                     className="border border-gray-300 rounded px-4 py-2"
+                /> */}
+                <input
                     type="text"
                     value={n_rota}
-                    onChange={(e) => setRota(e.target.value)}
-                    placeholder="Digite o número da rota"
+                    onChange={(e) => setNRota(e.target.value)}
+                    placeholder="Número da Rota"
+                    className="border border-gray-300 rounded px-4 py-2"
                 />
                 <input
                     className="border border-gray-300 rounded px-4 py-2"
