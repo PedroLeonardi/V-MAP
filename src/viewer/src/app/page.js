@@ -14,6 +14,39 @@ export default function CadastroAdmin() {
   const [loading, setLoading] = useState(false)
   const router = useRouter();
 
+  // add cargos
+  const cargosDisponiveis = [
+    'Coordenador Pedagógico',
+    'Gerente de Transporte',
+    'Diretor',
+    'Coordenador',
+    'Gerente de TI'
+  ]
+
+
+  function formatarCPF(valor) {
+    // Remove tudo que não for número
+    valor = valor.replace(/\D/g, '');
+
+    // Aplica a máscara
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return valor
+  }
+
+  // validação input nome
+  function validarNome(nome) {
+    // aqui só permito letras e espaços
+    return /^[A-Za-zÀ-ú\s]+$/.test(nome);
+
+  }
+
+  // senha precisa ser maior q 6 digitos
+  function validarSenha(senha) {
+    return senha.lenght >= 6;
+  }
+
   // removendo meu token de logado ao voltar para cadastro
   // só teste
   useEffect(() => {
@@ -32,6 +65,18 @@ export default function CadastroAdmin() {
       toast.error("Preencha todos os campos.")
     }
 
+    if (!validarNome(nome)) {
+      toast.error('Nome Inválido. Use apenas letras e espaços.')
+      setLoading(false);
+      return;
+    }
+
+    if(!validarSenha(senha)){
+      toast.error('Senha deve conter pelo menos 6 caracteres')
+      setLoading(false);
+      return;
+    }
+
 
     if (formsErrors) return
 
@@ -40,7 +85,7 @@ export default function CadastroAdmin() {
       const response = await axios.post('http://localhost:3001/admin', {
         nome,
         senha,
-        cpf,
+        cpf: cpf.replace(/\D/g, ''), // enviando cpf limpo
         cargo
       });
 
@@ -88,30 +133,40 @@ export default function CadastroAdmin() {
             className="border border-gray-300 rounded px-4 py-2"
             type="text"
             value={cpf}
-            onChange={e => setCPF(e.target.value)}
+            maxLength={14}
+            onChange={e => setCPF(formatarCPF(e.target.value))}
             placeholder="Digite seu CPF"
+
           />
-          <input
-            className="border border-gray-300 rounded px-4 py-2"
-            type="text"
+          <select
+            className="border border-gray-300 rounded px-4 py-2 text-black"
             value={cargo}
             onChange={e => setCargo(e.target.value)}
-            placeholder="Digite seu cargo"
-          />
+          >
+            <option value="">Selecione um cargo</option>
+            {cargosDisponiveis.map((cargoOp) => (
+              <option key={cargoOp} value={cargoOp}>
+                {cargoOp}
+              </option>
+            ))}
+          </select>
 
           <input
             className="border border-gray-300 rounded px-4 py-2"
             type="password"
             value={senha}
+            maxLength={255}
             onChange={e => setSenha(e.target.value)}
             placeholder="Digite sua senha"
           />
 
           <button
             type="submit"
+            disabled={loading}
             className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
           >
-            Cadastrar
+
+            {loading ? 'Cadastrando...' : 'Cadastrar'}
           </button>
         </form>
       </div>
