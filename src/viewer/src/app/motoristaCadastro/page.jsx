@@ -1,0 +1,84 @@
+'use client'
+import { useState } from 'react'
+import axios from 'axios'
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { get } from 'lodash';
+
+export default function MotoristaCadastro() {  // Note a mudança para PascalCase no nome do componente
+
+    const [nome, setNome] = useState('');
+    const [cpf_motorista, setCPF] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setLoading(true)
+
+        let formsErrors = false;
+
+        if (!nome.trim() || !cpf_motorista.trim()) {
+            formsErrors = true;
+            toast.error("Preencha todos os campos.")
+        }
+
+        if (formsErrors) return
+
+        try {
+            const response = await axios.post('http://localhost:3001/motorista', {
+                nome,
+                cpf_motorista
+            })
+
+            toast.success('Motorista cadastrado com sucesso.')
+            console.log(response.data)
+
+        } catch (err) {
+            const message = get(err, 'response.data.message', '');
+
+            if (message === 'CPF já cadastrado') {
+                toast.error('CPF já existente');
+            } else {
+                toast.error('erro ao cadastrar usuário')
+            }
+
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (  // Agora o return está dentro da função do componente
+        <>
+            <div className="flex flex-col items-center justify-center min-h-screen">
+                <h1 className="text-2xl font-bold mb-6">Crie sua conta</h1>
+
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col gap-4 bg-gray-800 p-6 rounded-lg shadow-md w-80"
+                >
+                    <input
+                        className="border border-gray-300 rounded px-4 py-2"
+                        type="text"
+                        value={nome}
+                        onChange={e => setNome(e.target.value)}
+                        placeholder="Digite seu nome"
+                    />
+                    <input
+                        className="border border-gray-300 rounded px-4 py-2"
+                        type="number"
+                        value={cpf_motorista}
+                        onChange={e => setCPF(e.target.value)}
+                        placeholder="Digite seu CPF"
+                    />
+
+                    <button
+                        type="submit"
+                        className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
+                    >
+                        Cadastrar
+                    </button>
+                </form>
+            </div>
+        </>
+    )
+}
