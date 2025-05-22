@@ -1,9 +1,10 @@
 'use client'
 import { useState } from 'react'
 import axios from 'axios'
-import {toast} from 'sonner';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { get } from 'lodash';
+import { FaTruckFront } from 'react-icons/fa6';
 
 export default function responsavelCadastro() {
 
@@ -11,6 +12,27 @@ export default function responsavelCadastro() {
     const [cpf, setCPF] = useState('');
     const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false)
+
+    function formatarCPF(valor) {
+        // Remove tudo que não for número
+        valor = valor.replace(/\D/g, '');
+
+        // Aplica a máscara
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return valor
+    }
+
+    function validarNome(nome) {
+        // aqui só permito letras e espaços
+        return /^[A-Za-zÀ-ú\s]+$/.test(nome);
+    }
+
+    function validarSenha(senha) {
+        return senha.length >= 6
+    }
+
 
     async function handleSubmit(e) {
 
@@ -23,11 +45,19 @@ export default function responsavelCadastro() {
             formsErrors = true;
             toast.error("Preencha todos os campos.")
         }
+        if (!validarNome(nome)) {
+            toast.error('Nome inválido. Use apenas letras ou espaços');
+        }
 
-        if(formsErrors) return
+        if(!validarSenha(senha)){
+            toast.error('Senha conter pelo menos 6 caracteres');
+        }
+
+
+        if (formsErrors) return
 
         try {
-            const response = await axios.post ('http://localhost:3001/responsavel', {
+            const response = await axios.post('http://localhost:3001/responsavel', {
                 nome,
                 cpf,
                 senha,
@@ -37,21 +67,21 @@ export default function responsavelCadastro() {
             console.log(response.data)
         } catch (err) {
             const message = get(err, 'response.data.message', '');
-      
+
             if (message === 'CPF já cadastrado') {
-              toast.error('CPF já existente');
+                toast.error('CPF já existente');
             } else {
-              toast.error('erro ao cadastrar usuário')
+                toast.error('erro ao cadastrar usuário')
             }
-      
-          } finally {
+
+        } finally {
             setLoading(false)
-          }
-        
+        }
 
-    
 
-    } 
+
+
+    }
 
     return (
 
@@ -75,10 +105,11 @@ export default function responsavelCadastro() {
                         className="border border-gray-300 rounded px-4 py-2"
                         type="number"
                         value={cpf}
-                        onChange={e => setCPF(e.target.value)}
+                        maxLength={14}
+                        onChange={e => setCPF(formatarCPF(e.target.value))}
                         placeholder="Digite seu CPF"
                     />
-                    
+
 
                     <input
                         className="border border-gray-300 rounded px-4 py-2"
