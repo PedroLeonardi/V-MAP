@@ -13,16 +13,16 @@ export default function responsavelCadastro() {
     const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false)
 
-    function formatarCPF(valor) {
-        // Remove tudo que não for número
-        valor = valor.replace(/\D/g, '');
+     function formatarCPF(valor) {
+    // Remove tudo que não for número
+    valor = valor.replace(/\D/g, '');
 
-        // Aplica a máscara
-        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        return valor
-    }
+    // Aplica a máscara
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return valor
+  }
 
     function validarNome(nome) {
         // aqui só permito letras e espaços
@@ -49,7 +49,7 @@ export default function responsavelCadastro() {
             toast.error('Nome inválido. Use apenas letras ou espaços');
         }
 
-        if(!validarSenha(senha)){
+        if (!validarSenha(senha)) {
             toast.error('Senha conter pelo menos 6 caracteres');
         }
 
@@ -103,7 +103,7 @@ export default function responsavelCadastro() {
                     />
                     <input
                         className="border border-gray-300 rounded px-4 py-2"
-                        type="number"
+                        type="text"
                         value={cpf}
                         maxLength={14}
                         onChange={e => setCPF(formatarCPF(e.target.value))}

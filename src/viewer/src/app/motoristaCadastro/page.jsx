@@ -11,6 +11,21 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
     const [cpf_motorista, setCPF] = useState('');
     const [loading, setLoading] = useState(false);
 
+    function formatarCPF(valor) {
+    // Remove tudo que não for número
+    valor = valor.replace(/\D/g, '');
+
+    // Aplica a máscara
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return valor
+  }
+
+    function validarNome(nome){
+         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true)
@@ -21,6 +36,11 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
             formsErrors = true;
             toast.error("Preencha todos os campos.")
         }
+
+        if(validarNome(nome)){
+            toast.error('Nome inválido. Usuário deve conter apenas letras e espaços')
+        }
+
 
         if (formsErrors) return
 
@@ -65,9 +85,10 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
                     />
                     <input
                         className="border border-gray-300 rounded px-4 py-2"
-                        type="number"
+                        type="text"
                         value={cpf_motorista}
-                        onChange={e => setCPF(e.target.value)}
+                        maxLength={14}
+                        onChange={e => setCPF(formatarCPF(e.target.value))}
                         placeholder="Digite seu CPF"
                     />
 
