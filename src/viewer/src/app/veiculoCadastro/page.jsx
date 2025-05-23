@@ -17,7 +17,7 @@ export default function VeiculoCadastro() {
         e.preventDefault()
         setLoading(true)
 
-        if(!coordenadasInicio.trim() || !coordenadasParadas.trim() || !coordenadasFim.trim()){
+        if (!coordenadasInicio.trim() || !coordenadasParadas.trim() || !coordenadasFim.trim()) {
             toast.error('Preencha todos os campos.')
         }
 
@@ -88,9 +88,10 @@ export default function VeiculoCadastro() {
 
                 <button
                     type="submit"
+                    disabled={loading}
                     className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
                 >
-                    Cadastrar
+                    {loading ? 'Cadastrando...' : 'Cadastrar'}
                 </button>
             </form>
         </div>

@@ -12,18 +12,18 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
     const [loading, setLoading] = useState(false);
 
     function formatarCPF(valor) {
-    // Remove tudo que não for número
-    valor = valor.replace(/\D/g, '');
+        // Remove tudo que não for número
+        valor = valor.replace(/\D/g, '');
 
-    // Aplica a máscara
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    return valor
-  }
+        // Aplica a máscara
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return valor
+    }
 
-    function validarNome(nome){
-         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
+    function validarNome(nome) {
+        return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
     async function handleSubmit(e) {
@@ -37,7 +37,7 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
             toast.error("Preencha todos os campos.")
         }
 
-        if(validarNome(nome)){
+        if (validarNome(nome)) {
             toast.error('Nome inválido. Usuário deve conter apenas letras e espaços')
         }
 
@@ -94,9 +94,10 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
 
                     <button
                         type="submit"
+                        disabled={loading}
                         className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
                     >
-                        Cadastrar
+                        {loading ? 'Cadastrando...' : 'Cadastrar'}
                     </button>
                 </form>
             </div>

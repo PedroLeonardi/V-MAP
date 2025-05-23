@@ -31,7 +31,7 @@ export default function alunoCadastro() {
 
   }
 
-  function validarSenha(senha){
+  function validarSenha(senha) {
     return senha.length >= 6;
   }
 
@@ -42,15 +42,15 @@ export default function alunoCadastro() {
 
     let formsErrors = false;
 
-    if(!nome.trim() || !cpf.trim() || !senha.trim() || !cpf_responsavel.trim()){
+    if (!nome.trim() || !cpf.trim() || !senha.trim() || !cpf_responsavel.trim()) {
       toast.error('Preencha todos os campos');
     }
 
-    if(!validarNome(nome)){
+    if (!validarNome(nome)) {
       toast.error('Nome Inválido. Usuario deve conter letras e espaços');
     }
 
-    if(!validarSenha(senha)){
+    if (!validarSenha(senha)) {
       toast.error('Senha deve conter pelo menos 6 caracteres');
     }
 
@@ -119,9 +119,10 @@ export default function alunoCadastro() {
 
           <button
             type="submit"
+            disabled={loading}
             className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
           >
-            Cadastrar
+            {loading ? 'Cadastrando...' : 'Cadastrar'}
           </button>
         </form>
       </div>

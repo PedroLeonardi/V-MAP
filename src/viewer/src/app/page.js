@@ -44,7 +44,7 @@ export default function CadastroAdmin() {
 
   // senha precisa ser maior q 6 digitos
   function validarSenha(senha) {
-    return senha.lenght >= 6;
+    return senha.length >= 6;
   }
 
   // removendo meu token de logado ao voltar para cadastro
