@@ -63,7 +63,7 @@ export default function responsavelCadastro() {
                 senha,
             })
 
-            toast.success('Cadastro concluido com sucesso!!')
+            toast.success('Responsavel cadastrado com sucesso!!!')
             console.log(response.data)
         } catch (err) {
             const message = get(err, 'response.data.message', '');
@@ -71,16 +71,12 @@ export default function responsavelCadastro() {
             if (message === 'CPF já cadastrado') {
                 toast.error('CPF já existente');
             } else {
-                toast.error('erro ao cadastrar usuário')
+                toast.error('Erro ao cadastrar responsável')
             }
 
         } finally {
             setLoading(false)
         }
-
-
-
-
     }
 
     return (

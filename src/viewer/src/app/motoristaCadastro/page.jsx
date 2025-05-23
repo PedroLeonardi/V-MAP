@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { get } from 'lodash';
 
-export default function MotoristaCadastro() {  // Note a mudança para PascalCase no nome do componente
+export default function MotoristaCadastro() {  
 
     const [nome, setNome] = useState('');
     const [cpf_motorista, setCPF] = useState('');
@@ -59,7 +59,7 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
             if (message === 'CPF já cadastrado') {
                 toast.error('CPF já existente');
             } else {
-                toast.error('erro ao cadastrar usuário')
+                toast.error('Erro ao cadastrar motorista')
             }
 
         } finally {
@@ -67,7 +67,7 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
         }
     }
 
-    return (  // Agora o return está dentro da função do componente
+    return (  
         <>
             <div className="flex flex-col items-center justify-center min-h-screen">
                 <h1 className="text-2xl font-bold mb-6">Crie sua conta</h1>

@@ -89,7 +89,7 @@ export default function CadastroAdmin() {
         cargo
       });
 
-      toast.success("Cadastro de ADM concluido com sucesso!!");
+      toast.success("Cadastro Adminstrativo concluido com sucesso!!");
       console.log(response.data);
 
       // setTimeout(() => {
@@ -103,7 +103,7 @@ export default function CadastroAdmin() {
       if (message === 'CPF já cadastrado') {
         toast.error('CPF já existente');
       } else {
-        toast.error('erro ao cadastrar usuário')
+        toast.error('Erro ao cadastrar administrador')
       }
 
     } finally {
