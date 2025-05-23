@@ -5,11 +5,27 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { get } from 'lodash';
 
-export default function MotoristaCadastro() {  // Note a mudança para PascalCase no nome do componente
+export default function MotoristaCadastro() {  
 
     const [nome, setNome] = useState('');
     const [cpf_motorista, setCPF] = useState('');
+    const cpfLimpo = cpf_motorista.replace(/\D/g, '');
     const [loading, setLoading] = useState(false);
+
+    function formatarCPF(valor) {
+        // Remove tudo que não for número
+        valor = valor.replace(/\D/g, '');
+
+        // Aplica a máscara
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return valor
+    }
+
+    function validarNome(nome) {
+        return /^[A-Za-zÀ-ú\s]+$/.test(nome);
+    }
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -22,12 +38,17 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
             toast.error("Preencha todos os campos.")
         }
 
+        if (validarNome(nome)) {
+            toast.error('Nome inválido. Usuário deve conter apenas letras e espaços')
+        }
+
+
         if (formsErrors) return
 
         try {
             const response = await axios.post('http://localhost:3001/motorista', {
                 nome,
-                cpf_motorista
+                cpf_motorista: cpfLimpo
             })
 
             toast.success('Motorista cadastrado com sucesso.')
@@ -39,7 +60,7 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
             if (message === 'CPF já cadastrado') {
                 toast.error('CPF já existente');
             } else {
-                toast.error('erro ao cadastrar usuário')
+                toast.error('Erro ao cadastrar motorista')
             }
 
         } finally {
@@ -47,7 +68,7 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
         }
     }
 
-    return (  // Agora o return está dentro da função do componente
+    return (  
         <>
             <div className="flex flex-col items-center justify-center min-h-screen">
                 <h1 className="text-2xl font-bold mb-6">Crie sua conta</h1>
@@ -65,17 +86,19 @@ export default function MotoristaCadastro() {  // Note a mudança para PascalCas
                     />
                     <input
                         className="border border-gray-300 rounded px-4 py-2"
-                        type="number"
+                        type="text"
                         value={cpf_motorista}
-                        onChange={e => setCPF(e.target.value)}
+                        maxLength={14}
+                        onChange={e => setCPF(formatarCPF(e.target.value))}
                         placeholder="Digite seu CPF"
                     />
 
                     <button
                         type="submit"
+                        disabled={loading}
                         className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
                     >
-                        Cadastrar
+                        {loading ? 'Cadastrando...' : 'Cadastrar'}
                     </button>
                 </form>
             </div>

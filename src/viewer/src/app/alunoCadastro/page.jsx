@@ -1,28 +1,19 @@
 'use client'
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import axios from 'axios';
-import { get } from 'lodash';
-import { toast } from "sonner";
 
-export default function CadastroAdmin() {
+import { useState } from 'react'
+import axios from 'axios'
+import { toast } from 'sonner'
+import { get } from 'lodash'
+
+export default function alunoCadastro() {
 
   const [nome, setNome] = useState('');
   const [senha, setSenha] = useState('');
   const [cpf, setCPF] = useState('');
-  const [cargo, setCargo] = useState('');
+  const [cpf_responsavel, setCPF_RESPONSAVEL] = useState('');
+  const cpfLimpo = cpf.replace(/\D/g, '');
+  const cpfLimpoResponsavel = cpf_responsavel.replace(/\D/g, '');
   const [loading, setLoading] = useState(false)
-  const router = useRouter();
-
-  // add cargos
-  const cargosDisponiveis = [
-    'Coordenador Pedagógico',
-    'Gerente de Transporte',
-    'Diretor',
-    'Coordenador',
-    'Gerente de TI'
-  ]
-
 
   function formatarCPF(valor) {
     // Remove tudo que não for número
@@ -42,73 +33,46 @@ export default function CadastroAdmin() {
 
   }
 
-  // senha precisa ser maior q 6 digitos
   function validarSenha(senha) {
     return senha.length >= 6;
   }
 
-  // removendo meu token de logado ao voltar para cadastro
-  // só teste
-  useEffect(() => {
-    localStorage.removeItem('token');
-  }, []);
-
   async function handleSubmit(e) {
 
-    e.preventDefault(); // evita o envio do formulário
+    e.preventDefault();
     setLoading(true);
 
     let formsErrors = false;
 
-    if (!nome.trim() || !senha.trim() || !cpf.trim() || !cargo.trim()) {
-      formsErrors = true;
-      toast.error("Preencha todos os campos.")
+    if (!nome.trim() || !cpf.trim() || !senha.trim() || !cpf_responsavel.trim()) {
+      toast.error('Preencha todos os campos');
     }
 
     if (!validarNome(nome)) {
-      toast.error('Nome Inválido. Use apenas letras e espaços.')
-      setLoading(false);
-      return;
+      toast.error('Nome Inválido. Usuario deve conter letras e espaços');
     }
 
-    if(!validarSenha(senha)){
-      toast.error('Senha deve conter pelo menos 6 caracteres')
-      setLoading(false);
-      return;
+    if (!validarSenha(senha)) {
+      toast.error('Senha deve conter pelo menos 6 caracteres');
     }
-
 
     if (formsErrors) return
 
     try {
 
-      const response = await axios.post('http://localhost:3001/admin', {
-        nome,
-        senha,
-        cpf: cpf.replace(/\D/g, ''), // enviando cpf limpo
-        cargo
-      });
+      const response = await axios.post('http://localhost:3001/aluno', {
+        nome: nome,
+        cpf_aluno: cpfLimpo,
+        senha: senha,
+        cpf_responsavel: cpfLimpoResponsavel
+      })
 
-      toast.success("Cadastro Adminstrativo concluido com sucesso!!");
-      console.log(response.data);
-
-      // setTimeout(() => {
-      //   router.push('/login')
-      // }, 2000)
-
-
+      console.log(response.data)
+      toast.success('Aluno cadastrado com sucesso.')
     } catch (err) {
-      const message = get(err, 'response.data.message', '');
-
-      if (message === 'CPF já cadastrado') {
-        toast.error('CPF já existente');
-      } else {
-        toast.error('Erro ao cadastrar administrador')
-      }
-
-    } finally {
-      setLoading(false)
+      console.error(err)
     }
+
   }
 
   return (
@@ -136,26 +100,21 @@ export default function CadastroAdmin() {
             maxLength={14}
             onChange={e => setCPF(formatarCPF(e.target.value))}
             placeholder="Digite seu CPF"
-
           />
-          <select
-            className="border border-gray-300 rounded px-4 py-2 text-black"
-            value={cargo}
-            onChange={e => setCargo(e.target.value)}
-          >
-            <option value="">Selecione um cargo</option>
-            {cargosDisponiveis.map((cargoOp) => (
-              <option key={cargoOp} value={cargoOp}>
-                {cargoOp}
-              </option>
-            ))}
-          </select>
+          <input
+            className="border border-gray-300 rounded px-4 py-2"
+            type="text"
+            value={cpf_responsavel}
+            maxLength={14}
+            onChange={e => setCPF_RESPONSAVEL(formatarCPF(e.target.value))}
+            placeholder="Digite seu CPF"
+          />
+
 
           <input
             className="border border-gray-300 rounded px-4 py-2"
             type="password"
             value={senha}
-            maxLength={255}
             onChange={e => setSenha(e.target.value)}
             placeholder="Digite sua senha"
           />
@@ -165,7 +124,6 @@ export default function CadastroAdmin() {
             disabled={loading}
             className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
           >
-
             {loading ? 'Cadastrando...' : 'Cadastrar'}
           </button>
         </form>
@@ -173,4 +131,6 @@ export default function CadastroAdmin() {
 
     </>
   );
+
+
 }
