@@ -4,7 +4,7 @@ import knex from '../../config/connection.js';
 import bcrypt from 'bcryptjs';
 
 const gerarToken = (payload) => {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 };
 
 export const loginAdminController = async (req, res) => {
@@ -61,7 +61,10 @@ export const loginResponsavelController = async (req, res) => {
   const { cpf, senha } = req.body;
 
   try {
-    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
+    const cpfLimpo = cpf.replace(/\D/g, '');
+
+
+    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpfLimpo }).first();
 
     if (!responsavel) {
       return res.status(404).json({ message: 'Responsável não encontrado.' });

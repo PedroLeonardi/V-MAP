@@ -1,7 +1,7 @@
 import knex from '../../config/connection.js';
 import bcrypt from 'bcryptjs';
 
-const saltRounds = 10; 
+const saltRounds = 10;
 
 const getAll = async () => {
   try {
@@ -25,8 +25,11 @@ const getById = async (id_responsavel) => {
 
 const create = async (data) => {
   try {
+
+    const cpfLimpo = data.cpf.replace(/\D/g, '');
+
     const responsavelExistente = await knex('responsaveis')
-      .where({ cpf_responsavel: data.cpf_responsavel })
+      .where({ cpf_responsavel: cpfLimpo })
       .first();
 
     if (responsavelExistente) {
@@ -39,7 +42,7 @@ const create = async (data) => {
 
     const [id_responsavel] = await knex('responsaveis').insert({
       nome: data.nome,
-      cpf_responsavel: data.cpf,
+      cpf_responsavel: cpfLimpo,
       senha: senhaHashed
     });
 
@@ -54,7 +57,7 @@ const create = async (data) => {
 
 const update = async (id_responsavel, data) => {
   try {
-   
+
     const updatedRows = await knex('responsaveis').where({ id_responsavel }).update(data);
     return updatedRows;
   } catch (err) {

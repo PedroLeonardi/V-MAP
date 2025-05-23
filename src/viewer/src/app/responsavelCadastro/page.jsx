@@ -8,10 +8,13 @@ import { FaTruckFront } from 'react-icons/fa6';
 
 export default function responsavelCadastro() {
 
+    
+    
     const [nome, setNome] = useState('');
     const [cpf, setCPF] = useState('');
     const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false)
+    const cpfLimpo = cpf.replace(/\D/g, '');
 
      function formatarCPF(valor) {
     // Remove tudo que não for número
@@ -59,7 +62,7 @@ export default function responsavelCadastro() {
         try {
             const response = await axios.post('http://localhost:3001/responsavel', {
                 nome,
-                cpf,
+                cpf: cpfLimpo,
                 senha,
             })
 
