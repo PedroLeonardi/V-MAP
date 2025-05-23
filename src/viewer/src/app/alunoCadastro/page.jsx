@@ -11,6 +11,8 @@ export default function alunoCadastro() {
   const [senha, setSenha] = useState('');
   const [cpf, setCPF] = useState('');
   const [cpf_responsavel, setCPF_RESPONSAVEL] = useState('');
+  const cpfLimpo = cpf.replace(/\D/g, '');
+  const cpfLimpoResponsavel = cpf_responsavel.replace(/\D/g, '');
   const [loading, setLoading] = useState(false)
 
   function formatarCPF(valor) {
@@ -60,9 +62,9 @@ export default function alunoCadastro() {
 
       const response = await axios.post('http://localhost:3001/aluno', {
         nome: nome,
-        cpf_aluno: cpf,
+        cpf_aluno: cpfLimpo,
         senha: senha,
-        cpf_responsavel: cpf_responsavel
+        cpf_responsavel: cpfLimpoResponsavel
       })
 
       console.log(response.data)

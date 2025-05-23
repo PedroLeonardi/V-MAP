@@ -9,6 +9,7 @@ export default function MotoristaCadastro() {
 
     const [nome, setNome] = useState('');
     const [cpf_motorista, setCPF] = useState('');
+    const cpfLimpo = cpf_motorista.replace(/\D/g, '');
     const [loading, setLoading] = useState(false);
 
     function formatarCPF(valor) {
@@ -47,7 +48,7 @@ export default function MotoristaCadastro() {
         try {
             const response = await axios.post('http://localhost:3001/motorista', {
                 nome,
-                cpf_motorista
+                cpf_motorista: cpfLimpo
             })
 
             toast.success('Motorista cadastrado com sucesso.')
