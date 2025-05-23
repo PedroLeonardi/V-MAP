@@ -64,7 +64,7 @@ export default function alunoCadastro() {
         nome: nome,
         cpf_aluno: cpfLimpo,
         senha: senha,
-        cpf_responsavel: cpfLimpoResponsavel
+        cpf_responsavel
       })
 
       console.log(response.data)
@@ -107,7 +107,7 @@ export default function alunoCadastro() {
             value={cpf_responsavel}
             maxLength={14}
             onChange={e => setCPF_RESPONSAVEL(formatarCPF(e.target.value))}
-            placeholder="Digite seu CPF"
+            placeholder="Digite CPF do responsavel"
           />
 
 
