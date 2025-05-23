@@ -17,6 +17,10 @@ export default function VeiculoCadastro() {
         e.preventDefault()
         setLoading(true)
 
+        if(!coordenadasInicio.trim() || !coordenadasParadas.trim() || !coordenadasFim.trim()){
+            toast.error('Preencha todos os campos.')
+        }
+
         try {
             const response = await axios.post('http://localhost:3001/veiculo', {
                 coordenadas_inicio: coordenadasInicio,
