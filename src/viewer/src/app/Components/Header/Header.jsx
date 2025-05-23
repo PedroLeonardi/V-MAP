@@ -14,7 +14,7 @@ import { IoChatboxEllipses } from "react-icons/io5";
 
 
 export default function Header() {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const menus = [
         { title: 'Dashboard' },
