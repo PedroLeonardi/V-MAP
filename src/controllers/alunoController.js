@@ -29,6 +29,11 @@ const createAluno = async (req, res) => {
         await userModel.create(req.body);
         return res.status(201).json({ message: 'Aluno criado com sucesso' });
     } catch (err) {
+
+       if (err.statusCode === 400) {
+            return res.status(400).json({ message: 'CPF do aluno já existente.' }); 
+        }
+
         console.error("Erro ao criar aluno", err);
         return res.status(500).json({ message: 'Erro ao criar aluno' });
     }
