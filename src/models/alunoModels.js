@@ -81,4 +81,15 @@ const deleteRecord = async (id_aluno) => {
     }
 };
 
-export default { getAll, getById, create, update, deleteRecord };
+const getTotalAlunos = async () => {
+  try {
+    const [{ count }] = await knex("Alunos").count("* as count");
+    return parseInt(count);
+  } catch (err) {
+    console.error("Erro ao contar alunos: ", err);
+    throw err;
+  }
+};
+
+
+export default { getAll, getById, create, update, deleteRecord, getTotalAlunos  };

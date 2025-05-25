@@ -1,10 +1,9 @@
-import userModel from "../Models/alunoModels.js";
-
+import userModel from '../models/alunoModels.js'
 const getAlunoAll = async (req, res) => {
     try {
         const users = await userModel.getAll();
         return res.status(200).json(users);
-    } catch (err) {
+    } catch (err) { 
         console.error("Erro ao buscar todos os alunos", err);
         return res.status(500).json({ message: 'Erro ao buscar todos os alunos' });
     }
@@ -67,4 +66,16 @@ const deleteAluno = async (req, res) => {
     }
 }
 
-export default { getAluno, getAlunoAll, createAluno, updateAluno, deleteAluno };
+const getTotalAlunos = async (req, res) => {
+  try {
+    const total = await userModel.getTotalAlunos();
+    return res.status(200).json({ total });
+  } catch (err) {
+    console.error("Erro ao obter total de alunos", err);
+    return res.status(500).json({ message: 'Erro ao obter total de alunos' });
+  }
+};
+
+
+
+export default { getAluno, getAlunoAll, createAluno, updateAluno, deleteAluno, getTotalAlunos };
