@@ -15,7 +15,7 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
     const [cpf_responsavel, setCpfResponsavel] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // Função para formatar CPF (mesma do ModalCadastro)
+    // função para formatar CPF (
     function formatarCPF(valor) {
         valor = valor.replace(/\D/g, '');
         valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
@@ -24,25 +24,30 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
         return valor;
     }
 
-    // Função para validar nome (mesma do ModalCadastro)
+    // função para validar nome 
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // Função para validar senha (mesma do ModalCadastro)
+    // função para validar senha 
     function validarSenha(senha) {
         return senha.length >= 6;
     }
 
     const buscarAluno = async () => {
+
+        // enviando cpf limpo para o db/back-end
         const cpfLimpo = cpfBusca.replace(/\D/g, '');
         if (!cpfLimpo) return toast.warning('Informe o CPF para buscar.');
 
         try {
             setLoading(true);
+
+            // verificando se esse cpf existe
             const response = await axios.get(`http://localhost:3001/aluno/cpf/${cpfLimpo}`);
             const alunoEncontrado = response.data;
 
+            // atribuindo ele...
             setAluno(alunoEncontrado);
             setCpfAluno(formatarCPF(alunoEncontrado.cpf_aluno));
             setNome(alunoEncontrado.nome);
@@ -83,6 +88,8 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
 
         try {
             setLoading(true);
+
+            // aqui vou enviar o cpf limpo para o back-end/db
             const cpfLimpoAluno = cpf_aluno.replace(/\D/g, '');
             const cpfLimpoResponsavel = cpf_responsavel.replace(/\D/g, '');
 
@@ -99,6 +106,10 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
             onClose();
         } catch (err) {
             console.error(err);
+        
+            // tratamentros de erros
+            // nele envio as msg do controller atraves de uma requisicao ao back-end
+            // toast personalizado :)
             if (err.response && err.response.status === 404) {
                 toast.error('Responsável não encontrado.');
             } else if (err.response?.data?.message) {

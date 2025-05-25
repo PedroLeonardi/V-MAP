@@ -11,6 +11,8 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
     const [aluno, setAluno] = useState(null);
     const [loading, setLoading] = useState(false);
 
+
+    // formatando o cpf
     function formatarCPF(valor) {
         if (!valor) return '';
         valor = valor.replace(/\D/g, '');
@@ -22,27 +24,34 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
 
     const handleCpfChange = (e) => {
         const valor = e.target.value;
-        // Permite apenas números e formata automaticamente
         const cpfFormatado = formatarCPF(valor);
         setCpfBusca(cpfFormatado);
     }
 
     const buscarAluno = async () => {
+        // enviando cpf limpo para db/back-end
+
         const cpfLimpo = cpfBusca.replace(/\D/g, '');
+
+        // verificação de cpf
         if (!cpfLimpo || cpfLimpo.length !== 11) {
             return toast.warning('Informe um CPF válido com 11 dígitos.');
         }
 
         try {
             setLoading(true);
+
+            // verificando se cpf existe
             const response = await axios.get(`http://localhost:3001/aluno/cpf/${cpfLimpo}`);
-            
+
             if (!response.data) {
                 throw new Error('Aluno não encontrado');
             }
 
             setAluno(response.data);
             toast.success('Aluno encontrado!');
+
+            // tratando erros
         } catch (err) {
             console.error(err);
             toast.error('Aluno não encontrado. Verifique o CPF.');
@@ -53,36 +62,44 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
     }
 
     const excluirAluno = async () => {
+
+        // se aluno nao existir
         if (!aluno?.id_aluno) {
             return toast.error('Nenhum aluno selecionado para exclusão.');
         }
 
         try {
             setLoading(true);
+
+            // aplicando logica para deletar
             const response = await axios.delete(`http://localhost:3001/aluno/${aluno.id_aluno}`);
-            
+
             if (response.status === 200) {
                 toast.success('Aluno excluído com sucesso!');
                 setAluno(null);
                 setCpfBusca('');
-                if (onSuccess) onSuccess(); // Notifica o componente pai
-                if (onClose) onClose(); // Fecha o modal
+                if (onSuccess) onSuccess(); // notifica o componente pai 
+                if (onClose) onClose(); // fecha o modal
             } else {
                 throw new Error('Erro ao excluir aluno');
             }
         } catch (err) {
             console.error('Erro na exclusão:', err);
-            
+
+            // mais tratamentos de erros
             let errorMessage = 'Erro ao excluir aluno';
             if (err.response) {
+
+                // essas mensagens de erros acabam fazendo uma requisição ao back-end
+                // ele acaba mandando a resposta do controller...
                 if (err.response.status === 404) {
                     errorMessage = 'Aluno não encontrado no sistema';
                 } else if (err.response.data?.message) {
                     errorMessage = err.response.data.message;
                 }
             }
-            
-            toast.error(errorMessage);
+
+            toast.error(errorMessage); // aq recebe a msg do back-end
         } finally {
             setLoading(false);
         }
@@ -93,7 +110,7 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
     return (
         <div className="fixed inset-0 backdrop-blur-sm bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="p-6 max-w-md w-full bg-gray-800 rounded-xl shadow-lg space-y-4 text-white relative">
-                <button 
+                <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-gray-400 hover:text-white"
                 >
