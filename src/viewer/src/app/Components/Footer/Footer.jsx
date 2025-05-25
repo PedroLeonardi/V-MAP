@@ -8,7 +8,7 @@ export default function Footer() {
           <h3 className="font-mono font-extrabold text-lg mb-2">Redes Sociais</h3>
           <ul className="space-y-1 text-sm text-gray-400 font-bold">
             <li>
-              <a href="#" className="hover:text-white transition">bla bla</a>
+              <a href="#" className="hover:text-white transition">bla blas</a>
             </li>
             <li>
               <a href="#" className="hover:text-white transition">bla bla</a>
