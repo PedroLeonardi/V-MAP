@@ -1,4 +1,4 @@
-import userModel from "../Models/responsavelModels.js";
+import userModel from '../models/responsavelModels.js'
 
 const getResponsavelAll = async (req, res) => {
     try {
@@ -62,4 +62,21 @@ const deleteResponsavel = async (req, res) => {
     }
 }
 
-export default { getResponsavel, getResponsavelAll, createResponsavel, updateResponsavel, deleteResponsavel };
+const getResponsavelByCPF = async (req, res) => {
+    try {
+        const cpf = req.params.cpf;
+        const user = await userModel.getByCPF(cpf);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Responsável não encontrado' });
+        }
+
+        return res.json(user);
+    } catch (err) {
+        console.error("Erro ao buscar responsável por CPF", err);
+        return res.status(500).json({ message: 'Erro ao buscar responsável por CPF' });
+    }
+};
+
+
+export default { getResponsavel, getResponsavelAll, createResponsavel, updateResponsavel, deleteResponsavel, getResponsavelByCPF };

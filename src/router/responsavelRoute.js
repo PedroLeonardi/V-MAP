@@ -4,6 +4,7 @@ const router  = Router();
 
 router.get('/', responsavel.getResponsavelAll);
 router.get("/:id", responsavel.getResponsavel);
+router.get('/cpf/:cpf', responsavel.getResponsavelByCPF);
 router.post('/', responsavel.createResponsavel);
 
 export default router;

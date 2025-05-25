@@ -76,4 +76,18 @@ const deleteRecord = async (id_responsavel) => {
   }
 };
 
-export default { getAll, getById, create, update, deleteRecord };
+const getByCPF = async (cpf) => {
+  try {
+    const cpfLimpo = cpf.replace(/\D/g, '');
+    const responsavel = await knex('responsaveis')
+      .where({ cpf_responsavel: cpfLimpo })
+      .first();
+    return responsavel;
+  } catch (err) {
+    console.error('Erro ao buscar responsável por CPF: ', err);
+    return null;
+  }
+};
+
+
+export default { getAll, getById, create, update, deleteRecord, getByCPF };

@@ -1,9 +1,11 @@
 'use client'
 import { useEffect, useState } from "react";
+import ModalCadastro from "./Components/Modals/ModalCadastro";
 import { useRouter } from "next/navigation";
 import axios from 'axios';
 import { get } from 'lodash';
 import { toast } from "sonner";
+
 
 export default function CadastroAdmin() {
 
@@ -174,3 +176,4 @@ export default function CadastroAdmin() {
     </>
   );
 }
+

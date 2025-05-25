@@ -1,10 +1,9 @@
-import userModel from "../Models/alunoModels.js";
-
+import userModel from '../models/alunoModels.js'
 const getAlunoAll = async (req, res) => {
     try {
         const users = await userModel.getAll();
         return res.status(200).json(users);
-    } catch (err) {
+    } catch (err) { 
         console.error("Erro ao buscar todos os alunos", err);
         return res.status(500).json({ message: 'Erro ao buscar todos os alunos' });
     }
@@ -29,6 +28,11 @@ const createAluno = async (req, res) => {
         await userModel.create(req.body);
         return res.status(201).json({ message: 'Aluno criado com sucesso' });
     } catch (err) {
+
+       if (err.statusCode === 400) {
+            return res.status(400).json({ message: 'CPF do aluno já existente.' }); 
+        }
+
         console.error("Erro ao criar aluno", err);
         return res.status(500).json({ message: 'Erro ao criar aluno' });
     }
@@ -62,4 +66,32 @@ const deleteAluno = async (req, res) => {
     }
 }
 
-export default { getAluno, getAlunoAll, createAluno, updateAluno, deleteAluno };
+const getTotalAlunos = async (req, res) => {
+  try {
+    const total = await userModel.getTotalAlunos();
+    return res.status(200).json({ total });
+  } catch (err) {
+    console.error("Erro ao obter total de alunos", err);
+    return res.status(500).json({ message: 'Erro ao obter total de alunos' });
+  }
+};
+
+
+const getAlunoByCPF = async (req, res) => {
+    try {
+        const cpf = req.params.cpf;
+        const user = await userModel.getByCPF(cpf);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Aluno não encontrado' });
+        }
+
+        return res.json(user);
+    } catch (err) {
+        console.error("Erro ao buscar aluno por CPF", err);
+        return res.status(500).json({ message: 'Erro ao buscar aluno por CPF' });
+    }
+};
+
+
+export default { getAluno, getAlunoAll, createAluno, updateAluno, deleteAluno, getTotalAlunos , getAlunoByCPF};
