@@ -77,5 +77,21 @@ const getTotalAlunos = async (req, res) => {
 };
 
 
+const getAlunoByCPF = async (req, res) => {
+    try {
+        const cpf = req.params.cpf;
+        const user = await userModel.getByCPF(cpf);
 
-export default { getAluno, getAlunoAll, createAluno, updateAluno, deleteAluno, getTotalAlunos };
+        if (!user) {
+            return res.status(404).json({ message: 'Aluno não encontrado' });
+        }
+
+        return res.json(user);
+    } catch (err) {
+        console.error("Erro ao buscar aluno por CPF", err);
+        return res.status(500).json({ message: 'Erro ao buscar aluno por CPF' });
+    }
+};
+
+
+export default { getAluno, getAlunoAll, createAluno, updateAluno, deleteAluno, getTotalAlunos , getAlunoByCPF};

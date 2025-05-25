@@ -63,8 +63,14 @@ const create = async (data) => {
 
 const update = async (id_aluno, data) => {
     try {
+       
+        if (data.senha) {
+            data.senha = await bcrypt.hash(data.senha, saltRounds);
+        }
+
         const dataUpdate = await knex("Alunos").where({ id_aluno }).update(data);
-        return dataUpdate;
+
+        return dataUpdate;  
     } catch (err) {
         console.error("Houve um erro ao realizar um Update no aluno: ", err);
         return 0;
@@ -82,14 +88,27 @@ const deleteRecord = async (id_aluno) => {
 };
 
 const getTotalAlunos = async () => {
-  try {
-    const [{ count }] = await knex("Alunos").count("* as count");
-    return parseInt(count);
-  } catch (err) {
-    console.error("Erro ao contar alunos: ", err);
-    throw err;
-  }
+    try {
+        const [{ count }] = await knex("Alunos").count("* as count");
+        return parseInt(count);
+    } catch (err) {
+        console.error("Erro ao contar alunos: ", err);
+        throw err;
+    }
+};
+
+const getByCPF = async (cpf) => {
+    try {
+        const cpfLimpo = cpf.replace(/\D/g, '');
+        const aluno = await knex('Alunos')
+            .where({ cpf_aluno: cpfLimpo })
+            .first();
+        return aluno;
+    } catch (err) {
+        console.error('Erro ao buscar aluno por CPF: ', err);
+        return null;
+    }
 };
 
 
-export default { getAll, getById, create, update, deleteRecord, getTotalAlunos  };
+export default { getAll, getById, create, update, deleteRecord, getTotalAlunos, getByCPF };
