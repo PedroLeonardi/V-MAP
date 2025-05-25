@@ -26,8 +26,7 @@ export default function Sidebar() {
     { title: "Rotas", icon: <FaLocationDot /> },
     { title: "Motoristas", icon: <AiFillEnvironment /> },
     { title: "Veículos", icon: <IoBus /> },
-    { title: "Escolas", icon: <FaSchool />, spacing: true },
-    { title: "Chat Interno", icon: <IoChatboxEllipses /> },
+    { title: "ChatBox", icon: <IoChatboxEllipses /> , spacing: true },
     { title: "Suporte", icon: <MdOutlineSupportAgent /> },
   ];
 
