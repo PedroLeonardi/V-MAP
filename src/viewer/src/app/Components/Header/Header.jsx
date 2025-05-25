@@ -1,80 +1,82 @@
-"use client"
+"use client";
+import { toast } from "sonner";
 import { useState } from "react";
-import { BsArrowLeftCircle, BsSearch } from "react-icons/bs";
+import { BsList } from "react-icons/bs";
 import { AiFillEnvironment } from "react-icons/ai";
 import { RiDashboardFill } from "react-icons/ri";
 import { FaGraduationCap } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
-import { FaSchool } from "react-icons/fa6";
-import { IoLogOut } from "react-icons/io5";
+import { FaLocationDot, FaSchool } from "react-icons/fa6";
+import { IoLogOut, IoChatboxEllipses, IoBus } from "react-icons/io5";
 import { MdOutlineSupportAgent } from "react-icons/md";
-import { IoChatboxEllipses } from "react-icons/io5";
+import { HiUserGroup } from "react-icons/hi2";
 
-
-
+const menu = [
+  { title: "Dashboard", icon: <RiDashboardFill /> },
+  { title: "Alunos", icon: <FaGraduationCap /> },
+  { title: "Responsáveis", icon: <HiUserGroup /> },
+  { title: "Rotas", icon: <FaLocationDot /> },
+  { title: "Motoristas", icon: <AiFillEnvironment /> },
+  { title: "Veículos", icon: <IoBus /> },
+  { title: "Escolas", icon: <FaSchool />, spacing: true },
+  { title: "Chat Interno", icon: <IoChatboxEllipses /> },
+  { title: "Suporte", icon: <MdOutlineSupportAgent /> },
+];
 
 export default function Header() {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [menuAtivo, setMenuAtivo] = useState("Dashboard");
 
-    const menus = [
-        { title: 'Dashboard' },
-        { title: 'Alunose', icon: <FaGraduationCap /> },
-        { title: 'Percurso', icon: <FaLocationDot /> },
-        { title: 'Escolas', icon: <FaSchool /> },
-        { title: 'ChatBox', icon: <IoChatboxEllipses /> },
-        { title: 'Suporte', icon: <MdOutlineSupportAgent /> },
-        { title: 'Logout', icon: <IoLogOut /> },
-    ]
+    // toasttt
+  const handleLogout = () => {
+    toast.success("Logout realizado com sucesso!");
+  };
 
-    return (
-        <>
+  return (
+    <header className="bg-gradient-to-r from-gray-950 to-gray-900 text-white px-5 py-4 shadow-md">
+      <div className="flex items-center justify-between">
+        {/* div logo e titulo */}
+        <div className="flex items-center gap-6">
+          <img className="w-[90px]" src="./logo.png" alt="Logo" />
+          <h1 className="text-xl font-bold hidden sm:block">DASHBOARD</h1>
+        </div>
 
-            <nav>
-                <div className={`bg-gradient-to-r from-gray-950 to-gray-900 h-screen p-5 pt-8 ${open ? "w-72" : "md:w-30 w-25"} relative duration-300`}>
-                    <BsArrowLeftCircle
-                        className={`bg-black text-white text-3xl rounded-full absolute right-1 top-5 border border-purple-950 cursor-pointer ${!open && "rotate-180"}`}
-                        onClick={() => setOpen(!open)}
-                    />
+       {/* menu hamburguer */}
+        <div className="lg:hidden">
+          <button onClick={() => setOpen(!open)} className="text-3xl">
+            <BsList />
+          </button>
+        </div>
+       
+      </div>
 
-                    <div className={`inline-flex items-center ${open ? 'border-b-2 border-gray-700' : ''}`}>
-                        <img
-                            className={`md:w-20 w-15 mr-1 md:mr-2 duration-300 ${open ? 'rotate-[360deg]' : ''}`}
-                            src="./logo.png"
-                            alt="Logo"
-                        />
-                        <h1 className={`text-white origin-left font-extrabold text-2xl duration-300 ${!open && 'scale-0'}`}>
-                            DASHBOARD
-                        </h1>
-                    </div>
-
-                    <div className={`flex items-center rounded-md bg-gray-700 mt-6 ${!open ? 'px-2.5' : 'px-4'} py-2`}>
-                        <BsSearch className={`text-white text-lg block float-left cursor-pointer ${open && 'mr-2'}`} />
-                        <input
-                            type={"search"}
-                            placeholder="Search"
-                            className={`text-base bg-transparent w-full text-white focus:outline-none ${!open && 'hidden'}`}
-                        />
-                    </div>
-
-                    <ul className="pt-2">
-                        {menus.map((menu, index) => (
-                            <li
-                                key={index}
-                                className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-400 duration-200 hover:text-black rounded-md ${menu.spacing ? 'mt-9' : 'mt-2'}`}
-                            >
-                                <span className="text-2xl block float-left">{menu.icon ? menu.icon : <RiDashboardFill />}</span>
-                                <span className={`text-base font-bold duration-300 ${!open && 'hidden'}`}>
-                                    {menu.title}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-            </nav>
-
-        </>
-
-
-    )
+      {/* dropdownzinho */}
+      {open && (
+        <div className="lg:hidden mt-4 bg-gray-900 border border-gray-700 rounded-md shadow-md py-4 px-4 space-y-3">
+          {menu.map((item) => (
+            <button
+              key={item.title}
+              onClick={() => {
+                setMenuAtivo(item.title);
+                setOpen(false);
+              }}
+              className={`flex items-center gap-3 w-full text-left px-2 py-2 rounded-md hover:bg-gray-800 duration-200 ${
+                menuAtivo === item.title ? "bg-gray-800 font-bold" : ""
+              }`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              <span>{item.title}</span>
+            </button>
+          ))}
+          <hr className="border-gray-600 my-2" />
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 text-red-400 hover:text-white hover:bg-red-500 px-2 py-2 rounded-md duration-200 w-full"
+          >
+            <IoLogOut />
+            <span>Logout</span>
+          </button>
+        </div>
+      )}
+    </header>
+  );
 }
