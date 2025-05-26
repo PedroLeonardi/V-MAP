@@ -1,4 +1,4 @@
-import contato from "../models/contatoModels.js"
+import contato from "../Models/contatoModels.js"
 
 const sendMensage = async (req,res)=>{
     try {
@@ -20,4 +20,14 @@ const readMensage = async (req,res )=> {
     }
 }
 
-export default {readMensage, sendMensage};
+const readMensageByStatus = async (req,res)=> {
+    try {
+        const data = await contato.getAllByStatus(req.params.status)
+        res.status(200).json({mensagem: data})
+    } catch (err) {
+        console.error("Houve um erro ao exibir as mensagens: ", err)
+        res.status(500).json({mensagem: "Houve um erro ao exibir as mensagens"})
+    }
+}
+
+export default {readMensage, sendMensage, readMensageByStatus};

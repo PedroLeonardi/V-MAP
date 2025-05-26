@@ -9,7 +9,7 @@ const knex = knexInstance;
 
 const getAll = async () => {
     try {
-        const dataGetAll = await knex("TABELA").select("*")
+        const dataGetAll = await knex("mensagens_suporte").select("*")
         return dataGetAll
     } catch (err) {
         console.error("Houve um erro ao ler as mensagens: ", err)
@@ -17,9 +17,19 @@ const getAll = async () => {
     }
 }
 
+const getAllByStatus = async (status_mensagem) => {
+    try {
+        const dataGetAllByStatus = await knex("mensagens_suporte").where({status_mensagem})
+        return dataGetAllByStatus
+    } catch (err) {
+        console.error("Houve um erro ao ler as mensagem com status especifico: ", err)
+        return
+    }
+}
+
 const create = async (data) => {
     try {
-        const newData = await knex('TABELA').insert(data);
+        const newData = await knex('mensagens_suporte').insert(data);
         return newData;
     } catch (err) {
         console.error("Houve um erro ao salvar a mensagem n banco de dados: ", err)
@@ -28,4 +38,4 @@ const create = async (data) => {
 }
 
 
-export default {getAll, create}
+export default {getAll, create, getAllByStatus}
