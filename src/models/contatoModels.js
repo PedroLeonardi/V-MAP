@@ -37,5 +37,14 @@ const create = async (data) => {
     }
 }
 
+const update = async (id_mensagem_suporte, status) => {
+    try {
+        const updateData = await knex('mensagens_suporte').where({id_mensagem_suporte}).update({ status_mensagem: status })
+        return updateData
+    } catch (err) {
+        console.error("Houve um erro ao atualizar a mensagem n banco de dados: ", err)
+    }
+}
 
-export default {getAll, create, getAllByStatus}
+
+export default {getAll, create, getAllByStatus, update}
