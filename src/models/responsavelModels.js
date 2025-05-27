@@ -25,7 +25,6 @@ const getById = async (id_responsavel) => {
 
 const create = async (data) => {
   try {
-
     const cpfLimpo = data.cpf.replace(/\D/g, '');
 
     const responsavelExistente = await knex('responsaveis')
@@ -53,12 +52,21 @@ const create = async (data) => {
   }
 };
 
-
-
 const update = async (id_responsavel, data) => {
   try {
+    const dataUpdate = { ...data };
 
-    const updatedRows = await knex('responsaveis').where({ id_responsavel }).update(data);
+    // se tiver senha faz o hash antes
+    if (data.senha) {
+      dataUpdate.senha = await bcrypt.hash(data.senha, saltRounds);
+    }
+
+    if (data.cpf) {
+      dataUpdate.cpf_responsavel = data.cpf.replace(/\D/g, '');
+      delete dataUpdate.cpf;
+    }
+
+    const updatedRows = await knex('responsaveis').where({ id_responsavel }).update(dataUpdate);
     return updatedRows;
   } catch (err) {
     console.error('Houve um erro ao realizar um update no responsável: ', err);
@@ -88,6 +96,5 @@ const getByCPF = async (cpf) => {
     return null;
   }
 };
-
 
 export default { getAll, getById, create, update, deleteRecord, getByCPF };

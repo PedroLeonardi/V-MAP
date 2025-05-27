@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import ModalCadastro from "./Components/Modals/ModalCadastro";
+import ModalCadastro from "./Components/Modals/ModalCadastroAluno";
 import { useRouter } from "next/navigation";
 import axios from 'axios';
 import { get } from 'lodash';
