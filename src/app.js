@@ -5,6 +5,7 @@ import responsavelRoute from './router/responsavelRoute.js'
 import authRoute from './router/authRoute.js'
 import motoristas from './router/motoristaRoute.js'
 import veiculoRoute from './router/veiculoRoute.js'
+import contatoRoute from './router/contatoRoute.js'
 import cors from 'cors';
 const app = express();
 const port = 3001;
@@ -24,6 +25,7 @@ app.use('/responsavel', responsavelRoute)
 app.use('/auth', authRoute)
 app.use('/motorista', motoristas)
 app.use('/veiculo', veiculoRoute)
+app.use('/contato', contatoRoute)
 
 app.use("/", (req,res) => {
     res.status(404).json({message: 'Rota não encontrada'})
