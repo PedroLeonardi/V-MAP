@@ -8,24 +8,24 @@ import { FaTruckFront } from 'react-icons/fa6';
 
 export default function responsavelCadastro() {
 
-    
-    
+
+
     const [nome, setNome] = useState('');
     const [cpf, setCPF] = useState('');
     const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false)
     const cpfLimpo = cpf.replace(/\D/g, '');
 
-     function formatarCPF(valor) {
-    // Remove tudo que não for número
-    valor = valor.replace(/\D/g, '');
+    function formatarCPF(valor) {   
+        // Remove tudo que não for número
+        valor = valor.replace(/\D/g, '');
 
-    // Aplica a máscara
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    return valor
-  }
+        // Aplica a máscara
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return valor
+    }
 
     function validarNome(nome) {
         // aqui só permito letras e espaços
