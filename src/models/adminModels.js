@@ -2,7 +2,7 @@
 import knex from '../../config/connection.js';
 import bcrypt from 'bcryptjs';
 
-const saltRounds = 10; 
+const saltRounds = 10;
 
 const getAll = async () => {
   try {
@@ -24,17 +24,14 @@ const create = async (data) => {
   try {
     const adminExist = await knex("administrador").where({ cpf: data.cpf }).first();
 
-    // verificando se esse adm já existe
     if (adminExist) {
       const error = new Error("CPF já cadastrado");
       error.statusCode = 400;
       throw error;
     }
 
-    // senha hash
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
 
-    // inserindo dados
     const [id_admin] = await knex("administrador").insert({
       cpf: data.cpf,
       senha: senhaHashed,
@@ -42,15 +39,19 @@ const create = async (data) => {
       cargo: data.cargo
     });
 
-    return id_admin; // recebendo 
+    return id_admin;
 
   } catch (err) {
-    throw new Error("Erro ao criar administrador: " , err.message);
+    throw err;
   }
 };
 
 const update = async (id_admin, user) => {
   try {
+    
+    if (user.senha) {
+      user.senha = await bcrypt.hash(user.senha, saltRounds);
+    }
     return await knex("administrador").where({ id_admin }).update(user);
   } catch (err) {
     throw new Error("Erro ao atualizar administrador");
@@ -65,7 +66,18 @@ const deleteRecord = async (id_admin) => {
   }
 };
 
-// data para atualizar um registro inteiro
-// user para parciais
+const getByCPF = async (cpf) => {
+  try {
+    const cpfLimpo = cpf.replace(/\D/g, '');
+  
+    const administrador = await knex('administrador')
+      .whereRaw("REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', '') , ' ', '') = ?", [cpfLimpo])
+      .first();
+    return administrador;
+  } catch (err) {
+    console.error('Erro ao buscar administrador por CPF: ', err);
+    return null;
+  }
+};
 
-export default { getAll, getById, create, update, deleteRecord };
+export default { getAll, getById, create, update, deleteRecord, getByCPF };

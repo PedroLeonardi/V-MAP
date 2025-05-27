@@ -1,17 +1,25 @@
 'use client';
-
 import { useState } from "react";
 import axios from "axios";
 import { toast } from 'sonner';
 import { IoClose } from "react-icons/io5";
 
-export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }) {
+export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
     const [cpfBusca, setCpfBusca] = useState('');
-    const [responsavel, setResponsavel] = useState(null);
+    const [admin, setAdmin] = useState(null);
     const [nome, setNome] = useState('');
     const [senha, setSenha] = useState('');
     const [cpf, setCpf] = useState('');
+    const [cargo, setCargo] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const cargosDisponiveis = [
+        'Coordenador Pedagógico',
+        'Gerente de Transporte',
+        'Diretor',
+        'Coordenador',
+        'Gerente de TI'
+    ];
 
     // função para formatar CPF
     function formatarCPF(valor) {
@@ -33,36 +41,37 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
         return senha.length >= 6;
     }
 
-    const buscarResponsavel = async () => {
+    const buscarAdmin = async () => {
         const cpfLimpo = cpfBusca.replace(/\D/g, '');
         if (!cpfLimpo) return toast.warning('Informe o CPF para buscar.');
 
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:3001/responsavel/cpf/${cpfLimpo}`);
-            const responsavelEncontrado = response.data;
+            const response = await axios.get(`http://localhost:3001/admin/cpf/${cpfLimpo}`);
+            const adminEncontrado = response.data;
 
-            console.log('Responsável encontrado:', responsavelEncontrado);
+            console.log('Administrador encontrado:', adminEncontrado);
 
-            setResponsavel(responsavelEncontrado);
-            setCpf(formatarCPF(responsavelEncontrado.cpf_responsavel)); // CORREÇÃO AQUI
-            setNome(responsavelEncontrado.nome);
-            setSenha(responsavelEncontrado.senha);
-            toast.success('Responsável encontrado!');
+            setAdmin(adminEncontrado);
+            setCpf(formatarCPF(adminEncontrado.cpf));
+            setNome(adminEncontrado.nome);
+            setSenha(adminEncontrado.senha);
+            setCargo(adminEncontrado.cargo);
+            toast.success('Administrador encontrado!');
         } catch (err) {
             console.error(err);
-            toast.error('Responsável não encontrado ou erro na busca.');
+            toast.error('Administrador não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
         }
     }
 
-    const atualizarResponsavel = async () => {
-        if (!responsavel) return toast.error('Busque um responsável antes de atualizar.');
+    const atualizarAdmin = async () => {
+        if (!admin) return toast.error('Busque um administrador antes de atualizar.');
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf.trim() || !senha.trim()) {
+        if (!nome.trim() || !cpf.trim() || !senha.trim() || !cargo.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -83,29 +92,31 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
             setLoading(true);
             const cpfLimpo = cpf.replace(/\D/g, '');
 
-            await axios.put(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`, {
+            await axios.put(`http://localhost:3001/admin/${admin.id_admin}`, {
                 cpf: cpfLimpo,
                 nome,
-                senha
+                senha,
+                cargo
             });
 
-            toast.success('Responsável atualizado com sucesso!');
-            setResponsavel(null);
+            toast.success('Administrador atualizado com sucesso!');
+            setAdmin(null);
             setCpfBusca('');
             setCpf('');
             setNome('');
             setSenha('');
+            setCargo('');
             if (onSuccess) onSuccess();
             onClose();
         } catch (err) {
             console.error(err);
 
             if (err.response && err.response.status === 404) {
-                toast.error('Responsável não encontrado.');
+                toast.error('Administrador não encontrado.');
             } else if (err.response?.data?.message) {
                 toast.error(err.response.data.message);
             } else {
-                toast.error('Erro ao atualizar responsável.');
+                toast.error('Erro ao atualizar administrador.');
             }
         } finally {
             setLoading(false);
@@ -124,7 +135,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
                     <IoClose size={20} />
                 </button>
 
-                <h2 className="text-xl font-bold text-white mb-4">Atualizar Cadastro de Responsável</h2>
+                <h2 className="text-xl font-bold text-white mb-4">Atualizar Cadastro de Administrador</h2>
 
                 <div className="space-y-4">
                     <div>
@@ -132,14 +143,14 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
                         <div className="flex gap-2">
                             <input
                                 type="text"
-                                placeholder="Digite o CPF do responsável"
+                                placeholder="Digite o CPF do administrador"
                                 className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 value={cpfBusca}
                                 onChange={(e) => setCpfBusca(formatarCPF(e.target.value))}
                                 maxLength={14}
                             />
                             <button
-                                onClick={buscarResponsavel}
+                                onClick={buscarAdmin}
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded whitespace-nowrap text-sm sm:text-base"
                                 disabled={loading}
                             >
@@ -148,9 +159,9 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
                         </div>
                     </div>
 
-                    {responsavel && (
+                    {admin && (
                         <div className="space-y-4 mt-4 border-t border-gray-700 pt-4">
-                            <h3 className="font-medium text-white">Dados do Responsável</h3>
+                            <h3 className="font-medium text-white">Dados do Administrador</h3>
 
                             <div className="space-y-3">
                                 <div>
@@ -175,6 +186,22 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
                                 </div>
 
                                 <div>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Cargo</label>
+                                    <select
+                                        className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        value={cargo}
+                                        onChange={(e) => setCargo(e.target.value)}
+                                    >
+                                        <option value="">Selecione um cargo</option>
+                                        {cargosDisponiveis.map((cargoOp) => (
+                                            <option key={cargoOp} value={cargoOp}>
+                                                {cargoOp}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div>
                                     <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Senha</label>
                                     <input
                                         type="password"
@@ -186,10 +213,9 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
                             </div>
 
                             <button
-                                onClick={atualizarResponsavel}
-                                className={`w-full mt-4 bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${
-                                    loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-green-700 hover:to-green-900 hover:shadow-green-900/30'
-                                }`}
+                                onClick={atualizarAdmin}
+                                className={`w-full mt-4 bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-green-700 hover:to-green-900 hover:shadow-green-900/30'
+                                    }`}
                                 disabled={loading}
                             >
                                 {loading ? "Atualizando..." : "Confirmar Atualização"}
