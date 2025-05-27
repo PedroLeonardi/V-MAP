@@ -7,6 +7,9 @@ import { MdPeopleAlt } from "react-icons/md";
 import { IoBusSharp } from "react-icons/io5";
 import { HiUser } from "react-icons/hi";
 import DashboardCard from '../Components/DashboardCard/Dashboard';
+import useFetchTotalAlunos from '../Hooks/TotalAlunos';
+import useFetchResponsaveis from '../Hooks/TotalResponsavel'; 
+
 
 // import modals
 import ModalCadastro from '../Components/Modals/ModalCadastroAluno';
@@ -33,8 +36,7 @@ const menu = [
 export default function PageAdmin() {
   const [abaAtiva, setAbaAtiva] = useState('Alunos');
   const [searchTerm, setSearchTerm] = useState('');
-  const [totalAlunos, setTotalAlunos] = useState(0);
-  const [responsaveis, setResponsaveis] = useState([]);
+
 
   const [showModalCadastro, setShowModalCadastro] = useState(false);
   const [showModalRelatorioAlunos, setShowModalRelatorioAlunos] = useState(false);
@@ -46,33 +48,11 @@ export default function PageAdmin() {
   const [showModalExcluirResponsavel, setShowModalExcluirResponsavel] = useState(false);
 
 
-  useEffect(() => {
-    const fetchTotalAlunos = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/aluno/total');
-        setTotalAlunos(response.data.total);
-      } catch (err) {
-        console.error("Erro ao buscar total de alunos", err);
-      }
-    };
-
-    const fetchResponsaveis = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/responsaveis');
-        setResponsaveis(response.data);
-      } catch (err) {
-        console.error("Erro ao buscar responsáveis", err);
-      }
-    };
 
 
+  const totalAlunos = useFetchTotalAlunos(abaAtiva === 'Alunos');
+  const [responsaveis, setResponsaveis] = useFetchResponsaveis(abaAtiva === 'Responsáveis');
 
-    if (abaAtiva === 'Alunos') {
-      fetchTotalAlunos();
-    } else if (abaAtiva === 'Responsáveis') {
-      fetchResponsaveis();
-    }
-  }, [abaAtiva]);
 
   const handleAlunoCadastrado = async () => {
     try {
@@ -250,6 +230,14 @@ export default function PageAdmin() {
             </div>
 
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+              <DashboardCard
+                icon={<MdPeopleAlt size={30} />}
+                title="Total de Responsáveis"
+                value={responsaveis.length}
+                description="Número atual de responsáveis cadastrados."
+                color="text-blue-700"
+              />
+
               <DashboardCard
                 icon={<PiPlusCircleBold size={30} />}
                 title="Cadastrar Responsável"
