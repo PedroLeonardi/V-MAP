@@ -33,7 +33,7 @@ const readMensageByStatus = async (req,res)=> {
 const updateMensageStatus = async (req,res)=> {
     try {
         const data = await contato.update(req.params.id, req.body.status)
-        res.status(200).json({mensagem: })
+        res.status(200).json({mensagem: ''})
     } catch (err) {
         console.error("Houve um erro ao exibir as mensagens: ", err)
         res.status(500).json({mensagem: "Houve um erro ao exibir as mensagens"})
