@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { get } from 'lodash';
 
-export default function MotoristaCadastro() {  
+export default function ModalCadastroResponsavel() {  
 
     const [nome, setNome] = useState('');
     const [cpf_motorista, setCPF] = useState('');
