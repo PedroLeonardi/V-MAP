@@ -1,8 +1,9 @@
 import knex from '../../config/connection.js';
 import bcrypt from 'bcryptjs';
 
-const saltRounds = 10;
+const saltRounds = 10; // gerando caracteres aleatorios
 
+// select *from
 const getAll = async () => {
   try {
     const responsaveis = await knex('responsaveis').select('*');
@@ -13,6 +14,7 @@ const getAll = async () => {
   }
 };
 
+// select by id
 const getById = async (id_responsavel) => {
   try {
     const responsavel = await knex('responsaveis').where({ id_responsavel }).first();
@@ -23,25 +25,23 @@ const getById = async (id_responsavel) => {
   }
 };
 
+// create
 const create = async (data) => {
   try {
-    const cpfLimpo = data.cpf.replace(/\D/g, '');
 
-    const responsavelExistente = await knex('responsaveis')
-      .where({ cpf_responsavel: cpfLimpo })
-      .first();
+    // checkando se responsavel ja existe
+    const responsavelExistente = await knex('responsaveis').where({ cpf_responsavel: data.cpf_responsavel })  .first();
 
     if (responsavelExistente) {
-      const error = new Error('Responsável com este CPF já está cadastrado');
-      error.statusCode = 400;
-      throw error;
+     return res.status(400).json({message: 'Responsavel já cadastrado.'})
     }
 
+    // atribuindo senha hash
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
 
     const [id_responsavel] = await knex('responsaveis').insert({
       nome: data.nome,
-      cpf_responsavel: cpfLimpo,
+      cpf_responsavel: data.cpf_responsavel,
       senha: senhaHashed
     });
 
@@ -74,6 +74,7 @@ const update = async (id_responsavel, data) => {
   }
 };
 
+// delete
 const deleteRecord = async (id_responsavel) => {
   try {
     const deletedRows = await knex('responsaveis').where({ id_responsavel }).delete();
@@ -84,17 +85,4 @@ const deleteRecord = async (id_responsavel) => {
   }
 };
 
-const getByCPF = async (cpf) => {
-  try {
-    const cpfLimpo = cpf.replace(/\D/g, '');
-    const responsavel = await knex('responsaveis')
-      .where({ cpf_responsavel: cpfLimpo })
-      .first();
-    return responsavel;
-  } catch (err) {
-    console.error('Erro ao buscar responsável por CPF: ', err);
-    return null;
-  }
-};
-
-export default { getAll, getById, create, update, deleteRecord, getByCPF };
+export default { getAll, getById, create, update, deleteRecord };

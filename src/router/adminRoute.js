@@ -4,11 +4,10 @@ import admin from '../controllers/adminController.js';
 
 const router = Router();
 
-router.get('/', admin.getAdminAll);       
-router.get('/:id', admin.getAdmin);      
-router.post('/', admin.createAdmin);       
-router.put('/:id', admin.updateAdmin);     
-router.delete('/:id', admin.deleteAdmin); 
-router.get('/cpf/:cpf', admin.getAdmByCPF);
+router.get('/', admin.getAdminController);       
+router.get('/:id', admin.getAdminController);      
+router.post('/', admin.createAdminController);       
+router.put('/:id', admin.updateAdminController);     
+router.delete('/:id', admin.deleteAdminController); 
 
 export default router;

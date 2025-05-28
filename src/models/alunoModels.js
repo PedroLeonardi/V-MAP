@@ -1,49 +1,51 @@
 import knex from '../../config/connection.js';
 import bcrypt from 'bcryptjs';
 
-const saltRounds = 10;
+const saltRounds = 10; // sequencia de caracteres aleatorio
 
-
-
+// model select all
 const getAll = async () => {
     try {
         const dataGetAll = await knex("Alunos").select('*');
         return dataGetAll;
     } catch (err) {
         console.error("Houve um erro ao listar todos os alunos: ", err);
-        return [];
+        return []; // retorna array vazio
     }
 };
 
+// select by id
 const getById = async (id_aluno) => {
     try {
         const dataGetById = await knex("Alunos").where({ id_aluno }).first();
         return dataGetById;
     } catch (err) {
         console.error("Houve um erro ao listar um aluno pelo ID: ", err);
-        return null;
+        return null; // retorna nulo
     }
 };
 
+// create
 const create = async (data) => {
     try {
+
+        //  verificando se aluno ja existe         
         const alunoExist = await knex('Alunos').where({ cpf_aluno: data.cpf_aluno }).first();
 
         if (alunoExist) {
-            const error = new Error('Aluno já cadastrado');
-            error.statusCode = 400;
-            throw error;
+            return res.status(400).json({message: 'Aluno já cadastrado.'});
         }
 
+        // verificando se existe responsavel para criar um aluno
         const responsavel = await knex('responsaveis').where({ cpf_responsavel: data.cpf_responsavel }).first();
         if (!responsavel) {
-            const error = new Error('Responsável não encontrado');
-            error.statusCode = 404;
-            throw error;
+            return res.status(404).json({message: 'Responsável inexistente.'})
         }
 
+        // cadastrando meu user com senha hasheada
         const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
 
+        // atribuindo senha hash para user
         const [id_aluno] = await knex("Alunos").insert({
             nome: data.nome,
             cpf_aluno: data.cpf_aluno,
@@ -60,23 +62,25 @@ const create = async (data) => {
     }
 };
 
-
+// atualizar
 const update = async (id_aluno, data) => {
+
+    // função para atualizar 
     try {
-       
         if (data.senha) {
             data.senha = await bcrypt.hash(data.senha, saltRounds);
         }
 
         const dataUpdate = await knex("Alunos").where({ id_aluno }).update(data);
 
-        return dataUpdate;  
+        return dataUpdate;
     } catch (err) {
         console.error("Houve um erro ao realizar um Update no aluno: ", err);
         return 0;
     }
 };
 
+// delete
 const deleteRecord = async (id_aluno) => {
     try {
         const dataDeleteRecord = await knex("Alunos").where({ id_aluno }).delete();
@@ -87,22 +91,10 @@ const deleteRecord = async (id_aluno) => {
     }
 };
 
-const getTotalAlunos = async () => {
+// puxar cpf do aluno
+const getByCPF = async () => {
     try {
-        const [{ count }] = await knex("Alunos").count("* as count");
-        return parseInt(count);
-    } catch (err) {
-        console.error("Erro ao contar alunos: ", err);
-        throw err;
-    }
-};
-
-const getByCPF = async (cpf) => {
-    try {
-        const cpfLimpo = cpf.replace(/\D/g, '');
-        const aluno = await knex('Alunos')
-            .where({ cpf_aluno: cpfLimpo })
-            .first();
+        const aluno = await knex('Alunos') .where({ cpf_aluno }).first();
         return aluno;
     } catch (err) {
         console.error('Erro ao buscar aluno por CPF: ', err);
@@ -110,5 +102,4 @@ const getByCPF = async (cpf) => {
     }
 };
 
-
-export default { getAll, getById, create, update, deleteRecord, getTotalAlunos, getByCPF };
+export default { getAll, getById, create, update, deleteRecord, getByCPF };
