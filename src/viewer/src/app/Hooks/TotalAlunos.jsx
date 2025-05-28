@@ -7,8 +7,8 @@ export default function useFetchTotalAlunos(shouldFetch) {
   useEffect(() => {
     const fetchTotalAlunos = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/aluno/total');
-        setTotalAlunos(response.data.total);
+        const response = await axios.get('http://localhost:3001/aluno');
+        setTotalAlunos(response.data.length);
       } catch (err) {
         console.error("Erro ao buscar total de alunos", err);
       }

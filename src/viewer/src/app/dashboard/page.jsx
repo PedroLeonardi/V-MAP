@@ -53,82 +53,79 @@
         const totalAlunos = useFetchTotalAlunos(abaAtiva === 'Alunos');
         const [responsaveis, setResponsaveis] = useFetchResponsaveis(abaAtiva === 'Responsáveis');
 
-        const handleAlunoCadastrado = async () => {
-          try {
-            const response = await axios.get('http://localhost:3001/aluno/total');
-            setTotalAlunos(response.data.total);
-          } catch (error) {
-            console.error("Erro ao atualizar total de alunos após cadastro", error);
-          } finally {
-            setShowModalCadastro(false);
-          }
-        };
+        // const handleAlunoCadastrado = async () => {
+        //   try {
+        //     const response = await axios.get('http://localhost:3001/aluno/total');
+        //     setTotalAlunos(response.data.total);
+        //   } catch (error) {
+        //     console.error("Erro ao atualizar total de alunos após cadastro", error);
+        //   } finally {
+        //     setShowModalCadastro(false);
+        //   }
+        // };
 
-        const handleAlunoExcluido = () => {
-          setTotalAlunos(prev => prev - 1);
-          setShowModalExcluirAluno(false);
-        };
 
-        const handleCadastroResponsavelSucesso = () => {
-          const fetchResponsaveis = async () => {
-            try {
-              const response = await axios.get('http://localhost:3001/responsaveis');
-              setResponsaveis(response.data);
-            } catch (err) {
-              console.error("Erro ao buscar responsáveis", err);
-            }
-          };
-          fetchResponsaveis();
-          setShowModalCadastroResponsavel(false);
-        };
 
-        const handleUpdateResponsavelSucesso = () => {
-          const fetchResponsaveis = async () => {
-            try {
-              const response = await axios.get('http://localhost:3001/responsaveis');
-              setResponsaveis(response.data);
-            } catch (err) {
-              console.error("Erro ao buscar responsáveis", err);
-            }
-          };
-          fetchResponsaveis();
-          setShowModalUpdateResponsavel(false);
-        };
+        // const handleCadastroResponsavelSucesso = () => {
+        //   const fetchResponsaveis = async () => {
+        //     try {
+        //       const response = await axios.get('http://localhost:3001/responsaveis');
+        //       setResponsaveis(response.data);
+        //     } catch (err) {
+        //       console.error("Erro ao buscar responsáveis", err);
+        //     }
+        //   };
+        //   fetchResponsaveis();
+        //   // setShowModalCadastroResponsavel(false);
+        // };
 
-        const handleExcluirResponsavelSucesso = () => {
-          const fetchResponsaveis = async () => {
-            try {
-              const response = await axios.get('http://localhost:3001/responsaveis');
-              setResponsaveis(response.data);
-            } catch (err) {
-              console.error("Erro ao buscar responsáveis", err);
-            }
-          };
-          fetchResponsaveis();
-          setShowModalExcluirResponsavel(false);
-        };
+        // const handleUpdateResponsavelSucesso = () => {
+        //   const fetchResponsaveis = async () => {
+        //     try {
+        //       const response = await axios.get('http://localhost:3001/responsaveis');
+        //       setResponsaveis(response.data);
+        //     } catch (err) {
+        //       console.error("Erro ao buscar responsáveis", err);
+        //     }
+        //   };
+        //   fetchResponsaveis();
+        //   setShowModalUpdateResponsavel(false);
+        // };
 
-        const handleCadastroAdminSucesso = () => {
-          // Você pode adicionar lógica para atualizar a lista de administradores aqui
-          setShowModalCadastroAdmin(false);
-          toast.success("Administrador cadastrado com sucesso!");
-        };
+        // const handleExcluirResponsavelSucesso = () => {
+        //   const fetchResponsaveis = async () => {
+        //     try {
+        //       const response = await axios.get('http://localhost:3001/responsaveis');
+        //       setResponsaveis(response.data);
+        //     } catch (err) {
+        //       console.error("Erro ao buscar responsáveis", err);
+        //     }
+        //   };
+        //   fetchResponsaveis();
+        //   setShowModalExcluirResponsavel(false);
+        // };
+
+        // const handleCadastroAdminSucesso = () => {
+        //   // Você pode adicionar lógica para atualizar a lista de administradores aqui
+        //   setShowModalCadastroAdmin(false);
+        //   toast.success("Administrador cadastrado com sucesso!");
+        // };
         const [totalAdmins, setTotalAdmins] = useState(0);
 
-        const handleUpdateAdminSucesso = () => {
-          setShowModalUpdateAdmin(false);
-          toast.success("Administrador atualizado com sucesso!");
-          fetchTotalAdmins(); // Atualiza o total de administradores após atualização
-        };
+        // const handleUpdateAdminSucesso = () => {
+        //   setShowModalUpdateAdmin(false);
+        //   toast.success("Administrador atualizado com sucesso!");
+        //   fetchTotalAdmins(); // Atualiza o total de administradores após atualização
+        // };
 
-        const fetchTotalAdmins = async () => {
-          try {
-            const response = await axios.get('http://localhost:3001/admin/total');
-            setTotalAdmins(response.data.total);
-          } catch (error) {
-            console.error("Erro ao buscar total de administradores", error);
-          }
-        };
+        // const fetchTotalAdmins = async () => {
+        //   try {
+        //     const response = await axios.get('http://localhost:3001/admin/total');
+        //     setTotalAdmins(response.data.total);
+        //   } catch (error) {
+        //     console.error("Erro ao buscar total de administradores", error);
+        //   }
+        // };
 
         return (
           <div className='min-h-screen bg-slate-900 text-gray-100 p-4 sm:p-8 font-sans'>
@@ -223,12 +220,12 @@
                   <ModalCadastroAdmin
                     isVisible={showModalCadastroAdmin}
                     onClose={() => setShowModalCadastroAdmin(false)}
-                    onSuccess={handleCadastroAdminSucesso}
+                    // onSuccess={handleCadastroAdminSucesso}
                   />
                   <ModalUpdateAdmin
                     isVisible={showModalUpdateAdmin}
                     onClose={() => setShowModalUpdateAdmin(false)}
-                    onSuccess={handleUpdateAdminSucesso}
+                    // onSuccess={handleUpdateAdminSucesso}
                   />
                 </>
               ) : abaAtiva === 'Alunos' ? (
@@ -267,7 +264,7 @@
                       icon={<PiPencilSimpleBold size={30} />}
                       title="Atualizar Cadastro"
                       description="Editar informações de um aluno existente."
-                      onClick={() => setShowModalUpdateAluno(true)}
+                      // onClick={() => setShowModalUpdateAluno(true)}
                       color="text-blue-700"
                       action
                     />
@@ -292,7 +289,7 @@
                   <ModalCadastro
                     isVisible={showModalCadastro}
                     onClose={() => setShowModalCadastro(false)}
-                    onSuccess={handleAlunoCadastrado}
+                    // onSuccess={handleAluno}
                   />
                   <ModalRelatorioAlunos
                     isVisible={showModalRelatorioAlunos}
@@ -301,11 +298,12 @@
                   <ModalUpdateAluno
                     isVisible={showModalUpdateAluno}
                     onClose={() => setShowModalUpdateAluno(false)}
+
                   />
                   <ModalExcluirAluno
                     isVisible={showModalExcluirAluno}
                     onClose={() => setShowModalExcluirAluno(false)}
-                    onSuccess={handleAlunoExcluido}
+                    // onSuccess={handleAluno}
                   />
                 </>
               ) : abaAtiva === 'Responsáveis' ? (
@@ -363,7 +361,7 @@
                   <ModalCadastroResponsavel
                     isVisible={showModalCadastroResponsavel}
                     onClose={() => setShowModalCadastroResponsavel(false)}
-                    onSuccess={handleCadastroResponsavelSucesso}
+                    // onSuccess={handleCadastroResponsavelSucesso}
                   />
                   <ModalRelatorioResponsaveis
                     isVisible={showModalRelatorioResponsaveis}
@@ -373,12 +371,12 @@
                   <ModalUpdateResponsavel
                     isVisible={showModalUpdateResponsavel}
                     onClose={() => setShowModalUpdateResponsavel(false)}
-                    onSuccess={handleUpdateResponsavelSucesso}
+                    // onSuccess={handleUpdateResponsavelSucesso}
                   />
                   <ModalExcluirResponsavel
                     isVisible={showModalExcluirResponsavel}
                     onClose={() => setShowModalExcluirResponsavel(false)}
-                    onSuccess={handleExcluirResponsavelSucesso}
+                    // onSuccess={handleExcluirResponsavelSucesso}
                   />
                 </>
               ) : (
