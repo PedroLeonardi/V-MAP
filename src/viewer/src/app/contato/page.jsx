@@ -8,15 +8,21 @@ import ModalContatoAlunos from '../Components/Modals/ModalContato';
 export default function contato() {
     const [countContatos, setCountContatos] = useState(0)
     const [dataContatos, setDataContatos] = useState([])
+    // const [statusUseEfEC]
     const [showModalRelatorio, setShowModalRelatorio] = useState(false);
 
 
     useEffect(() => {
         const readContatos = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/contato/1')
-                setCountContatos(response.data.mensagem.length)
-                setDataContatos(response.data.mensagem)
+                const responseCount = await axios.get('http://localhost:3001/contato/0')
+                setCountContatos(responseCount.data.mensagem.length)
+            } catch (err) {
+                console.error("Erro ao acessar a rota de contatos: ", err)
+            } //============================================================================================POSSIVELMENTE REDUZIR
+            try {
+                const responseData = await axios.get('http://localhost:3001/contato/0')
+                setDataContatos(responseData.data.mensagem)
             } catch (err) {
                 console.error("Erro ao acessar a rota de contatos: ", err)
             }
@@ -24,6 +30,14 @@ export default function contato() {
         readContatos()
         console.log(countContatos)
     }, [])
+
+    const changeStatus = async (id_mensagem_suporte) => {
+        try {
+            axios.put(`http://localhost:3001/contato/${id_mensagem_suporte}`).then(response => {console.log(response.data)})
+        } catch (err) {
+            console.error("Houve um erro ao ataulizar o status: ", err)
+        }
+    }
 
     return (
         <>
@@ -54,6 +68,7 @@ export default function contato() {
                 isVisible={showModalRelatorio}
                 onClose={() => setShowModalRelatorio(false)}
             />
+            {console.log(dataContatos)}
             <div>
             <div className="overflow-x-auto w-[85%] ">
                     <table className="min-w-full text-sm text-left text-white border border-gray-600">
@@ -73,7 +88,7 @@ export default function contato() {
                                         <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
                                         <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
                                         <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
-                                        <td className="px-4 py-2 border border-gray-600">Responder</td>
+                                        <td className="px-4 py-2 border border-gray-600"><button onClick={() => {changeStatus(contato.id_mensagem_suporte)}} className='bg-red-500'>Responder</button></td>
                                     </tr>
                                 );
                             })}

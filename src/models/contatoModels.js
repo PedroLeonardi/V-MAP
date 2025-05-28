@@ -37,9 +37,21 @@ const create = async (data) => {
     }
 }
 
-const update = async (id_mensagem_suporte, status) => {
+const update = async (id_mensagem_suporte) => {
     try {
-        const updateData = await knex('mensagens_suporte').where({id_mensagem_suporte}).update({ status_mensagem: status })
+
+        const mensagem = await await knex('mensagens_suporte').where({ id_mensagem_suporte }).first();
+
+        if(!mensagem) {
+            throw new Error("Mensagem não encontrada.");
+        }
+        
+        if (mensagem.status_mensagem === 1) {
+            // Já está com status 1, não atualiza
+            return { atualizado: false, mensagem: "Status já é 1, nada foi alterado." };
+        }
+
+        const updateData = await knex('mensagens_suporte').where({id_mensagem_suporte}).update({ status_mensagem: 1 })
         return updateData
     } catch (err) {
         console.error("Houve um erro ao atualizar a mensagem n banco de dados: ", err)
