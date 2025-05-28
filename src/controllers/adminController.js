@@ -1,46 +1,54 @@
-import userModel from "../Models/adminModels.js";
+import userModel from "../models/adminModels.js";
 
-const getAdminAll = async (req, res) => {
+// get
+const getAdminAllController = async (req, res) => {
   try {
-    const users = await userModel.getAll();
-    res.status(200).json(users);
+    const admins = await userModel.getAll();
+    res.status(200).json(admins);
   } catch (err) {
     console.error("Erro ao buscar todos os usuários ", err);
     res.status(500).json({ message: 'Erro ao buscar todos usuários' });
   }
 };
 
-const getAdmin = async (req, res) => {
+// get by id
+const getAdminController = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    const user = await userModel.getById(id);
-    if (!user) {
+    const id = parseInt(req.params.id);
+    const admin = await userModel.getById(id);
+
+    // se admin nao existe
+    if (!admin) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
-    return res.json(user);
+    return res.json(admin);
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Erro ao buscar um usuário' });
   }
 };
 
-const createAdmin = async (req, res) => {
+const createAdminController = async (req, res) => {
   try {
+
     await userModel.create(req.body);
     return res.status(201).json({ message: 'Usuário criado com sucesso' });
+
   } catch (err) {
     console.error(err);
-    const statusCode = err.statusCode || 500;
-    return res.status(statusCode).json({ message: err.message || 'Erro ao criar usuário' });
+    return res.status(500).json({ message: 'Erro ao criar usuário' });
   }
 };
 
-const updateAdmin = async (req, res) => {
+// update
+const updateAdminController = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    const affected = await userModel.update(id, req.body);
+    const id = parseInt(req.params.id);
+    const admin = await userModel.update(id, req.body);
 
-    if (!affected) {
+    // se admin nao existir
+    if (!admin) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
@@ -51,11 +59,14 @@ const updateAdmin = async (req, res) => {
   }
 };
 
-const deleteAdmin = async (req, res) => {
+// deletar
+const deleteAdminController = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    const affected = await userModel.deleteRecord(id);
-    if (!affected) {
+    const id = parseInt(req.params.id);
+    const admin = await userModel.deleteRecord(id);
+
+    // se admin nao exisitir
+    if (!admin) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
     return res.status(200).json({ message: 'Usuário deletado com sucesso' });
@@ -65,18 +76,4 @@ const deleteAdmin = async (req, res) => {
   }
 };
 
-const getAdmByCPF = async (req, res) => {
-  try {
-    const cpf = req.params.cpf;
-    const user = await userModel.getByCPF(cpf);
-    if (!user) {
-      return res.status(404).json({ message: 'Administrador não encontrado' });
-    }
-    return res.json(user);
-  } catch (err) {
-    console.error("Erro ao buscar Administrador por CPF", err);
-    return res.status(500).json({ message: 'Erro ao buscar administrador por CPF' });
-  }
-};
-
-export default { getAdmin, getAdminAll, createAdmin, updateAdmin, deleteAdmin, getAdmByCPF };
+export default { getAdminController, getAdminAllController, createAdminController, updateAdminController, deleteAdminController };
