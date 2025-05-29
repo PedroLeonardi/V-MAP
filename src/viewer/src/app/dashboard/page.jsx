@@ -275,9 +275,6 @@ export default function PageAdmin() {
                 color="text-red-400"
                 action
               />
-
-
-
             </div>
 
             {/*  modals*/}
@@ -377,44 +374,18 @@ export default function PageAdmin() {
             {/* div para cards */}
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
 
-              <DashboardCard
-                icon={<PiPlusCircleBold size={30} />}
-                title="Cadastre uma rota"
-                description="Adicionar uma nova rota ao sistema."
-                onClick={() => setShowModalCadastroResponsavel(true)}
-                color="text-blue-700"
-                action
-              />
+  
 
               {/* table de responsaveis */}
               <DashboardCard
                 icon={<PiListChecksBold size={30} />}
-                title="Relatório de Rotas"
+                title="Visualizar Rotas"
                 description="Visualizar lista completa de rotas."
                 onClick={() => setShowModalRelatorioResponsaveis(true)}
                 color="text-blue-700"
                 action
               />
 
-              {/* update responsavel */}
-              <DashboardCard
-                icon={<PiPencilSimpleBold size={30} />}
-                title="Atualizar Rota"
-                description="Editar dados de uma rota existente."
-                onClick={() => setShowModalUpdateResponsavel(true)}
-                color="text-blue-700"
-                action
-              />
-
-              {/* delete responsavel */}
-              <DashboardCard
-                icon={<PiTrashBold size={30} />}
-                title="Excluir Rota"
-                description="Remover uma rota do sistema."
-                onClick={() => setShowModalExcluirResponsavel(true)}
-                color="text-red-400"
-                action
-              />
             </div>
 
             {/* modals para ativação */}
@@ -506,7 +477,7 @@ export default function PageAdmin() {
 
 
         )}
-        {abaAtiva === 'Veiculos' && (
+        {abaAtiva === 'Veículos' && (
           <>
             {/* titulo da sessao */}
             <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Rotas</h2>
@@ -515,8 +486,8 @@ export default function PageAdmin() {
 
               <DashboardCard
                 icon={<PiPlusCircleBold size={30} />}
-                title="Cadastre uma rota"
-                description="Adicionar uma nova rota ao sistema."
+                title="Cadastrar um veículo"
+                description="Adicionar um novo veículo ao sistema."
                 onClick={() => setShowModalCadastroResponsavel(true)}
                 color="text-blue-700"
                 action
@@ -525,8 +496,8 @@ export default function PageAdmin() {
               {/* table de responsaveis */}
               <DashboardCard
                 icon={<PiListChecksBold size={30} />}
-                title="Relatório de Rotas"
-                description="Visualizar lista completa de rotas."
+                title="Relatório de veículos"
+                description="Visualizar lista completa de veículos."
                 onClick={() => setShowModalRelatorioResponsaveis(true)}
                 color="text-blue-700"
                 action
@@ -535,8 +506,8 @@ export default function PageAdmin() {
               {/* update responsavel */}
               <DashboardCard
                 icon={<PiPencilSimpleBold size={30} />}
-                title="Atualizar Rota"
-                description="Editar dados de uma rota existente."
+                title="Atualizar Veiculo"
+                description="Editar dados de um veículo existente"
                 onClick={() => setShowModalUpdateResponsavel(true)}
                 color="text-blue-700"
                 action
@@ -545,8 +516,8 @@ export default function PageAdmin() {
               {/* delete responsavel */}
               <DashboardCard
                 icon={<PiTrashBold size={30} />}
-                title="Excluir Rota"
-                description="Remover uma rota do sistema."
+                title="Excluir Veículo"
+                description="Remover um veículo do sistema."
                 onClick={() => setShowModalExcluirResponsavel(true)}
                 color="text-red-400"
                 action
@@ -571,7 +542,6 @@ export default function PageAdmin() {
               onClose={() => setShowModalExcluirResponsavel(false)}
             />
           </>
-
 
         )}
 
