@@ -10,9 +10,8 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
     const [aluno, setAluno] = useState(null);
 
     const [nome, setNome] = useState('');
-    const [senha, setSenha] = useState('');
     const [cpf_aluno, setCpfAluno] = useState('');
-    const [cpf_responsavel, setCpfResponsavel] = useState('');
+    // const [cpf_responsavel, setCpfResponsavel] = useState('');
     const [loading, setLoading] = useState(false);
 
     // função para formatar CPF (
@@ -29,30 +28,23 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // função para validar senha 
-    function validarSenha(senha) {
-        return senha.length >= 6;
-    }
-
     const buscarAluno = async () => {
 
         // enviando cpf limpo para o db/back-end
-        const cpfLimpo = cpfBusca.replace(/\D/g, '');
-        if (!cpfLimpo) return toast.warning('Informe o CPF para buscar.');
+        if (!cpfBusca) return toast.warning('Informe o CPF para buscar.');
 
         try {
             setLoading(true);
 
             // verificando se esse cpf existe
-            const response = await axios.get(`http://localhost:3001/aluno/cpf/${cpfLimpo}`);
+            const response = await axios.get(`http://localhost:3001/aluno/cpf/${cpfBusca}`);
             const alunoEncontrado = response.data;
 
             // atribuindo ele...
             setAluno(alunoEncontrado);
             setCpfAluno(formatarCPF(alunoEncontrado.cpf_aluno));
             setNome(alunoEncontrado.nome);
-            setSenha(alunoEncontrado.senha);
-            setCpfResponsavel(formatarCPF(alunoEncontrado.cpf_responsavel));
+            // setCpfResponsavel(formatarCPF(alunoEncontrado.cpf_responsavel));
             toast.success('Aluno encontrado!');
 
         } catch (err) {
@@ -69,7 +61,7 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
         // Validações (mesmas do ModalCadastro)
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim()) {
+        if (!nome.trim() || !cpf_aluno.trim() /*|| || !cpf_responsavel.trim()*/) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -79,25 +71,15 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
             formsErrors = true;
         }
 
-        if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
-            formsErrors = true;
-        }
-
         if (formsErrors) return;
 
         try {
             setLoading(true);
 
-            // aqui vou enviar o cpf limpo para o back-end/db
-            const cpfLimpoAluno = cpf_aluno.replace(/\D/g, '');
-            const cpfLimpoResponsavel = cpf_responsavel.replace(/\D/g, '');
-
             await axios.put(`http://localhost:3001/aluno/${aluno.id_aluno}`, {
-                cpf_aluno: cpfLimpoAluno,
+                cpf_aluno,
                 nome,
-                senha,
-                cpf_responsavel: cpfLimpoResponsavel
+                // cpf_responsavel
             });
 
             toast.success('Aluno atualizado com sucesso!');
@@ -184,17 +166,7 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
                                     />
                                 </div>
 
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Senha</label>
-                                    <input
-                                        type="password"
-                                        className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={senha}
-                                        onChange={(e) => setSenha(e.target.value)}
-                                    />
-                                </div>
-
-                                <div>
+                                {/* <div>
                                     <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF do Responsável</label>
                                     <input
                                         type="text"
@@ -203,7 +175,7 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
                                         onChange={(e) => setCpfResponsavel(formatarCPF(e.target.value))}
                                         maxLength={14}
                                     />
-                                </div>
+                                </div> */}
                             </div>
 
                             <button

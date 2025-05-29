@@ -35,6 +35,12 @@ const createAlunoController = async (req, res) => {
         return res.status(201).json({ message: 'Aluno criado com sucesso' });
     } catch (err) {
 
+        // se o usuario cadastrar cpf ja existente
+        // vai cair nesse erro (requisição ja pronta do model)
+        if (err.status === 400) {
+            return res.status(400).json({ message: err.message });
+        }
+
         console.error("Erro ao criar aluno", err);
         return res.status(500).json({ message: 'Erro ao criar aluno' });
     }
@@ -74,4 +80,20 @@ const deleteAlunoController = async (req, res) => {
     }
 }
 
-export default { getAlunoController, getAlunoAllController, createAlunoController, updateAlunoController, deleteAlunoController };
+const getAlunoByCpfController = async (req, res) => {
+    try {
+        const cpf = req.params.cpf;
+        const aluno = await userModel.getByCPF(cpf);
+
+        if (!aluno) {
+            return res.status(404).json({ message: 'Aluno não encontrado' });
+        }
+
+        return res.json(aluno);
+    } catch (err) {
+        console.error("Erro ao buscar aluno por CPF", err);
+        return res.status(500).json({ message: 'Erro ao buscar aluno por CPF' });
+    }
+};
+
+export default { getAlunoController, getAlunoAllController, createAlunoController, updateAlunoController, deleteAlunoController, getAlunoByCpfController };

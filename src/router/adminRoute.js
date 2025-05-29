@@ -5,7 +5,8 @@ import admin from '../controllers/adminController.js';
 const router = Router();
 
 router.get('/', admin.getAdminController);       
-router.get('/:id', admin.getAdminController);      
+router.get('/:id', admin.getAdminController);   
+router.get('/cpf/:cpf', admin.getAdmByCpfController)   
 router.post('/', admin.createAdminController);       
 router.put('/:id', admin.updateAdminController);     
 router.delete('/:id', admin.deleteAdminController); 
