@@ -18,7 +18,6 @@ app.use(cors())
 app.get('/', async (req, res) =>{
     res.status(200).json({message: 'Sucesso, Página inicial'})
 })
-
 app.use('/admin', adminRoutes);
 app.use('/aluno', alunoRoute);
 app.use('/responsavel', responsavelRoute)
@@ -27,11 +26,10 @@ app.use('/motorista', motoristas)
 app.use('/veiculo', veiculoRoute)
 app.use('/contato', contatoRoute)
 
+// se caso rota nao existir 
 app.use("/", (req,res) => {
     res.status(404).json({message: 'Rota não encontrada'})
 })
-
-
 
 app.listen(port, ()=>{
     console.log(`Servidor rodando em http://localhost:${port}`)

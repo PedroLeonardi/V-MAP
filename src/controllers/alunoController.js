@@ -1,48 +1,53 @@
-import userModel from '../Models/alunoModels.js'
-const getAlunoAll = async (req, res) => {
+import userModel from '../models/alunoModels.js'
+
+// get
+const getAlunoAllController = async (req, res) => {
     try {
-        const users = await userModel.getAll();
-        return res.status(200).json(users);
-    } catch (err) { 
+        const alunos = await userModel.getAll();
+        return res.status(200).json(alunos);
+    } catch (err) {
         console.error("Erro ao buscar todos os alunos", err);
         return res.status(500).json({ message: 'Erro ao buscar todos os alunos' });
     }
 }
 
-const getAluno = async (req, res) => {
+// get by id
+const getAlunoController = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const user = await userModel.getById(id);
-        if (!user) {
+        const aluno = await userModel.getById(id);
+
+        // se aluno nao existir 
+        if (!aluno) {
             return res.status(404).json({ message: 'Aluno não encontrado' });
         }
-        return res.json(user);
+        return res.json(aluno);
     } catch (err) {
         console.error("Erro ao buscar um aluno", err);
         return res.status(500).json({ message: 'Erro ao buscar um aluno' });
     }
 }
 
-const createAluno = async (req, res) => {
+// create
+const createAlunoController = async (req, res) => {
     try {
         await userModel.create(req.body);
         return res.status(201).json({ message: 'Aluno criado com sucesso' });
     } catch (err) {
-
-       if (err.statusCode === 400) {
-            return res.status(400).json({ message: 'CPF do aluno já existente.' }); 
-        }
 
         console.error("Erro ao criar aluno", err);
         return res.status(500).json({ message: 'Erro ao criar aluno' });
     }
 }
 
-const updateAluno = async (req, res) => {
+// update
+const updateAlunoController = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const affected = await userModel.update(id, req.body);
-        if (!affected) {
+        const aluno = await userModel.update(id, req.body);
+
+        // verificando se aluno existe
+        if (!aluno) {
             return res.status(404).json({ message: 'Aluno não encontrado' });
         }
         return res.status(200).json({ message: 'Aluno atualizado com sucesso' });
@@ -52,11 +57,14 @@ const updateAluno = async (req, res) => {
     }
 }
 
-const deleteAluno = async (req, res) => {
+// delete 
+const deleteAlunoController = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const affected = await userModel.deleteRecord(id);
-        if (!affected) {
+        const aluno = await userModel.deleteRecord(id);
+
+        // verificando se aluno existe
+        if (!aluno) {
             return res.status(404).json({ message: 'Aluno não encontrado' });
         }
         return res.status(200).json({ message: 'Aluno deletado com sucesso' });
@@ -66,32 +74,4 @@ const deleteAluno = async (req, res) => {
     }
 }
 
-const getTotalAlunos = async (req, res) => {
-  try {
-    const total = await userModel.getTotalAlunos();
-    return res.status(200).json({ total });
-  } catch (err) {
-    console.error("Erro ao obter total de alunos", err);
-    return res.status(500).json({ message: 'Erro ao obter total de alunos' });
-  }
-};
-
-
-const getAlunoByCPF = async (req, res) => {
-    try {
-        const cpf = req.params.cpf;
-        const user = await userModel.getByCPF(cpf);
-
-        if (!user) {
-            return res.status(404).json({ message: 'Aluno não encontrado' });
-        }
-
-        return res.json(user);
-    } catch (err) {
-        console.error("Erro ao buscar aluno por CPF", err);
-        return res.status(500).json({ message: 'Erro ao buscar aluno por CPF' });
-    }
-};
-
-
-export default { getAluno, getAlunoAll, createAluno, updateAluno, deleteAluno, getTotalAlunos , getAlunoByCPF};
+export default { getAlunoController, getAlunoAllController, createAlunoController, updateAlunoController, deleteAlunoController };

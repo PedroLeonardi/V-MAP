@@ -2,8 +2,9 @@
 import knex from '../../config/connection.js';
 import bcrypt from 'bcryptjs';
 
-const saltRounds = 10;
+const saltRounds = 10; // sequencia de caracteres aleatorios
 
+// select * from
 const getAll = async () => {
   try {
     return await knex("administrador").select("*");
@@ -12,6 +13,7 @@ const getAll = async () => {
   }
 };
 
+// select by id
 const getById = async (id_admin) => {
   try {
     return await knex("administrador").where({ id_admin }).first();
@@ -20,16 +22,16 @@ const getById = async (id_admin) => {
   }
 };
 
+// create
 const create = async (data) => {
   try {
     const adminExist = await knex("administrador").where({ cpf: data.cpf }).first();
 
     if (adminExist) {
-      const error = new Error("CPF já cadastrado");
-      error.statusCode = 400;
-      throw error;
+     return res.status(400).json({message: 'Administrador já cadastrado.'})
     }
 
+    // aplicando senha hash para senha no bd
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
 
     const [id_admin] = await knex("administrador").insert({
@@ -46,18 +48,22 @@ const create = async (data) => {
   }
 };
 
+// update
 const update = async (id_admin, user) => {
   try {
     
+    // aplicando hash ao atualizar
     if (user.senha) {
       user.senha = await bcrypt.hash(user.senha, saltRounds);
     }
+
     return await knex("administrador").where({ id_admin }).update(user);
   } catch (err) {
     throw new Error("Erro ao atualizar administrador");
   }
 };
 
+// delete 
 const deleteRecord = async (id_admin) => {
   try {
     return await knex("administrador").where({ id_admin }).delete();
@@ -66,18 +72,4 @@ const deleteRecord = async (id_admin) => {
   }
 };
 
-const getByCPF = async (cpf) => {
-  try {
-    const cpfLimpo = cpf.replace(/\D/g, '');
-  
-    const administrador = await knex('administrador')
-      .whereRaw("REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', '') , ' ', '') = ?", [cpfLimpo])
-      .first();
-    return administrador;
-  } catch (err) {
-    console.error('Erro ao buscar administrador por CPF: ', err);
-    return null;
-  }
-};
-
-export default { getAll, getById, create, update, deleteRecord, getByCPF };
+export default { getAll, getById, create, update, deleteRecord};
