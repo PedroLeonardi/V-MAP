@@ -20,6 +20,7 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
         return valor;
     }
 
+    // apenas para buscar
     const handleCpfChange = (e) => {
         const valor = e.target.value;
         const cpfFormatado = formatarCPF(valor);
@@ -27,16 +28,11 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
     }
 
     const buscarResponsavel = async () => {
-        const cpfLimpo = cpfBusca.replace(/\D/g, '');
-
-        if (!cpfLimpo || cpfLimpo.length !== 11) {
-            return toast.warning('Informe um CPF válido com 11 dígitos.');
-        }
 
         try {
             setLoading(true);
 
-            const response = await axios.get(`http://localhost:3001/responsavel/cpf/${cpfLimpo}`);
+            const response = await axios.get(`http://localhost:3001/responsavel/cpf/${cpfBusca}`);
 
             if (!response.data) {
                 throw new Error('Responsável não encontrado');
@@ -68,15 +64,17 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
                 toast.success('Responsável excluído com sucesso!');
                 setResponsavel(null);
                 setCpfBusca('');
-                if (onSuccess) onSuccess();
-                if (onClose) onClose();
             } else {
                 throw new Error('Erro ao excluir responsável');
             }
 
         } catch (err) {
             console.error('Erro na exclusão:', err);
+
             let errorMessage = 'Erro ao excluir responsável';
+
+            // enviando requisição ao controller para tratar erros
+            // e aparecer no toast
             if (err.response) {
                 if (err.response.status === 404) {
                     errorMessage = 'Responsável não encontrado no sistema';
