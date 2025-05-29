@@ -11,7 +11,6 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
     const [aluno, setAluno] = useState(null);
     const [loading, setLoading] = useState(false);
 
-
     // formatando o cpf
     function formatarCPF(valor) {
         if (!valor) return '';
@@ -29,20 +28,12 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
     }
 
     const buscarAluno = async () => {
-        // enviando cpf limpo para db/back-end
-
-        const cpfLimpo = cpfBusca.replace(/\D/g, '');
-
-        // verificação de cpf
-        if (!cpfLimpo || cpfLimpo.length !== 11) {
-            return toast.warning('Informe um CPF válido com 11 dígitos.');
-        }
 
         try {
             setLoading(true);
 
             // verificando se cpf existe
-            const response = await axios.get(`http://localhost:3001/aluno/cpf/${cpfLimpo}`);
+            const response = await axios.get(`http://localhost:3001/aluno/cpf/${cpfBusca}`);
 
             if (!response.data) {
                 throw new Error('Aluno não encontrado');
@@ -78,8 +69,6 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
                 toast.success('Aluno excluído com sucesso!');
                 setAluno(null);
                 setCpfBusca('');
-                if (onSuccess) onSuccess(); // notifica o componente pai 
-                if (onClose) onClose(); // fecha o modal
             } else {
                 throw new Error('Erro ao excluir aluno');
             }
@@ -144,8 +133,8 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
                 {aluno && (
                     <div className="mt-4 space-y-4 border-t border-gray-700 pt-4">
                         <div className="space-y-2">
-                            <p><strong>Nome:</strong> {aluno.nome}</p>
-                            <p><strong>CPF:</strong> {formatarCPF(aluno.cpf_aluno)}</p>
+                            <p><span className="font-bold">Nome:</span> {aluno.nome}</p>
+                            <p><span className="font-bold">CPF:</span> {formatarCPF(aluno.cpf_aluno)}</p>
                         </div>
 
                         <button

@@ -5,12 +5,13 @@ import axios from "axios";
 import { toast } from 'sonner';
 import { IoClose } from "react-icons/io5";
 
-export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }) {
+export default function ModalUpdateResponsavel({ isVisible, onClose }) {
+
+    // atribuindo minhas consts
     const [cpfBusca, setCpfBusca] = useState('');
     const [responsavel, setResponsavel] = useState(null);
     const [nome, setNome] = useState('');
-    const [senha, setSenha] = useState('');
-    const [cpf, setCpf] = useState('');
+    const [cpf_responsavel, setCpf] = useState('');
     const [loading, setLoading] = useState(false);
 
     // função para formatar CPF
@@ -28,26 +29,21 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // função para validar senha 
-    function validarSenha(senha) {
-        return senha.length >= 6;
-    }
-
     const buscarResponsavel = async () => {
-        const cpfLimpo = cpfBusca.replace(/\D/g, '');
-        if (!cpfLimpo) return toast.warning('Informe o CPF para buscar.');
+    
+        // precisa informar um cpf
+        if (!cpfBusca) return toast.warning('Informe o CPF para buscar.');
 
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:3001/responsavel/cpf/${cpfLimpo}`);
+            const response = await axios.get(`http://localhost:3001/responsavel/cpf/${cpfBusca}`);
             const responsavelEncontrado = response.data;
 
             console.log('Responsável encontrado:', responsavelEncontrado);
 
             setResponsavel(responsavelEncontrado);
-            setCpf(formatarCPF(responsavelEncontrado.cpf_responsavel)); // CORREÇÃO AQUI
+            setCpf(formatarCPF(responsavelEncontrado.cpf_responsavel)); 
             setNome(responsavelEncontrado.nome);
-            setSenha(responsavelEncontrado.senha);
             toast.success('Responsável encontrado!');
         } catch (err) {
             console.error(err);
@@ -62,7 +58,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf.trim() || !senha.trim()) {
+        if (!nome.trim() || !cpf_responsavel.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -72,21 +68,14 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
             formsErrors = true;
         }
 
-        if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
-            formsErrors = true;
-        }
-
         if (formsErrors) return;
 
         try {
             setLoading(true);
-            const cpfLimpo = cpf.replace(/\D/g, '');
 
             await axios.put(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`, {
-                cpf: cpfLimpo,
+                cpf_responsavel,
                 nome,
-                senha
             });
 
             toast.success('Responsável atualizado com sucesso!');
@@ -94,12 +83,11 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
             setCpfBusca('');
             setCpf('');
             setNome('');
-            setSenha('');
-            if (onSuccess) onSuccess();
-            onClose();
         } catch (err) {
             console.error(err);
 
+            // mandando errs response para meu controller do back-end
+            // usado para tratar meus erros no toast.
             if (err.response && err.response.status === 404) {
                 toast.error('Responsável não encontrado.');
             } else if (err.response?.data?.message) {
@@ -168,19 +156,9 @@ export default function ModalUpdateResponsavel({ isVisible, onClose, onSuccess }
                                     <input
                                         type="text"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={cpf}
+                                        value={cpf_responsavel}
                                         onChange={(e) => setCpf(formatarCPF(e.target.value))}
                                         maxLength={14}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Senha</label>
-                                    <input
-                                        type="password"
-                                        className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={senha}
-                                        onChange={(e) => setSenha(e.target.value)}
                                     />
                                 </div>
                             </div>
