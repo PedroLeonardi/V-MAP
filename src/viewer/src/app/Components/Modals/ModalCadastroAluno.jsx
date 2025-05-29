@@ -88,7 +88,7 @@ export default function ModalCadastro({ isVisible, onClose }) {
 
                 // verificações enviadas ao back-end
                 if (err.response && err.response.status === 400) {
-                    toast.error('CPF já existente.');
+                    toast.error('CPF já cadastrado.');
                 } else if (err.response && err.response.status === 404) {
                     toast.error('Responsável não encontrado.');
                 } else {

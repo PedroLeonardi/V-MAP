@@ -91,7 +91,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
             // que conversa com meu model, por isso consigo tratar o toast
             // da forma que eu quero
             if (err.response && err.response.status === 400) {
-                toast.error('CPF já existente.');
+                toast.error('CPF já cadastrado.');
             } else {
                 toast.error('Erro ao cadastrar responsável.');
             }

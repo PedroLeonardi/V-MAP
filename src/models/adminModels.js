@@ -27,9 +27,14 @@ const create = async (data) => {
   try {
     const adminExist = await knex("administrador").where({ cpf: data.cpf }).first();
 
-    if (adminExist) {
-     return res.status(400).json({message: 'Administrador já cadastrado.'})
-    }
+   
+        // aqui eu faço com que se o adm existir
+        // eu mando ele pro meu controller 
+        if (adminExist) {
+            const error = new Error('Administrador já cadastrado.');
+            error.status = 400;
+            throw error
+        }
 
     // aplicando senha hash para senha no bd
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);

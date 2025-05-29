@@ -37,6 +37,12 @@ const createAdminController = async (req, res) => {
 
   } catch (err) {
     console.error(err);
+
+    if (err.status === 400) {
+      return res.status(400).json({ message: err.message });
+    }
+
+
     return res.status(500).json({ message: 'Erro ao criar usuário' });
   }
 };
