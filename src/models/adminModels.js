@@ -7,18 +7,22 @@ const saltRounds = 10; // sequencia de caracteres aleatorios
 // select * from
 const getAll = async () => {
   try {
-    return await knex("administrador").select("*");
+    const dataGetAll = await knex("administrador").select('*');
+    return dataGetAll;
   } catch (err) {
-    throw new Error("Erro ao listar administradores");
+    console.error("Houve um erro ao listar todos os admins: ", err);
+    return []; // retorna array vazio
   }
 };
 
 // select by id
-const getById = async (id_admin) => {
+const getById = async (id) => {
   try {
-    return await knex("administrador").where({ id_admin }).first();
+    const dataGetById = await knex("administrador").where({ id_admin: id }).first();
+    return dataGetById;
   } catch (err) {
-    throw new Error("Erro ao buscar administrador por ID");
+   console.error('Houve um erro ao listar um adm por ID: ',err);
+   return null;
   }
 };
 

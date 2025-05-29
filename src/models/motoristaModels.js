@@ -62,4 +62,14 @@ const deleteRecord = async (id_motorista) => {
   }
 };
 
-export default { getAll, getById, create, update, deleteRecord };
+const getByCPF = async (cpf) => {
+  try {
+      const motorista = await knex('funcionario_motorista').where({ cpf_motorista: cpf }).first();
+      return motorista;
+  } catch (err) {
+      console.error('Erro ao buscar motorista por CPF: ', err);
+      return null;
+  }
+};
+
+export default { getAll, getById, create, update, getByCPF };
