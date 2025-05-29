@@ -2,18 +2,15 @@
 // imports
 import { useState } from "react";
 import { toast } from 'sonner';
-import { BsArrowLeftCircle, BsSearch } from "react-icons/bs";
-import { AiFillEnvironment } from "react-icons/ai";
+import { BsArrowLeftCircle} from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import { FaGraduationCap } from "react-icons/fa";
-import { FaLocationDot, FaSchool } from "react-icons/fa6";
 import { IoLogOut, IoChatboxEllipses } from "react-icons/io5";
 import { MdOutlineSupportAgent } from "react-icons/md";
-import { HiUserGroup } from "react-icons/hi2";
-import { IoBus } from "react-icons/io5";
 
 
-export default function Sidebar() {
+
+export default function SidebarAluno() {
     // função para dashboard
   const [open, setOpen] = useState(false);
   const [menuAtivo, setMenuAtivo] = useState("Dashboard");
@@ -21,11 +18,7 @@ export default function Sidebar() {
   // map items
   const menus = [
     { title: "Dashboard", icon: <RiDashboardFill /> },
-    { title: "Alunos", icon: <FaGraduationCap /> },
-    { title: "Responsáveis", icon: <HiUserGroup /> },
-    { title: "Rotas", icon: <FaLocationDot /> },
-    { title: "Motoristas", icon: <AiFillEnvironment /> },
-    { title: "Veículos", icon: <IoBus /> },
+    { title: "Minhas informções", icon: <FaGraduationCap /> },
     { title: "ChatBox", icon: <IoChatboxEllipses /> , spacing: true },
     { title: "Suporte", icon: <MdOutlineSupportAgent /> },
   ];
@@ -47,18 +40,6 @@ export default function Sidebar() {
             alt="Logo"
           />
           <h1 className={`text-white text-xl font-extrabold origin-left duration-200 ${!open && "scale-0"}`}>DASHBOARD</h1>
-        </div>
-
-        {/* searchh */}
-        <div className={`flex items-center bg-gray-700 mt-6 p-2 rounded-md`}>
-          <BsSearch className="text-white text-lg" />
-          {open && (
-            <input
-              type="search"
-              placeholder="Buscar..."
-              className="ml-2 bg-transparent outline-none text-white w-full"
-            />
-          )}
         </div>
 
         {/* menus */}

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 //modulos
 import axios from 'axios';
 
-
 // icons
 import { FaLocationDot, FaChartBar } from "react-icons/fa6";
 import { PiStudentBold, PiPlusCircleBold, PiPencilSimpleBold, PiTrashBold, PiListChecksBold } from "react-icons/pi";
@@ -34,6 +33,7 @@ import ModalCadastroMotorista from '../Components/Modals/ModalCadastroMotorista'
 import ModalRelatorioMotorista from '../Components/Modals/ModalRelatorioMotorista';
 import ModalExcluirMotorista from '../Components/Modals/ModalExcluirMotorista';
 import ModalUpdateMotorista from '../Components/Modals/ModalUpdateMotorista';
+import ModalContatoAlunos from '../Components/Modals/ModalContato';
 
 // Fetch com banco de dados Dinamico
 import useFetchTotalAlunos from '../Hooks/TotalAlunos'
@@ -43,12 +43,12 @@ import useFetchTotalContatos from '../Hooks/TotalContatos'
 
 // menus "sessões"
 const menu = [
-  { nome: 'Administração', icon: <FiSettings size={18} /> },
-  { nome: 'Rotas', icon: <FaLocationDot size={18} /> },
-  { nome: 'Alunos', icon: <PiStudentBold size={18} /> },
+  { nome: 'Administradores', icon: <MdPeopleAlt size={18} /> },
   { nome: 'Responsáveis', icon: <MdPeopleAlt size={18} /> },
-  { nome: 'Veículos', icon: <IoBusSharp size={18} /> },
+  { nome: 'Alunos', icon: <PiStudentBold size={18} /> },
   { nome: 'Motoristas', icon: <HiUser size={18} /> },
+  { nome: 'Veículos', icon: <IoBusSharp size={18} /> },
+  { nome: 'Rotas', icon: <FaLocationDot size={18} /> },
   { nome: 'Contatos', icon: <IoIosMail size={18} /> },
 ];
 
@@ -73,6 +73,7 @@ export default function PageAdmin() {
   const [showModalRelatorioMotorista, setShowModalRelatorioMotorista] = useState(false);
   const [showModalExcluirMotorista, setShowModalExcluirMotorista] = useState(false);
   const [showModalUpdateMotorista, setShowModalUpdateMotorista] = useState(false);
+  const [showModalRelatorioContatos, setShowModalRelatorioContatos] = useState(false);
 
 
   const { totalAlunos, refetchAlunos } = useFetchTotalAlunos();
@@ -123,7 +124,7 @@ export default function PageAdmin() {
             <li key={item.nome}>
               <button
                 onClick={() => setAbaAtiva(item.nome)}
-                className={`flex items-center gap-2 p-3 px-4 rounded-lg text-sm sm:text-base font-medium transition-all duration-200
+                className={`flex items-center gap-2 p-3 px-4 rounded-lg text-sm sm:text-base font-medium transition-all duration-200 cursor-pointer
                   ${abaAtiva === item.nome
                     // aq sao meus sets 
                     ? 'bg-blue-900 text-white shadow-md scale-105'
@@ -137,7 +138,7 @@ export default function PageAdmin() {
 
       {/* enfim aq estou começando a mexer nas sessões */}
       <section>
-        {abaAtiva === 'Administração' && (
+        {abaAtiva === 'Administradores' && (
           <>
 
             {/* titulo de cada sessão */}
@@ -374,7 +375,7 @@ export default function PageAdmin() {
             {/* div para cards */}
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
 
-  
+
 
               {/* table de responsaveis */}
               <DashboardCard
@@ -545,6 +546,63 @@ export default function PageAdmin() {
 
         )}
 
+        {abaAtiva === 'Contatos' && (
+          <>
+            <div className='grid grid-cols-4 grid-start-2'>
+
+              <div></div>
+              <DashboardCard
+                icon={<FiSettings size={30} />}
+                title=""
+                description="Mensagens não respondidas"
+                value={totalContato}
+                // onClick={() => setShowModalCadastro(true)}
+                color="text-blue-700"
+              />
+              <DashboardCard
+                // icon={<PiListChecksBold size={30} />}
+                title="Relatório de Mensagens"
+                description="Visualizar mensagens já respondidas e ainda pendentes"
+                onClick={() => setShowModalRelatorioContatos(true)}
+                color="text-blue-700"
+                action
+              />
+            </div>
+            <ModalContatoAlunos
+              isVisible={showModalRelatorioContatos}
+              onClose={() => setShowModalRelatorioContatos(false)}
+            />
+            {console.log(dataContato)}
+            <div>
+              <div className="overflow-x-auto w-[85%] ">
+                <table className="min-w-full text-sm text-left text-white border border-gray-600">
+                  <thead className="bg-gray-800 text-gray-300 uppercase text-xs">
+                    <tr>
+                      <th className="px-4 py-2 border border-gray-600">NOME</th>
+                      <th className="px-4 py-2 border border-gray-600">EMAIL</th>
+                      <th className="px-4 py-2 border border-gray-600">MENSAGEM</th>
+                      <th className="px-4 py-2 border border-gray-600">STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.isArray(dataContato) &&
+                      dataContato.map((contato) => {
+
+                        return (
+                          <tr key={contato.id_mensagem_suporte} className="hover:bg-gray-700">
+                            <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
+                            <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
+                            <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
+                            <td className="px-4 py-2 border border-gray-600"><button onClick={() => { changeStatus(contato.id_mensagem_suporte) }} className='bg-red-500'>Responder</button></td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        )}
       </section>
     </div>
   )
