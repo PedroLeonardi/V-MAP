@@ -4,12 +4,13 @@ import DashboardCard from '../Components/DashboardCard/Dashboard';
 import { CiViewList } from "react-icons/ci";
 import axios from 'axios';
 import ModalContatoAlunos from '../Components/Modals/ModalContato';
+import useFetchTotalContatos from '../Hooks/TotalContatos'
 
 export default function contato() {
-    const [countContatos, setCountContatos] = useState(0)
+    // const [countContatos, setCountContatos] = useState(0)
     const [dataContatos, setDataContatos] = useState([])
-    // const [statusUseEfEC]
-    const [showModalRelatorio, setShowModalRelatorio] = useState(false);
+    const [statusUseEffect, setStatusUseEffect] = useState([])
+    const [showModalRelatorioContatos, setShowModalRelatorioContatos] = useState(false);
 
 
     useEffect(() => {
@@ -28,12 +29,12 @@ export default function contato() {
             }
         }
         readContatos()
-        console.log(countContatos)
-    }, [])
+    }, [statusUseEffect])
 
     const changeStatus = async (id_mensagem_suporte) => {
         try {
             axios.put(`http://localhost:3001/contato/${id_mensagem_suporte}`).then(response => {console.log(response.data)})
+            setStatusUseEffect([])
         } catch (err) {
             console.error("Houve um erro ao ataulizar o status: ", err)
         }
@@ -58,15 +59,15 @@ export default function contato() {
                     // icon={<PiListChecksBold size={30} />}
                     title="Relatório de Mensagens"
                     description="Visualizar mensagens já respondidas e ainda pendentes"
-                    onClick={() => setShowModalRelatorio(true)}
+                    onClick={() => setShowModalRelatorioContatos(true)}
                     color="text-blue-700"
                     action
                 />
             </div>
         
             <ModalContatoAlunos
-                isVisible={showModalRelatorio}
-                onClose={() => setShowModalRelatorio(false)}
+                isVisible={showModalRelatorioContatos}
+                onClose={() => setShowModalRelatorioContatos(false)}
             />
             {console.log(dataContatos)}
             <div>

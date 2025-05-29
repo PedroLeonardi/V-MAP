@@ -1,18 +1,17 @@
 'use client';
-import { useState } from 'react';
-
-// icons
+import { useState, useEffect } from 'react';
 import { FaLocationDot, FaChartBar } from "react-icons/fa6";
-import { PiStudentBold, PiPlusCircleBold, PiPencilSimpleBold, PiTrashBold, PiListChecksBold } from "react-icons/pi";
+import { PiStudentBold, PiPlusCircleBold, PiPencilSimpleBold, PiTrashBold, PiUsersThreeBold, PiListChecksBold } from "react-icons/pi";
 import { MdPeopleAlt } from "react-icons/md";
 import { IoBusSharp } from "react-icons/io5";
 import { HiUser } from "react-icons/hi";
 import { FiSettings } from "react-icons/fi";
-
-//card
 import DashboardCard from '../Components/DashboardCard/Dashboard';
+import useFetchTotalAlunos from '../Hooks/TotalAlunos';
+import useFetchResponsaveis from '../Hooks/TotalResponsavel';
+import axios from 'axios';
 
-// modals
+// Import modals
 import ModalCadastro from '../Components/Modals/ModalCadastroAluno';
 import ModalRelatorioAlunos from '../Components/Modals/ModalRelatorioAlunos';
 import ModalUpdateAluno from '../Components/Modals/ModalUpdateAluno';
@@ -24,7 +23,6 @@ import ModalExcluirResponsavel from '../Components/Modals/ModalExcluirResponsave
 import ModalCadastroAdmin from '../Components/Modals/ModalCadastroAdm';
 import ModalUpdateAdmin from '../Components/Modals/ModalUpdateAdm';
 
-// menus "sessões"
 const menu = [
   { nome: 'Administração', icon: <FiSettings size={18} /> },
   { nome: 'Rotas', icon: <FaLocationDot size={18} /> },
@@ -35,62 +33,75 @@ const menu = [
 ];
 
 export default function PageAdmin() {
-  // set para navbar de sessões
   const [abaAtiva, setAbaAtiva] = useState('Alunos');
-
-  // states dos modals
+  const [searchTerm, setSearchTerm] = useState('');
   const [showModalCadastro, setShowModalCadastro] = useState(false);
   const [showModalRelatorioAlunos, setShowModalRelatorioAlunos] = useState(false);
   const [showModalUpdateAluno, setShowModalUpdateAluno] = useState(false);
   const [showModalExcluirAluno, setShowModalExcluirAluno] = useState(false);
+
   const [showModalCadastroResponsavel, setShowModalCadastroResponsavel] = useState(false);
   const [showModalUpdateResponsavel, setShowModalUpdateResponsavel] = useState(false);
   const [showModalRelatorioResponsaveis, setShowModalRelatorioResponsaveis] = useState(false);
   const [showModalExcluirResponsavel, setShowModalExcluirResponsavel] = useState(false);
+
   const [showModalCadastroAdmin, setShowModalCadastroAdmin] = useState(false);
   const [showModalUpdateAdmin, setShowModalUpdateAdmin] = useState(false);
   const [showModalRelatorioAdmin, setShowModalRelatorioAdmin] = useState(false);
 
+  const [responsaveis, setResponsaveis] = useState([]);
+  const [totalAdmins, setTotalAdmins] = useState(0);
+
+  const { totalAlunos } = useFetchTotalAlunos();
+  const { totalResponsaveis } = useFetchResponsaveis();
+
+  const handleUpdateResponsavelSucesso = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/responsaveis');
+      setResponsaveis(response.data);
+    } catch (err) {
+      console.error("Erro ao buscar responsáveis", err);
+    }
+    setShowModalUpdateResponsavel(false);
+  };
+
+  const handleExcluirResponsavelSucesso = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/responsaveis');
+      setResponsaveis(response.data);
+    } catch (err) {
+      console.error("Erro ao buscar responsáveis", err);
+    }
+    setShowModalExcluirResponsavel(false);
+  };
+
   return (
     <div className='min-h-screen bg-slate-900 text-gray-100 p-4 sm:p-8 font-sans'>
-
-      {/* meu header */}
       <header className="mb-8">
         <h1 className='font-bold text-3xl sm:text-4xl text-white'>Painel de Coordenação</h1>
-        <p className="text-slate-400 mt-1">Gerenciamento de rotas, alunos, responsáveis e mais.</p>
+        <p className="text-slate-400 mt-1">Gerencie rotas, alunos, responsáveis e mais.</p>
       </header>
 
-      {/* minha nav de sessões */}
       <nav className='mb-10 pb-4 border-b border-slate-700'>
         <ul className='flex flex-wrap gap-3 sm:gap-5'>
           {menu.map((item) => (
             <li key={item.nome}>
               <button
                 onClick={() => setAbaAtiva(item.nome)}
-                className={`flex items-center gap-2 p-3 px-4 rounded-lg text-sm sm:text-base font-medium transition-all duration-200
-                  ${abaAtiva === item.nome
-                    // aq sao meus sets 
-                    ? 'bg-blue-900 text-white shadow-md scale-105'
-                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
-                  }`}
-              >{item.icon} {item.nome}</button>
+                className={`flex items-center gap-2 p-3 px-4 rounded-lg text-sm sm:text-base font-medium transition-all duration-200 ease-in-out ${abaAtiva === item.nome ? 'bg-blue-900 text-white shadow-md scale-105' : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'}`}
+              >
+                {item.icon} {item.nome}
+              </button>
             </li>
           ))}
         </ul>
       </nav>
 
-      {/* enfim aq estou começando a mexer nas sessões */}
       <section>
-        {abaAtiva === 'Administração' && (
+        {abaAtiva === 'Administração' ? (
           <>
-
-            {/* titulo de cada sessão */}
-            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Administradores</h2>
-
-            {/* div para abrigar meus cards */}
+            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-6'>Gerenciamento de Administradores</h2>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-
-              {/* card cadastro adm */}
               <DashboardCard
                 icon={<PiPlusCircleBold size={30} />}
                 title="Cadastrar Administrador"
@@ -99,35 +110,15 @@ export default function PageAdmin() {
                 color="text-blue-700"
                 action
               />
-
-              {/* card atualizar cadastro */}
               <DashboardCard
-                icon={<PiPencilSimpleBold size={30} />}
-                title="Atualizar Cadastro"
-                description="Editar informações de um administrador."
-                onClick={() => setShowModalUpdateAdmin(true)}
+                icon={<PiUsersThreeBold size={30} />}
+                title="Total de Administradores"
+                value={totalAdmins}
+                description="Número atual de administradores cadastrados."
                 color="text-blue-700"
-                action
-              />
-
-              {/* remover adm */}
-              <DashboardCard
-                icon={<PiTrashBold size={30} />}
-                title="Remover Administrador"
-                description="Excluir um administrador do sistema."
-                color="text-red-400"
-                action
-              />
-
-              {/* relatorio adm */}
-              <DashboardCard
-                icon={<PiListChecksBold size={30} />}
-                title="Relatório de Administradores"
-                description="Visualizar lista completa de administradores."
-                color="text-blue-700"
-                action
               />
             </div>
+
 
             {/* modals para cada card
             nao é necessariamente importante */}
@@ -143,19 +134,19 @@ export default function PageAdmin() {
               isVisible={showModalRelatorioAdmin}
               onClose={() => setShowModalRelatorioAdmin(false)}
             />
+
           </>
-        )}
-
-        {abaAtiva === 'Alunos' && (
+        ) : abaAtiva === 'Alunos' ? (
           <>
-
-            {/* titulo da sessao */}
-            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Alunos</h2>
-
-            {/* div para meus cards */}
+            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-6'>Gerenciamento de Alunos</h2>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-
-              {/* cadastrar aluno */}
+              <DashboardCard
+                icon={<PiStudentBold size={30} />}
+                title="Total de Alunos"
+                value={totalAlunos}
+                description="Número atual de alunos cadastrados."
+                color="text-blue-700"
+              />
               <DashboardCard
                 icon={<PiPlusCircleBold size={30} />}
                 title="Cadastrar Aluno"
@@ -164,8 +155,6 @@ export default function PageAdmin() {
                 color="text-blue-700"
                 action
               />
-
-              {/* table dos alunos */}
               <DashboardCard
                 icon={<PiListChecksBold size={30} />}
                 title="Relatório de Alunos"
@@ -174,7 +163,6 @@ export default function PageAdmin() {
                 color="text-blue-700"
                 action
               />
-              {/* atualizar cadastro */}
               <DashboardCard
                 icon={<PiPencilSimpleBold size={30} />}
                 title="Atualizar Cadastro"
@@ -183,8 +171,6 @@ export default function PageAdmin() {
                 color="text-blue-700"
                 action
               />
-
-              {/* delete aluno */}
               <DashboardCard
                 icon={<PiTrashBold size={30} />}
                 title="Excluir Aluno"
@@ -193,96 +179,36 @@ export default function PageAdmin() {
                 color="text-red-400"
                 action
               />
-
+              <DashboardCard
+                icon={<FaChartBar size={30} />}
+                title="Histórico do Aluno"
+                description="Consultar registros e atividades."
+                color="text-blue-700"
+                action
+              />
             </div>
-
-            {/*  modals*/}
-            <ModalCadastro
-              isVisible={showModalCadastro}
-              onClose={() => setShowModalCadastro(false)}
-            />
-            <ModalRelatorioAlunos
-              isVisible={showModalRelatorioAlunos}
-              onClose={() => setShowModalRelatorioAlunos(false)}
-            />
-            <ModalUpdateAluno
-              isVisible={showModalUpdateAluno}
-              onClose={() => setShowModalUpdateAluno(false)}
-            />
-            <ModalExcluirAluno
-              isVisible={showModalExcluirAluno}
-              onClose={() => setShowModalExcluirAluno(false)}
-            />
+            <ModalCadastro isVisible={showModalCadastro} onClose={() => setShowModalCadastro(false)} />
+            <ModalRelatorioAlunos isVisible={showModalRelatorioAlunos} onClose={() => setShowModalRelatorioAlunos(false)} />
+            <ModalUpdateAluno isVisible={showModalUpdateAluno} onClose={() => setShowModalUpdateAluno(false)} />
+            <ModalExcluirAluno isVisible={showModalExcluirAluno} onClose={() => setShowModalExcluirAluno(false)} />
           </>
-        )}
-
-        {abaAtiva === 'Responsáveis' && (
+        ) : abaAtiva === 'Responsáveis' ? (
           <>
-
-            {/* titulo da sessao */}
-            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Responsáveis</h2>
-            {/* div para cards */}
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-
-              {/* card cadastrar funcionario */}
-              <DashboardCard
-                icon={<PiPlusCircleBold size={30} />}
-                title="Cadastrar Responsável"
-                description="Adicionar um novo responsável ao sistema."
-                onClick={() => setShowModalCadastroResponsavel(true)}
-                color="text-blue-700"
-                action
-              />
-
-              {/* table de responsaveis */}
-              <DashboardCard
-                icon={<PiListChecksBold size={30} />}
-                title="Relatório de Responsáveis"
-                description="Visualizar lista completa de responsáveis."
-                onClick={() => setShowModalRelatorioResponsaveis(true)}
-                color="text-blue-700"
-                action
-              />
-
-              {/* update responsavel */}
-              <DashboardCard
-                icon={<PiPencilSimpleBold size={30} />}
-                title="Atualizar Responsável"
-                description="Editar dados de um responsável existente."
-                onClick={() => setShowModalUpdateResponsavel(true)}
-                color="text-blue-700"
-                action
-              />
-
-              {/* delete responsavel */}
-              <DashboardCard
-                icon={<PiTrashBold size={30} />}
-                title="Excluir Responsável"
-                description="Remover um responsável do sistema."
-                onClick={() => setShowModalExcluirResponsavel(true)}
-                color="text-red-400"
-                action
-              />
-            </div>
-
-            {/* modals para ativação */}
-            <ModalCadastroResponsavel
-              isVisible={showModalCadastroResponsavel}
-              onClose={() => setShowModalCadastroResponsavel(false)}
+            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-6'>Gerenciamento de Responsáveis</h2>
+            <DashboardCard
+              icon={<PiUsersThreeBold size={30} />}
+              title="Total de Responsáveis"
+              value={totalResponsaveis}
+              description="Número atual de responsáveis cadastrados."
+              color="text-blue-700"
             />
-            <ModalRelatorioResponsaveis
-              isVisible={showModalRelatorioResponsaveis}
-              onClose={() => setShowModalRelatorioResponsaveis(false)}
-            />
-            <ModalUpdateResponsavel
-              isVisible={showModalUpdateResponsavel}
-              onClose={() => setShowModalUpdateResponsavel(false)}
-            />
-            <ModalExcluirResponsavel
-              isVisible={showModalExcluirResponsavel}
-              onClose={() => setShowModalExcluirResponsavel(false)}
-            />
+            <ModalCadastroResponsavel isVisible={showModalCadastroResponsavel} onClose={() => setShowModalCadastroResponsavel(false)} />
+            <ModalRelatorioResponsaveis isVisible={showModalRelatorioResponsaveis} onClose={() => setShowModalRelatorioResponsaveis(false)} responsaveis={responsaveis} />
+            <ModalUpdateResponsavel isVisible={showModalUpdateResponsavel} onClose={() => setShowModalUpdateResponsavel(false)} />
+            <ModalExcluirResponsavel isVisible={showModalExcluirResponsavel} onClose={() => setShowModalExcluirResponsavel(false)} />
           </>
+        ) : (
+          <div className='text-slate-400 p-8 text-center'>Seção ainda em desenvolvimento.</div>
         )}
       </section>
     </div>
