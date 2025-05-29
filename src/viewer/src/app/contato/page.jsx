@@ -7,7 +7,7 @@ import ModalContatoAlunos from '../Components/Modals/ModalContato';
 import useFetchTotalContatos from '../Hooks/TotalContatos'
 
 export default function contato() {
-    // const [countContatos, setCountContatos] = useState(0)
+    const [countContatos, setCountContatos] = useState(0)
     const [dataContatos, setDataContatos] = useState([])
     const [statusUseEffect, setStatusUseEffect] = useState([])
     const [showModalRelatorioContatos, setShowModalRelatorioContatos] = useState(false);
