@@ -4,7 +4,7 @@ import admin from '../controllers/adminController.js';
 
 const router = Router();
 
-router.get('/', admin.getAdminController);       
+router.get('/', admin.getAdminAllController);       
 router.get('/:id', admin.getAdminController);   
 router.get('/cpf/:cpf', admin.getAdmByCpfController)   
 router.post('/', admin.createAdminController);       

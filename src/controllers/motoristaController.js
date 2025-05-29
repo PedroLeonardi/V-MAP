@@ -62,4 +62,20 @@ const deleteMotorista = async (req, res) => {
     }
 }
 
-export default { getMotorista, getMotoristaAll, createMotorista, updateMotorista, deleteMotorista };
+const getMotoristaByCpfController = async (req, res) => {
+    try {
+      const cpf = req.params.cpf;
+      const motorista = await userModel.getByCPF(cpf);
+  
+      if (!motorista) {
+        return res.status(404).json({ message: 'Administrador não encontrado' });
+      }
+  
+      return res.json(motorista);
+    } catch (err) {
+      console.error("Erro ao buscar motorista por CPF", err);
+      return res.status(500).json({ message: 'Erro ao buscar motorista por CPF' });
+    }
+  };
+
+export default { getMotorista, getMotoristaAll, createMotorista, updateMotorista, deleteMotorista, getMotoristaByCpfController };

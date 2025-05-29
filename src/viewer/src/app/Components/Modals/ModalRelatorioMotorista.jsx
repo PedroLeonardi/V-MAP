@@ -3,19 +3,19 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-export default function ModalRelatorioAdm({ isVisible, onClose }) {
-  const [admin, setAdm] = useState([])
+export default function ModalRelatorioMotorista({ isVisible, onClose }) {
+  const [motorista, setMotorista] = useState([])
   const [busca, setBusca] = useState('') // sistema de busca
 
   // Requisição para a API
   useEffect(() => {
     if (isVisible) {
-      axios.get('http://localhost:3001/admin')
+      axios.get('http://localhost:3001/motorista')
         .then((response) => {
-          setAdm(response.data)
+          setMotorista(response.data)
         })
         .catch((err) => {
-          console.error('Erro ao buscar admin: ', err)
+          console.error('Erro ao buscar motorista: ', err)
         })
     }
   }, [isVisible])
@@ -29,8 +29,8 @@ export default function ModalRelatorioAdm({ isVisible, onClose }) {
   };
 
   // logica do filtro (ignora maiúsculas/minúsculas)
-  const admsFiltrados = admin.filter((admin) =>
-    admin.nome?.toLowerCase().includes(busca.toLowerCase())
+  const motoristaFiltrados = motorista.filter((motorista) =>
+    motorista.nome?.toLowerCase().includes(busca.toLowerCase())
   );
 
   return (
@@ -47,7 +47,7 @@ export default function ModalRelatorioAdm({ isVisible, onClose }) {
         </button>
 
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-white mb-1">Lista de Administradores Cadastrados</h2>
+          <h2 className="text-2xl font-bold text-white mb-1">Lista de Motoristas Cadastrados</h2>
           <div className="w-12 h-1 bg-blue-500 rounded-full"></div>
         </div>
 
@@ -72,19 +72,19 @@ export default function ModalRelatorioAdm({ isVisible, onClose }) {
               </tr>
             </thead>
             <tbody>
-              {/* eu passo a const admsFiltrados */}
-              {admsFiltrados.map((admin) => (
-                <tr key={admin.id_admin} className="hover:bg-gray-700">
-                  <td className="px-4 py-2 border border-gray-600">{admin.id_admin}</td>
-                  <td className="px-4 py-2 border border-gray-600">{admin.nome}</td>
-                  <td className="px-4 py-2 border border-gray-600">{admin.cpf}</td>
+              {/* eu passo a const motoristaFiltrados */}
+              {motoristaFiltrados.map((motorista) => (
+                <tr key={motorista.id_motorista} className="hover:bg-gray-700">
+                  <td className="px-4 py-2 border border-gray-600">{motorista.id_motorista}</td>
+                  <td className="px-4 py-2 border border-gray-600">{motorista.nome}</td>
+                  <td className="px-4 py-2 border border-gray-600">{motorista.cpf_motorista}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        {admsFiltrados.length === 0 && (
-          <p className="text-center text-gray-400 mt-4">Nenhum admin encontrado.</p>
+        {motoristaFiltrados.length === 0 && (
+          <p className="text-center text-gray-400 mt-4">Nenhum motorista encontrado.</p>
         )}
       </div>
     </div>
