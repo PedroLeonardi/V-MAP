@@ -6,10 +6,11 @@ import { toast } from 'sonner'
 
 export default function ModalCadastro({ isVisible, onClose }) {
 
+    // const para criar meu aluno
     const [nome, setNome] = useState('');
     const [senha, setSenha] = useState('');
-    const [cpf, setCPF] = useState('');
-    const [cpf_responsavel, setCPF_RESPONSAVEL] = useState('');
+    const [cpf_aluno, setCPF] = useState('');
+    const [cpf_responsavel, setCpfResponsavel] = useState('');
     const [loading, setLoading] = useState(false)
 
     // formatando o front do cpf
@@ -42,79 +43,64 @@ export default function ModalCadastro({ isVisible, onClose }) {
     };
 
     // envio do form
+    // envio do form
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
 
         let formsErrors = false;
 
-        // nao pode espaço vazio
-        if (!nome.trim() || !cpf.trim() || !senha.trim() || !cpf_responsavel.trim()) {
+        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
 
-        // valid
         if (!validarNome(nome)) {
             toast.error('Nome Inválido. O nome deve conter apenas letras e espaços.');
             formsErrors = true;
         }
-        // valid
 
         if (!validarSenha(senha)) {
             toast.error('Senha deve conter pelo menos 6 caracteres');
             formsErrors = true;
         }
 
-        // se detectar erro, ele cai nesse if
         if (formsErrors) {
             setLoading(false);
             return;
         }
-        // caso for concluido 
 
-        // enviando sem formatação para o db e back-end
-        const cpfLimpoAluno = cpf.replace(/\D/g, ''); 
-        const cpfLimpoResponsavel = cpf_responsavel.replace(/\D/g, '');
-
-        // função para buscar o responsável e criar o aluno
+        // definindo uma função para buscar se ja existe um responsavel
         const buscarResponsavel = async (cpf) => {
             try {
-               await axios.get(`http://localhost:3001/responsavel/cpf/${cpf}`);
+                await axios.get(`http://localhost:3001/responsavel/cpf/${cpf}`);
 
-                // se chegar aqui, responsável existe
                 const response = await axios.post('http://localhost:3001/aluno', {
                     nome,
-                    cpf_aluno: cpfLimpoAluno,
+                    cpf_aluno,
                     senha,
-                    cpf_responsavel: cpfLimpoResponsavel
+                    cpf_responsavel
                 });
 
-                console.log(response)
-
+                console.log('Dados recebidos: ', response);
                 toast.success('Aluno cadastrado com sucesso.');
-                // Limpar campos após o envio do cadastro
-                setNome('');
-                setCPF('');
-                setCPF_RESPONSAVEL('');
-                setSenha('');
-                onClose();
-
-                // tratamento de erros
             } catch (err) {
-                if (err.response && err.response.status === 404) {
-                    toast.error('Responsável não encontrado.');
-                } else if (err.response && err.response.data && err.response.data.message) {
-                    toast.error(err.response.data.message);
-                } else {
-                    toast.error('Erro ao cadastrar aluno. ');
-                }
-                console.error(err);
-            }
-        }
 
-        await buscarResponsavel(cpfLimpoResponsavel);
-        setLoading(false);
+                // verificações enviadas ao back-end
+                if (err.response && err.response.status === 400) {
+                    toast.error('CPF já existente.');
+                } else if (err.response && err.response.status === 404) {
+                    toast.error('Responsável não encontrado.');
+                } else {
+                    toast.error('Erro ao cadastrar aluno.');
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        // preciso chamar a função "fora" dela
+        await buscarResponsavel(cpf_responsavel);
     }
 
     return (
@@ -153,7 +139,7 @@ export default function ModalCadastro({ isVisible, onClose }) {
                         <input
                             id="cpf"
                             type="text"
-                            value={cpf}
+                            value={cpf_aluno}
                             maxLength={14}
                             onChange={e => setCPF(formatarCPF(e.target.value))}
                             className="text-sm sm:text-base border border-gray-600 p-2 sm:p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -168,7 +154,7 @@ export default function ModalCadastro({ isVisible, onClose }) {
                             type="text"
                             value={cpf_responsavel}
                             maxLength={14}
-                            onChange={e => setCPF_RESPONSAVEL(formatarCPF(e.target.value))}
+                            onChange={e => setCpfResponsavel(formatarCPF(e.target.value))}
                             className="text-sm sm:text-base border border-gray-600 p-2 sm:p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             placeholder="000.000.000-00"
                         />
@@ -189,9 +175,8 @@ export default function ModalCadastro({ isVisible, onClose }) {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`mt-1 sm:mt-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-2 sm:py-3 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${
-                            loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-700 hover:to-blue-900 hover:shadow-blue-900/30'
-                        }`}
+                        className={`mt-1 sm:mt-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-2 sm:py-3 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-700 hover:to-blue-900 hover:shadow-blue-900/30'
+                            }`}
                     >
                         {/* mudar estado do envio */}
                         {loading ? 'Cadastrando...' : 'Cadastrar'}

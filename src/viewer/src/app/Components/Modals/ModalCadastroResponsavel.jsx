@@ -6,11 +6,10 @@ import { toast } from 'sonner'
 
 export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess }) {
 
-
+    // abrigando minhas const para criar meu responsavel
     const [nome, setNome] = useState('');
     const [senha, setSenha] = useState('');
-    const [cpf, setCPF] = useState('');
-    const cpfLimpo = cpf.replace(/\D/g, '');
+    const [cpf_responsavel, setCPF] = useState('');
     const [loading, setLoading] = useState(false)
 
     // formatando o front do cpf
@@ -49,49 +48,58 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf.trim() || !senha.trim()) {
+        // nao permitir envio sem preencher todo form
+        if (!nome.trim() || !cpf_responsavel.trim() || !senha.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
 
+        // validação
         if (!validarNome(nome)) {
             toast.error('Nome inválido. Apenas letras e espaços são permitidos.');
             formsErrors = true;
         }
 
+        // validação 
         if (!validarSenha(senha)) {
             toast.error('Senha deve conter pelo menos 6 caracteres');
             formsErrors = true;
         }
 
+        // se form conter erros, nao envie
         if (formsErrors) {
             setLoading(false);
             return;
         }
 
+        // caso aprovado...
         try {
+
             const response = await axios.post('http://localhost:3001/responsavel', {
                 nome,
-                cpf: cpf.replace(/\D/g, ''),
+                cpf_responsavel,
                 senha,
             });
 
             toast.success('Responsável cadastrado com sucesso.');
+            console.log('Dados enviados: ', response)
 
-            if (onSuccess) onSuccess(); // notifica componente pai
-            onClose(); // fecha o modal
         } catch (err) {
-            if (err.response?.data?.message) {
-                toast.error(err.response.data.message);
+            console.error(err);
+
+            // aqui eu envio uma requisição ao meu controller
+            // que conversa com meu model, por isso consigo tratar o toast
+            // da forma que eu quero
+            if (err.response && err.response.status === 400) {
+                toast.error('CPF já existente.');
             } else {
                 toast.error('Erro ao cadastrar responsável.');
             }
-            console.error(err);
+
         } finally {
             setLoading(false);
         }
     }
-
 
     return (
         <div
@@ -129,7 +137,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
                         <input
                             id="cpf"
                             type="text"
-                            value={cpf}
+                            value={cpf_responsavel}
                             maxLength={14}
                             onChange={e => setCPF(formatarCPF(e.target.value))}
                             className="text-sm sm:text-base border border-gray-600 p-2 sm:p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -155,7 +163,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
                         className={`mt-1 sm:mt-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-2 sm:py-3 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-700 hover:to-blue-900 hover:shadow-blue-900/30'
                             }`}
                     >
-                        {/* mudar estado do envio */}
+                        {/* mudar estado do envio, apenas front-end nada demais */}
                         {loading ? 'Cadastrando...' : 'Cadastrar'}
                     </button>
                 </form>
