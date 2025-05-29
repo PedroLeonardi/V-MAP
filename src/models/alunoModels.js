@@ -96,14 +96,15 @@ const deleteRecord = async (id_aluno) => {
 };
 
 // puxar cpf do aluno
-const getByCPF = async () => {
+const getByCPF = async (cpf) => {
     try {
-        const aluno = await knex('Alunos').where({ cpf_aluno }).first();
+        const aluno = await knex('Alunos').where({ cpf_aluno: cpf }).first();
         return aluno;
     } catch (err) {
         console.error('Erro ao buscar aluno por CPF: ', err);
         return null;
     }
 };
+
 
 export default { getAll, getById, create, update, deleteRecord, getByCPF };
