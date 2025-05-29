@@ -4,7 +4,7 @@ import userModel from "../models/adminModels.js";
 const getAdminAllController = async (req, res) => {
   try {
     const admins = await userModel.getAll();
-    res.status(200).json(admins);
+   return res.status(200).json(admins);
   } catch (err) {
     console.error("Erro ao buscar todos os usuários ", err);
     res.status(500).json({ message: 'Erro ao buscar todos usuários' });
@@ -98,4 +98,4 @@ const getAdmByCpfController = async (req, res) => {
   }
 };
 
-export default { getAdminController, getAdminAllController, createAdminController, updateAdminController, deleteAdminController , getAdmByCpfController};
+export default { getAdminController, getAdminAllController, createAdminController, updateAdminController, deleteAdminController, getAdmByCpfController };
