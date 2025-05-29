@@ -47,6 +47,7 @@ export default function PageAdmin() {
 
   const [showModalCadastroAdmin, setShowModalCadastroAdmin] = useState(false);
   const [showModalUpdateAdmin, setShowModalUpdateAdmin] = useState(false);
+  const [showModalRelatorioAdmin, setShowModalRelatorioAdmin] = useState(false);
 
   const [responsaveis, setResponsaveis] = useState([]);
   const [totalAdmins, setTotalAdmins] = useState(0);
@@ -117,8 +118,23 @@ export default function PageAdmin() {
                 color="text-blue-700"
               />
             </div>
-            <ModalCadastroAdmin isVisible={showModalCadastroAdmin} onClose={() => setShowModalCadastroAdmin(false)} />
-            <ModalUpdateAdmin isVisible={showModalUpdateAdmin} onClose={() => setShowModalUpdateAdmin(false)} />
+
+
+            {/* modals para cada card
+            nao é necessariamente importante */}
+            <ModalCadastroAdmin
+              isVisible={showModalCadastroAdmin}
+              onClose={() => setShowModalCadastroAdmin(false)}
+            />
+            <ModalUpdateAdmin
+              isVisible={showModalUpdateAdmin}
+              onClose={() => setShowModalUpdateAdmin(false)}
+            />
+            <ModalUpdateAdmin
+              isVisible={showModalRelatorioAdmin}
+              onClose={() => setShowModalRelatorioAdmin(false)}
+            />
+
           </>
         ) : abaAtiva === 'Alunos' ? (
           <>
