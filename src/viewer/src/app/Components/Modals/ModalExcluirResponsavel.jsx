@@ -61,6 +61,7 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
             const response = await axios.delete(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`);
 
             if (response.status === 200) {
+                if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
                 toast.success('Responsável excluído com sucesso!');
                 setResponsavel(null);
                 setCpfBusca('');

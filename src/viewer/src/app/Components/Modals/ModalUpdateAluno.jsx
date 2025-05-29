@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from 'sonner';
 import { IoClose } from "react-icons/io5";
 
-export default function ModalUpdateAluno({ isVisible, onClose }) {
+export default function ModalUpdateAluno({ isVisible, onClose}) {
     const [cpfBusca, setCpfBusca] = useState('');
     const [aluno, setAluno] = useState(null);
 
@@ -81,7 +81,7 @@ export default function ModalUpdateAluno({ isVisible, onClose }) {
                 nome,
                 // cpf_responsavel
             });
-
+            
             toast.success('Aluno atualizado com sucesso!');
             setAluno(null);
             setCpfBusca('');

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'sonner'
 
-export default function ModalCadastro({ isVisible, onClose }) {
+export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
 
     // const para criar meu aluno
     const [nome, setNome] = useState('');
@@ -81,7 +81,7 @@ export default function ModalCadastro({ isVisible, onClose }) {
                     senha,
                     cpf_responsavel
                 });
-
+                if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
                 console.log('Dados recebidos: ', response);
                 toast.success('Aluno cadastrado com sucesso.');
             } catch (err) {

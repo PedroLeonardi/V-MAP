@@ -67,6 +67,7 @@ export default function ModalExcluirAluno({ isVisible, onClose, onSuccess }) {
 
             if (response.status === 200) {
                 toast.success('Aluno excluído com sucesso!');
+                if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
                 setAluno(null);
                 setCpfBusca('');
             } else {

@@ -80,7 +80,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
                 cpf_responsavel,
                 senha,
             });
-
+            if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
             toast.success('Responsável cadastrado com sucesso.');
             console.log('Dados enviados: ', response)
 
