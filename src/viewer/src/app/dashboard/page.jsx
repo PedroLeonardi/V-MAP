@@ -29,7 +29,11 @@ import ModalExcluirResponsavel from '../Components/Modals/ModalExcluirResponsave
 import ModalCadastroAdmin from '../Components/Modals/ModalCadastroAdm';
 import ModalUpdateAdmin from '../Components/Modals/ModalUpdateAdm';
 import ModalRelatorioAdm from '../Components/Modals/ModalRelatorioAdm';
-import ModalContatoAlunos from '../Components/Modals/ModalContato';
+import ModalExcluirAdm from '../Components/Modals/ModalExcluirAdm';
+import ModalCadastroMotorista from '../Components/Modals/ModalCadastroMotorista';
+import ModalRelatorioMotorista from '../Components/Modals/ModalRelatorioMotorista';
+import ModalExcluirMotorista from '../Components/Modals/ModalExcluirMotorista';
+import ModalUpdateMotorista from '../Components/Modals/ModalUpdateMotorista';
 
 // Fetch com banco de dados Dinamico
 import useFetchTotalAlunos from '../Hooks/TotalAlunos'
@@ -64,36 +68,39 @@ export default function PageAdmin() {
   const [showModalCadastroAdmin, setShowModalCadastroAdmin] = useState(false);
   const [showModalUpdateAdmin, setShowModalUpdateAdmin] = useState(false);
   const [showModalRelatorioAdmin, setShowModalRelatorioAdmin] = useState(false);
-  const [showModalRelatorioContatos, setShowModalRelatorioContatos] = useState(false);
+  const [showModalExcluirAdmin, setShowModalExcluirAdmin] = useState(false);
+  const [showModalCadastroMotorista, setShowModalCadastroMotorista] = useState(false);
+  const [showModalRelatorioMotorista, setShowModalRelatorioMotorista] = useState(false);
+  const [showModalExcluirMotorista, setShowModalExcluirMotorista] = useState(false);
+  const [showModalUpdateMotorista, setShowModalUpdateMotorista] = useState(false);
 
-  
 
   const { totalAlunos, refetchAlunos } = useFetchTotalAlunos();
-  
+
   const handleAluno = async () => {
     await refetchAlunos();
   };
 
-  const {totalResponsaveis, refetchResponsaveis} = useFetchTotalResponsaveis();
+  const { totalResponsaveis, refetchResponsaveis } = useFetchTotalResponsaveis();
   const handleResponsveis = async () => {
     await refetchResponsaveis();
   };
 
-  const { dataContato, totalContato, refetchContato} = useFetchTotalContatos();
+  const { dataContato, totalContato, refetchContato } = useFetchTotalContatos();
   const handleContato = async () => {
     await refetchContato();
   };
 
-// -================================================================================================================================
+  // -================================================================================================================================
   const changeStatus = async (id_mensagem_suporte) => {
     try {
-        axios.put(`http://localhost:3001/contato/${id_mensagem_suporte}`).then(response => {console.log(response.data)})
+      axios.put(`http://localhost:3001/contato/${id_mensagem_suporte}`).then(response => { console.log(response.data) })
     } catch (err) {
-        console.error("Houve um erro ao ataulizar o status: ", err)
+      console.error("Houve um erro ao ataulizar o status: ", err)
     }
-}
+  }
 
-// ==================================================================================================================================
+  // ==================================================================================================================================
   // const handle
 
   // useEffect(()=>{
@@ -164,6 +171,7 @@ export default function PageAdmin() {
                 icon={<PiTrashBold size={30} />}
                 title="Remover Administrador"
                 description="Excluir um administrador do sistema."
+                onClick={() => setShowModalExcluirAdmin(true)}
                 color="text-red-400"
                 action
               />
@@ -184,7 +192,18 @@ export default function PageAdmin() {
             <ModalCadastroAdmin
               isVisible={showModalCadastroAdmin}
               onClose={() => setShowModalCadastroAdmin(false)}
-
+            />
+            <ModalUpdateAdmin
+              isVisible={showModalUpdateAdmin}
+              onClose={() => setShowModalUpdateAdmin(false)}
+            />
+            <ModalRelatorioAdm
+              isVisible={showModalRelatorioAdmin}
+              onClose={() => setShowModalRelatorioAdmin(false)}
+            />
+            <ModalExcluirAdm
+              isVisible={showModalExcluirAdmin}
+              onClose={() => setShowModalExcluirAdmin(false)}
             />
             <ModalUpdateAdmin
               isVisible={showModalUpdateAdmin}
@@ -211,7 +230,7 @@ export default function PageAdmin() {
               <DashboardCard
                 icon={<PiPlusCircleBold size={30} />}
                 title="Alunos Totais"
-                value = {totalAlunos}
+                value={totalAlunos}
                 description="numero total de alunos cadastrados."
                 // onClick={() => setShowModalCadastro(true)}
                 color="text-blue-700"
@@ -278,7 +297,7 @@ export default function PageAdmin() {
             <ModalExcluirAluno
               isVisible={showModalExcluirAluno}
               onClose={() => setShowModalExcluirAluno(false)}
-              
+
             />
           </>
         )}
@@ -290,17 +309,6 @@ export default function PageAdmin() {
             <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Responsáveis</h2>
             {/* div para cards */}
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-
-              {/* Card para visualizar total responsaveis */}
-              <DashboardCard
-                icon={<PiPlusCircleBold size={30} />}
-                title="Total de Responsaveis"
-                value = {totalResponsaveis}
-                description="Numero total de responsaveis cadastrados."
-                // onClick={() => setShowModalCadastroResponsavel(true)}
-                color="text-blue-700"
-                action
-              />
 
               {/* card cadastrar funcionario */}
               <DashboardCard
@@ -347,7 +355,6 @@ export default function PageAdmin() {
             <ModalCadastroResponsavel
               isVisible={showModalCadastroResponsavel}
               onClose={() => setShowModalCadastroResponsavel(false)}
-              onSuccess={handleResponsveis}
             />
             <ModalRelatorioResponsaveis
               isVisible={showModalRelatorioResponsaveis}
@@ -360,76 +367,215 @@ export default function PageAdmin() {
             <ModalExcluirResponsavel
               isVisible={showModalExcluirResponsavel}
               onClose={() => setShowModalExcluirResponsavel(false)}
-              onSuccess={handleResponsveis}
             />
           </>
         )}
+        {abaAtiva === 'Rotas' && (
+          <>
+            {/* titulo da sessao */}
+            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Rotas</h2>
+            {/* div para cards */}
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
 
-        {abaAtiva === 'Contatos' && (
+              <DashboardCard
+                icon={<PiPlusCircleBold size={30} />}
+                title="Cadastre uma rota"
+                description="Adicionar uma nova rota ao sistema."
+                onClick={() => setShowModalCadastroResponsavel(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* table de responsaveis */}
+              <DashboardCard
+                icon={<PiListChecksBold size={30} />}
+                title="Relatório de Rotas"
+                description="Visualizar lista completa de rotas."
+                onClick={() => setShowModalRelatorioResponsaveis(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* update responsavel */}
+              <DashboardCard
+                icon={<PiPencilSimpleBold size={30} />}
+                title="Atualizar Rota"
+                description="Editar dados de uma rota existente."
+                onClick={() => setShowModalUpdateResponsavel(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* delete responsavel */}
+              <DashboardCard
+                icon={<PiTrashBold size={30} />}
+                title="Excluir Rota"
+                description="Remover uma rota do sistema."
+                onClick={() => setShowModalExcluirResponsavel(true)}
+                color="text-red-400"
+                action
+              />
+            </div>
+
+            {/* modals para ativação */}
+            <ModalCadastroResponsavel
+              isVisible={showModalCadastroResponsavel}
+              onClose={() => setShowModalCadastroResponsavel(false)}
+            />
+            <ModalRelatorioResponsaveis
+              isVisible={showModalRelatorioResponsaveis}
+              onClose={() => setShowModalRelatorioResponsaveis(false)}
+            />
+            <ModalUpdateResponsavel
+              isVisible={showModalUpdateResponsavel}
+              onClose={() => setShowModalUpdateResponsavel(false)}
+            />
+            <ModalExcluirResponsavel
+              isVisible={showModalExcluirResponsavel}
+              onClose={() => setShowModalExcluirResponsavel(false)}
+            />
+          </>
 
 
-                  <>
-                      <div className='grid grid-cols-4 grid-start-2'>
-          
-                          <div></div>
-                          <DashboardCard
-                              icon={<FiSettings size={30} />}
-                              title=""
-                              description="Mensagens não respondidas"
-                              value={totalContato}
-                              // onClick={() => setShowModalCadastro(true)}
-                              color="text-blue-700"
-          
-                          />
-          
-                          <DashboardCard
-                              // icon={<PiListChecksBold size={30} />}
-                              title="Relatório de Mensagens"
-                              description="Visualizar mensagens já respondidas e ainda pendentes"
-                              onClick={() => setShowModalRelatorioContatos(true)}
-                              color="text-blue-700"
-                              action
-                          />
-                      </div>
-                  
-                      <ModalContatoAlunos
-                          isVisible={showModalRelatorioContatos}
-                          onClose={() => setShowModalRelatorioContatos(false)}
-                      />
-                      {console.log(dataContato)}
-                      <div>
-                      <div className="overflow-x-auto w-[85%] ">
-                              <table className="min-w-full text-sm text-left text-white border border-gray-600">
-                                  <thead className="bg-gray-800 text-gray-300 uppercase text-xs">
-                                      <tr>
-                                          <th className="px-4 py-2 border border-gray-600">NOME</th>
-                                          <th className="px-4 py-2 border border-gray-600">EMAIL</th>
-                                          <th className="px-4 py-2 border border-gray-600">MENSAGEM</th>
-                                          <th className="px-4 py-2 border border-gray-600">STATUS</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                  {Array.isArray(dataContato) && 
-                                      dataContato.map((contato) => {
-          
-                                          return (
-                                              <tr key={contato.id_mensagem_suporte} className="hover:bg-gray-700">
-                                                  <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
-                                                  <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
-                                                  <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
-                                                  <td className="px-4 py-2 border border-gray-600"><button onClick={() => {changeStatus(contato.id_mensagem_suporte)}} className='bg-red-500'>Responder</button></td>
-                                              </tr>
-                                          );
-                                      })}
-                              
-          
-                                  </tbody>
-                              </table>
-                          </div>
-                      </div>
-                  </>
         )}
+        {abaAtiva === 'Motoristas' && (
+          <>
+            {/* titulo da sessao */}
+            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Motoristas</h2>
+            {/* div para cards */}
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+
+              <DashboardCard
+                icon={<PiPlusCircleBold size={30} />}
+                title="Cadastre um motorista"
+                description="Adicionar um novo motorista ao sistema."
+                onClick={() => setShowModalCadastroMotorista(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* table de responsaveis */}
+              <DashboardCard
+                icon={<PiListChecksBold size={30} />}
+                title="Relatório de Motoristas"
+                description="Visualizar lista completa de motoristas."
+                onClick={() => setShowModalRelatorioMotorista(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* update responsavel */}
+              <DashboardCard
+                icon={<PiPencilSimpleBold size={30} />}
+                title="Atualizar motorista"
+                description="Editar dados de uma rota existente."
+                onClick={() => setShowModalUpdateMotorista(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* delete responsavel */}
+              <DashboardCard
+                icon={<PiTrashBold size={30} />}
+                title="Excluir motorista"
+                description="Remover um motorista do sistema."
+                onClick={() => setShowModalExcluirMotorista(true)}
+                color="text-red-400"
+                action
+              />
+            </div>
+
+            {/* modals para ativação */}
+            <ModalCadastroMotorista
+              isVisible={showModalCadastroMotorista}
+              onClose={() => setShowModalCadastroMotorista(false)}
+            />
+            <ModalRelatorioMotorista
+              isVisible={showModalRelatorioMotorista}
+              onClose={() => setShowModalRelatorioMotorista(false)}
+            />
+            <ModalUpdateMotorista
+              isVisible={showModalUpdateMotorista}
+              onClose={() => setShowModalUpdateMotorista(false)}
+            />
+            <ModalExcluirMotorista
+              isVisible={showModalExcluirMotorista}
+              onClose={() => setShowModalExcluirMotorista(false)}
+            />
+          </>
+
+
+        )}
+        {abaAtiva === 'Veiculos' && (
+          <>
+            {/* titulo da sessao */}
+            <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Rotas</h2>
+            {/* div para cards */}
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+
+              <DashboardCard
+                icon={<PiPlusCircleBold size={30} />}
+                title="Cadastre uma rota"
+                description="Adicionar uma nova rota ao sistema."
+                onClick={() => setShowModalCadastroResponsavel(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* table de responsaveis */}
+              <DashboardCard
+                icon={<PiListChecksBold size={30} />}
+                title="Relatório de Rotas"
+                description="Visualizar lista completa de rotas."
+                onClick={() => setShowModalRelatorioResponsaveis(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* update responsavel */}
+              <DashboardCard
+                icon={<PiPencilSimpleBold size={30} />}
+                title="Atualizar Rota"
+                description="Editar dados de uma rota existente."
+                onClick={() => setShowModalUpdateResponsavel(true)}
+                color="text-blue-700"
+                action
+              />
+
+              {/* delete responsavel */}
+              <DashboardCard
+                icon={<PiTrashBold size={30} />}
+                title="Excluir Rota"
+                description="Remover uma rota do sistema."
+                onClick={() => setShowModalExcluirResponsavel(true)}
+                color="text-red-400"
+                action
+              />
+            </div>
+
+            {/* modals para ativação */}
+            <ModalCadastroResponsavel
+              isVisible={showModalCadastroResponsavel}
+              onClose={() => setShowModalCadastroResponsavel(false)}
+            />
+            <ModalRelatorioResponsaveis
+              isVisible={showModalRelatorioResponsaveis}
+              onClose={() => setShowModalRelatorioResponsaveis(false)}
+            />
+            <ModalUpdateResponsavel
+              isVisible={showModalUpdateResponsavel}
+              onClose={() => setShowModalUpdateResponsavel(false)}
+            />
+            <ModalExcluirResponsavel
+              isVisible={showModalExcluirResponsavel}
+              onClose={() => setShowModalExcluirResponsavel(false)}
+            />
+          </>
+
+
+        )}
+
       </section>
     </div>
-  );
-}
+  )
+};

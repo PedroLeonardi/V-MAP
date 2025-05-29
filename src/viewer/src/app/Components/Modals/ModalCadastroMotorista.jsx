@@ -6,12 +6,12 @@ import { toast } from 'sonner'
 
 export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }) {
 
-    // abrigando minhas const para criar meu responsavel
+    // abrigando minhas const para criar meu motorista
     const [nome, setNome] = useState('');
     const [cpf_motorista, setCpfMotorista] = useState('');
     const [loading, setLoading] = useState(false)
 
-    // formatando o front do _motorista
+    // formatando o front do cpf motorista
     function formatarCPF(valor) {
         valor = valor.replace(/\D/g, '');
         valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
@@ -44,7 +44,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
         let formsErrors = false;
 
         // nao permitir envio sem preencher todo form
-        if (!nome.trim() || !cpf_motorista.trim() || !senha.trim()) {
+        if (!nome.trim() || !cpf_motorista.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -52,12 +52,6 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
         // validação
         if (!validarNome(nome)) {
             toast.error('Nome inválido. Apenas letras e espaços são permitidos.');
-            formsErrors = true;
-        }
-
-        // validação 
-        if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
             formsErrors = true;
         }
 
@@ -75,7 +69,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
                 cpf_motorista,
             });
 
-            toast.success('Admininstrador cadastrado com sucesso.');
+            toast.success('Motorista cadastrado com sucesso.');
             console.log('Dados enviados: ', response)
 
         } catch (err) {
@@ -87,7 +81,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
             if (err.response && err.response.status === 400) {
                 toast.error('CPF já cadastrado.');
             } else {
-                toast.error('Erro ao cadastrar administrador.');
+                toast.error('Erro ao cadastrar motorista.');
             }
 
         } finally {
