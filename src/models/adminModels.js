@@ -77,4 +77,15 @@ const deleteRecord = async (id_admin) => {
   }
 };
 
-export default { getAll, getById, create, update, deleteRecord};
+// puxar cpf do administrador
+const getByCPF = async (cpf) => {
+    try {
+        const administrador = await knex('administrador').where({ cpf: cpf }).first();
+        return administrador;
+    } catch (err) {
+        console.error('Erro ao buscar administrador por CPF: ', err);
+        return null;
+    }
+};
+
+export default { getAll, getById, create, update, deleteRecord, getByCPF};

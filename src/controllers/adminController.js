@@ -82,4 +82,20 @@ const deleteAdminController = async (req, res) => {
   }
 };
 
-export default { getAdminController, getAdminAllController, createAdminController, updateAdminController, deleteAdminController };
+const getAdmByCpfController = async (req, res) => {
+  try {
+    const cpf = req.params.cpf;
+    const administrador = await userModel.getByCPF(cpf);
+
+    if (!administrador) {
+      return res.status(404).json({ message: 'Administrador não encontrado' });
+    }
+
+    return res.json(administrador);
+  } catch (err) {
+    console.error("Erro ao buscar administrador por CPF", err);
+    return res.status(500).json({ message: 'Erro ao buscar administrador por CPF' });
+  }
+};
+
+export default { getAdminController, getAdminAllController, createAdminController, updateAdminController, deleteAdminController , getAdmByCpfController};

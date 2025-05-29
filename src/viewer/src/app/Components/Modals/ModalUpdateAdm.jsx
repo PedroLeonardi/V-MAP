@@ -8,13 +8,12 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
     const [cpfBusca, setCpfBusca] = useState('');
     const [admin, setAdmin] = useState(null);
     const [nome, setNome] = useState('');
-    const [senha, setSenha] = useState('');
     const [cpf, setCpf] = useState('');
     const [cargo, setCargo] = useState('');
     const [loading, setLoading] = useState(false);
 
     const cargosDisponiveis = [
-        'Coordenador Pedagógico',
+        'Administrador',
         'Gerente de Transporte',
         'Diretor',
         'Coordenador',
@@ -35,19 +34,14 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
-
-    // função para validar senha 
-    function validarSenha(senha) {
-        return senha.length >= 6;
-    }
-
+   
     const buscarAdmin = async () => {
-        const cpfLimpo = cpfBusca.replace(/\D/g, '');
-        if (!cpfLimpo) return toast.warning('Informe o CPF para buscar.');
+       
+        if (!cpfBusca) return toast.warning('Informe o CPF para buscar.');
 
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:3001/admin/cpf/${cpfLimpo}`);
+            const response = await axios.get(`http://localhost:3001/admin/cpf/${cpfBusca}`);
             const adminEncontrado = response.data;
 
             console.log('Administrador encontrado:', adminEncontrado);
@@ -55,7 +49,6 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
             setAdmin(adminEncontrado);
             setCpf(formatarCPF(adminEncontrado.cpf));
             setNome(adminEncontrado.nome);
-            setSenha(adminEncontrado.senha);
             setCargo(adminEncontrado.cargo);
             toast.success('Administrador encontrado!');
         } catch (err) {
@@ -71,7 +64,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf.trim() || !senha.trim() || !cargo.trim()) {
+        if (!nome.trim() || !cpf.trim() || !cargo.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -81,21 +74,14 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
 
-        if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
-            formsErrors = true;
-        }
-
         if (formsErrors) return;
 
         try {
             setLoading(true);
-            const cpfLimpo = cpf.replace(/\D/g, '');
 
             await axios.put(`http://localhost:3001/admin/${admin.id_admin}`, {
-                cpf: cpfLimpo,
+                cpf,
                 nome,
-                senha,
                 cargo
             });
 
@@ -104,10 +90,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
             setCpfBusca('');
             setCpf('');
             setNome('');
-            setSenha('');
             setCargo('');
-            if (onSuccess) onSuccess();
-            onClose();
         } catch (err) {
             console.error(err);
 
@@ -199,16 +182,6 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
                                             </option>
                                         ))}
                                     </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Senha</label>
-                                    <input
-                                        type="password"
-                                        className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={senha}
-                                        onChange={(e) => setSenha(e.target.value)}
-                                    />
                                 </div>
                             </div>
 
