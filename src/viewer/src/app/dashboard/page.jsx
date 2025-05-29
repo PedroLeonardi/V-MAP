@@ -49,6 +49,7 @@ export default function PageAdmin() {
   const [showModalExcluirResponsavel, setShowModalExcluirResponsavel] = useState(false);
   const [showModalCadastroAdmin, setShowModalCadastroAdmin] = useState(false);
   const [showModalUpdateAdmin, setShowModalUpdateAdmin] = useState(false);
+  const [showModalRelatorioAdmin, setShowModalRelatorioAdmin] = useState(false);
 
   return (
     <div className='min-h-screen bg-slate-900 text-gray-100 p-4 sm:p-8 font-sans'>
@@ -137,6 +138,10 @@ export default function PageAdmin() {
             <ModalUpdateAdmin
               isVisible={showModalUpdateAdmin}
               onClose={() => setShowModalUpdateAdmin(false)}
+            />
+            <ModalUpdateAdmin
+              isVisible={showModalRelatorioAdmin}
+              onClose={() => setShowModalRelatorioAdmin(false)}
             />
           </>
         )}
