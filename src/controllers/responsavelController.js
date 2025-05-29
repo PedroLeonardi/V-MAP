@@ -32,6 +32,13 @@ const createResponsavelController = async (req, res) => {
     await userModel.create(req.body);
     return res.status(201).json({ message: 'Responsável criado com sucesso' });
   } catch (err) {
+
+      // se o usuario cadastrar cpf ja existente
+      // vai cair nesse erro (requisição ja pronta do model)
+      if (err.status === 400) {
+      return res.status(400).json({ message: err.message });
+    }
+
     console.error("Erro ao criar responsável", err);
     return res.status(500).json({ message: 'Erro ao criar responsável' });
   }
@@ -52,6 +59,7 @@ const updateResponsavelController = async (req, res) => {
   }
 };
 
+// deletando responsavel
 const deleteResponsavelController = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -66,5 +74,21 @@ const deleteResponsavelController = async (req, res) => {
   }
 };
 
+// pescando cpf do responsavel
+const getResponsavelByCpfController = async (req, res) => {
+    try {
+        const cpf = req.params.cpf;
+        const user = await userModel.getByCPF(cpf);
 
-export default { getResponsavelController, getResponsavelAllContoller, createResponsavelController, updateResponsavelController, deleteResponsavelController};
+        if (!user) {
+            return res.status(404).json({ message: 'Responsável não encontrado' });
+        }
+
+        return res.json(user);
+    } catch (err) {
+        console.error("Erro ao buscar responsável por CPF", err);
+        return res.status(500).json({ message: 'Erro ao buscar responsável por CPF' });
+    }
+};
+
+export default { getResponsavelController, getResponsavelAllContoller, createResponsavelController, updateResponsavelController, deleteResponsavelController, getResponsavelByCpfController};

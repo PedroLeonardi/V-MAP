@@ -32,14 +32,18 @@ const create = async (data) => {
         //  verificando se aluno ja existe         
         const alunoExist = await knex('Alunos').where({ cpf_aluno: data.cpf_aluno }).first();
 
+        // aqui eu faço com que se o aluno existir
+        // eu mando ele pro meu controller 
         if (alunoExist) {
-            return res.status(400).json({message: 'Aluno já cadastrado.'});
+            const error = new Error('Aluno já cadastrado.');
+            error.status = 400;
+            throw error
         }
 
         // verificando se existe responsavel para criar um aluno
         const responsavel = await knex('responsaveis').where({ cpf_responsavel: data.cpf_responsavel }).first();
         if (!responsavel) {
-            return res.status(404).json({message: 'Responsável inexistente.'})
+            return res.status(404).json({ message: 'Responsável inexistente.' })
         }
 
         // cadastrando meu user com senha hasheada
@@ -94,7 +98,7 @@ const deleteRecord = async (id_aluno) => {
 // puxar cpf do aluno
 const getByCPF = async () => {
     try {
-        const aluno = await knex('Alunos') .where({ cpf_aluno }).first();
+        const aluno = await knex('Alunos').where({ cpf_aluno }).first();
         return aluno;
     } catch (err) {
         console.error('Erro ao buscar aluno por CPF: ', err);

@@ -32,8 +32,12 @@ const create = async (data) => {
     // checkando se responsavel ja existe
     const responsavelExistente = await knex('responsaveis').where({ cpf_responsavel: data.cpf_responsavel })  .first();
 
+    // aqui eu faço com que se o responsavel existir
+    // eu mando ele pro meu controller 
     if (responsavelExistente) {
-     return res.status(400).json({message: 'Responsavel já cadastrado.'})
+      const error = new Error('Responsável já cadastrado');
+      error.status = 400;
+      throw error
     }
 
     // atribuindo senha hash
@@ -85,4 +89,17 @@ const deleteRecord = async (id_responsavel) => {
   }
 };
 
-export default { getAll, getById, create, update, deleteRecord };
+// pescando o cpf do responsavel
+const getByCPF = async (cpf) => {
+  try {
+
+    // capturando o cpf do meu responsavel
+    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
+    return responsavel;
+  } catch (err) {
+    console.error('Erro ao buscar responsável por CPF: ', err);
+    return null;
+  }
+};
+
+export default { getAll, getById, create, update, deleteRecord, getByCPF };
