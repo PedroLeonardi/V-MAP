@@ -5,7 +5,11 @@ export default {
             host: 'localhost',
             user: 'root',
             password: '',
-            database: 'TABELA'
+            database: 'vmap_db'
         },
+        pool: {
+            min: 0,
+            max: 10,
+          }
     }
 };
