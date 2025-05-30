@@ -586,18 +586,24 @@ export default function PageAdmin() {
 
         {abaAtiva === 'Contatos' && (
           <>
-            <div className='grid grid-cols-4 grid-start-2'>
+          <div className='w-[99%]'>
+            <div className=' sm:place-items-center w-full mt-5 mb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6'>
 
-              <div></div>
+            
+              <div className='col-span-1 xl:col-start-2 h-full'>   
+
               <DashboardCard
                 icon={<PiListChecksBold size={30} />}
-                title=""
-                value= {totalContato}
-                description="Mensagens não respondidas"
-                // onClick={() => setShowModalCadastro(true)}
+                title="Mnesagens pendentes"
+                value = {totalContato}
+                description="Total de mensagens pendentes"
+                // onClick={() => setShowModalRelatorioContatos(true)}
                 color="text-blue-700"
-              />
-              
+                action
+                />
+                </div>
+
+                <div className='col-span-1 xl:col-start-3 h-full'>
               <DashboardCard
                 icon={<PiListChecksBold size={30} />}
                 title="Relatório de Mensagens"
@@ -605,15 +611,16 @@ export default function PageAdmin() {
                 onClick={() => setShowModalRelatorioContatos(true)}
                 color="text-blue-700"
                 action
-              />
+                />
+                </div>
             </div>
             <ModalContatoAlunos
               isVisible={showModalRelatorioContatos}
               onClose={() => setShowModalRelatorioContatos(false)}
             />
             
-            <div>
-              <div className="overflow-x-auto w-[85%] ">
+            <div className='w-full flex justify-center'>
+              <div className="overflow-x-auto w-85 sm:w-[85%] ">
                 <table className="min-w-full text-sm text-left text-white border border-gray-600">
                   <thead className="bg-gray-800 text-gray-300 uppercase text-xs">
                     <tr>
@@ -632,7 +639,7 @@ export default function PageAdmin() {
                             <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
                             <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
                             <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
-                            <td className="px-4 py-2 border border-gray-600"><button onClick={async ()  => { changeStatus(contato.id_mensagem_suporte); await sleep(500); handleContato()}} className='bg-red-500'>Responder</button></td>
+                            <td className="px-4 py-2 border border-gray-600"><button onClick={async ()  => { changeStatus(contato.id_mensagem_suporte); await sleep(500); handleContato()}} className='bg-red-500 rounded-sm'>Responder</button></td>
                           </tr>
                         );
                       })}
@@ -640,7 +647,9 @@ export default function PageAdmin() {
                 </table>
               </div>
             </div>
+            </div>
           </>
+
         )}
       </section>
     </div>
