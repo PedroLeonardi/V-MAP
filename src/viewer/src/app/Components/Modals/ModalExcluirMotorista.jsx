@@ -127,8 +127,8 @@ export default function ModalExcluirMotorista({ isVisible, onClose, onSuccess })
                 {motorista && (
                     <div className="mt-4 space-y-4 border-t border-gray-700 pt-4">
                         <div className="space-y-2">
-                            <p><>Nome:</> {motorista.nome}</p>
-                            <p><>CPF:</> {formatarCPF(motorista.cpf_motorista)}</p>
+                            <p><span>Nome:</span> {motorista.nome}</p>
+                            <p><span>CPF:</span> {formatarCPF(motorista.cpf_motorista)}</p>
                         </div>
 
                         <button

@@ -72,4 +72,4 @@ const getByCPF = async (cpf) => {
   }
 };
 
-export default { getAll, getById, create, update, getByCPF };
+export default { getAll, getById, create, update, deleteRecord, getByCPF };
