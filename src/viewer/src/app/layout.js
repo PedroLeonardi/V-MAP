@@ -22,29 +22,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-
-        {/* 
-          estrutura diferente de layout para poder encaixar meus toast, 
-          header e sidebar...
-        */}
-
-
-        {/* header para telas pequenas */}
-        <div className="block lg:hidden">
-          <Header />
-        </div>
-
-        {/* estrutura sidebar em telas grandes */}
-        <div className="flex">
-          {/* visivel apenas para telas grandes*/}
-          <div className="hidden lg:block">
-            <Sidebar />
-          </div>
-
-          {/* conteudo principal */}
-          <main className="flex-1">{children}</main>
-        </div>
-
+       {children}
         <Toaster
           position="top-right"
           theme="dark"
@@ -61,8 +39,6 @@ export default function RootLayout({ children }) {
             duration: 3000,
           }}
         />
-        <Footer/>
-
       </body>
     </html>
   );
