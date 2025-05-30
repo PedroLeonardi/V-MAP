@@ -12,6 +12,7 @@ import { IoBusSharp } from "react-icons/io5";
 import { HiUser } from "react-icons/hi";
 import { FiSettings } from "react-icons/fi";
 import { IoIosMail } from "react-icons/io";
+import { TbNumber } from "react-icons/tb";
 
 //card
 import DashboardCard from '../Components/DashboardCard/Dashboard';
@@ -39,6 +40,8 @@ import ModalContatoAlunos from '../Components/Modals/ModalContato';
 import useFetchTotalAlunos from '../Hooks/TotalAlunos'
 import useFetchTotalResponsaveis from '../Hooks/TotalResponsavel'
 import useFetchTotalContatos from '../Hooks/TotalContatos'
+import useFetchTotalAdm from '../Hooks/TotalAdm'
+import { Handjet } from 'next/font/google';
 
 
 // menus "sessões"
@@ -87,15 +90,23 @@ export default function PageAdmin() {
     await refetchResponsaveis();
   };
 
+  const { totalAdm, refetchAdm } = useFetchTotalAdm();
+  const handleAdm = async () => {
+    await refetchAdm();
+  };
+
   const { dataContato, totalContato, refetchContato } = useFetchTotalContatos();
   const handleContato = async () => {
     await refetchContato();
   };
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  
 
   // -================================================================================================================================
   const changeStatus = async (id_mensagem_suporte) => {
     try {
-      axios.put(`http://localhost:3001/contato/${id_mensagem_suporte}`).then(response => { console.log(response.data) })
+      axios.put(`http://localhost:3001/contato/${id_mensagem_suporte}`).then(response => {})
     } catch (err) {
       console.error("Houve um erro ao ataulizar o status: ", err)
     }
@@ -148,6 +159,17 @@ export default function PageAdmin() {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
 
               {/* card cadastro adm */}
+
+              <DashboardCard
+                icon={<TbNumber size={30} />}
+                title="Total Administradores"
+                description="Total de administrados cadastrados."
+                value = {totalAdm}
+                // onClick={() => setShowModalCadastroAdmin(true)}
+                color="text-blue-700"
+                action
+              />
+
               <DashboardCard
                 icon={<PiPlusCircleBold size={30} />}
                 title="Cadastrar Administrador"
@@ -193,6 +215,7 @@ export default function PageAdmin() {
             <ModalCadastroAdmin
               isVisible={showModalCadastroAdmin}
               onClose={() => setShowModalCadastroAdmin(false)}
+              onSuccess={handleAdm}
             />
             <ModalUpdateAdmin
               isVisible={showModalUpdateAdmin}
@@ -205,6 +228,7 @@ export default function PageAdmin() {
             <ModalExcluirAdm
               isVisible={showModalExcluirAdmin}
               onClose={() => setShowModalExcluirAdmin(false)}
+              onSuccess={handleAdm}
             />
             <ModalUpdateAdmin
               isVisible={showModalUpdateAdmin}
@@ -229,7 +253,7 @@ export default function PageAdmin() {
               {/* cadastrar aluno */}
 
               <DashboardCard
-                icon={<PiPlusCircleBold size={30} />}
+                icon={<TbNumber size={30} />}
                 title="Alunos Totais"
                 value={totalAlunos}
                 description="numero total de alunos cadastrados."
@@ -309,6 +333,18 @@ export default function PageAdmin() {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
 
               {/* card cadastrar funcionario */}
+
+              <DashboardCard
+                icon={< TbNumber size={30} />}
+                title="Total de Responsável"
+                description="Numero total de responsaveis cadastrados."
+                value={totalResponsaveis}
+                // onClick={() => setShowModalCadastroResponsavel(true)}
+                color="text-blue-700"
+                action
+              />
+
+
               <DashboardCard
                 icon={<PiPlusCircleBold size={30} />}
                 title="Cadastrar Responsável"
@@ -353,6 +389,7 @@ export default function PageAdmin() {
             <ModalCadastroResponsavel
               isVisible={showModalCadastroResponsavel}
               onClose={() => setShowModalCadastroResponsavel(false)}
+              onSuccess={handleResponsveis}
             />
             <ModalRelatorioResponsaveis
               isVisible={showModalRelatorioResponsaveis}
@@ -365,6 +402,7 @@ export default function PageAdmin() {
             <ModalExcluirResponsavel
               isVisible={showModalExcluirResponsavel}
               onClose={() => setShowModalExcluirResponsavel(false)}
+              onSuccess={handleResponsveis}
             />
           </>
         )}
@@ -552,15 +590,16 @@ export default function PageAdmin() {
 
               <div></div>
               <DashboardCard
-                icon={<FiSettings size={30} />}
+                icon={<PiListChecksBold size={30} />}
                 title=""
+                value= {totalContato}
                 description="Mensagens não respondidas"
-                value={totalContato}
                 // onClick={() => setShowModalCadastro(true)}
                 color="text-blue-700"
               />
+              
               <DashboardCard
-                // icon={<PiListChecksBold size={30} />}
+                icon={<PiListChecksBold size={30} />}
                 title="Relatório de Mensagens"
                 description="Visualizar mensagens já respondidas e ainda pendentes"
                 onClick={() => setShowModalRelatorioContatos(true)}
@@ -572,7 +611,7 @@ export default function PageAdmin() {
               isVisible={showModalRelatorioContatos}
               onClose={() => setShowModalRelatorioContatos(false)}
             />
-            {console.log(dataContato)}
+            
             <div>
               <div className="overflow-x-auto w-[85%] ">
                 <table className="min-w-full text-sm text-left text-white border border-gray-600">
@@ -593,7 +632,7 @@ export default function PageAdmin() {
                             <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
                             <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
                             <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
-                            <td className="px-4 py-2 border border-gray-600"><button onClick={() => { changeStatus(contato.id_mensagem_suporte) }} className='bg-red-500'>Responder</button></td>
+                            <td className="px-4 py-2 border border-gray-600"><button onClick={async ()  => { changeStatus(contato.id_mensagem_suporte); await sleep(500); handleContato()}} className='bg-red-500'>Responder</button></td>
                           </tr>
                         );
                       })}
