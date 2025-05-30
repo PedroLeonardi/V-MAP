@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import Link from 'next/link';
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -78,8 +79,7 @@ export default function Home() {
       </button>
       {mobileLoginOpen && (
         <div className="ml-4 mt-2 flex flex-col gap-2 text-sm text-black">
-          <a href="#" className="hover:underline">Minha Conta</a>
-          <a href="#" className="hover:underline">Cadastrar-se</a>
+          <Link href="./login" className="hover:underline">Minha Conta</Link>
         </div>
       )}
     </div>
@@ -96,7 +96,7 @@ export default function Home() {
       <button onClick={() => setOpenMenu(true)} className="text-white text-3xl font-bold">&#9776;</button>
     </div>
     <div className="-mt-40 md:-mt-70 lg:-mt-100 hidden md:block">
-      <img src="/Logo.png" alt="Logo" className="w-30 md:w-40 lg:w-45" />
+    <Link href="/"><img src="/Logo.png" alt="Logo" className="w-30 md:w-40 lg:w-45"></img> </Link>
     </div>
 
     <div className="-mt-5 md:mt-30 lg:mt-35">
@@ -152,8 +152,7 @@ export default function Home() {
         </button>
         {open && (
           <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-lg z-50 py-2 text-base">
-            <a href="#" className="block px-4 py-2 hover:bg-gray-300">Minha Conta</a>
-            <a href="#" className="block px-4 py-2 hover:bg-gray-300">Cadastrar-se</a>
+            <Link href="./login" className="block px-4 py-2 hover:bg-gray-300">Minha Conta</Link>
           </div>
         )}
       </div>
@@ -229,7 +228,7 @@ export default function Home() {
     </div>
 
     <div className="hidden lg:flex lg:w-1/2 justify-center items-center">
-      <img
+    <img
         src="./Rota-Image.png"
         className="max-w-290 h-auto object-contain mt-20 lg:mt-40"
         alt="Imagem do trajeto"
@@ -375,31 +374,6 @@ export default function Home() {
   </div>
   </div>
 </section>
-<footer
-  className="w-full text-white px-6 py-10"
-  style={{
-    background: 'linear-gradient(to right, #1E1E1E, #1E1E1E, #595959, #595959, #848484)',
-  }}
->
-  <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-8">
-    {/* Redes sociais */}
-    <div className="flex justify-center md:justify-start gap-4">
-      <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="p-2 hover:grayscale transition">
-        <img src="/Insta-logo.png" alt="Instagram" className="w-15 h-20 md:w-20 md:h-25" />
-      </a>
-      <a href="mailto:contato@exemplo.com" className="p-2 hover:grayscale transition">
-        <img src="/Email-Logo.png" alt="Email" className="w-15 h-20 md:w-20 md:h-25" />
-      </a>
-    </div>
-
-    {/* Informações do footer*/}
-    <div className="text-center md:text-left text-base md:text-lg">
-      <p className="font-bold">Viação Monte Azul Paulista - LTDA</p>
-      <p>São Paulo - Brasil</p>
-    </div>
-  </div>
-</footer>
-
 
 
 

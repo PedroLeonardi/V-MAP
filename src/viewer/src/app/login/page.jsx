@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function login() {
   const [doc, setDoc] = useState('');
@@ -45,7 +46,7 @@ export default function login() {
       {/* Conteúdo principal */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
      <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
-        <img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 sm:w-75 sm:h-50" />
+        <Link href="/"><img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" /></Link>
     </div>
 
          <div className="bg-black/50 border border-gray-300 rounded-xl p-6 sm:p-8 w-full max-w-sm text-white shadow-lg">
@@ -74,7 +75,7 @@ export default function login() {
 
             <button
               type="submit"
-              className="w-full mt-4 py-2 rounded-md bg-[#3a5dbf] hover:bg-[#2d50a0] transition text-white font-bold border border-gray-300"
+              className="w-full mt-4 py-2 rounded-md bg-[#3a5dbf] hover:bg-[#2d50a0] transition text-white font-bold border border-gray-300 cursor-pointer"
             >
               Entrar
             </button>
