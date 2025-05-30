@@ -61,10 +61,8 @@ export const loginResponsavelController = async (req, res) => {
   const { cpf, senha } = req.body;
 
   try {
-    const cpfLimpo = cpf.replace(/\D/g, '');
-
-
-    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpfLimpo }).first();
+  
+    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
 
     if (!responsavel) {
       return res.status(404).json({ message: 'Responsável não encontrado.' });
