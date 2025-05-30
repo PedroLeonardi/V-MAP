@@ -11,7 +11,7 @@ export default function DashboardCard({
 }) {
     const cardClasses = `
     flex flex-col items-center justify-center
-    bg-slate-800 text-white
+    bg-slate-800 text-blue
     w-full sm:w-64 p-5
     shadow-xl rounded-2xl
     transition-all duration-300 ease-in-out

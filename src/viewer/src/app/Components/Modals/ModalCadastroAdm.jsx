@@ -91,6 +91,7 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
                 senha,
             });
 
+            if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
             toast.success('Admininstrador cadastrado com sucesso.');
             console.log('Dados enviados: ', response)
 
