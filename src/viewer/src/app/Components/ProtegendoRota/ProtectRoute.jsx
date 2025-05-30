@@ -1,35 +1,33 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function RotaProtegidaAdm({ children, requiredRole = 'admin' }) {
-
     const router = useRouter();
+    const [isAuthorized, setIsAuthorized] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // aqui estou verificando o tipo
         if (typeof window !== 'undefined') {
             const token = localStorage.getItem('token');
+            const userType = localStorage.getItem('usuarioType');
 
-            // se ele nao tiver passado pelo form
-            if (!token || userTyoe !== requiredRole) {
-                // redirecionar para fazer login
-                router.push('/login')
+            if (!token || userType !== requiredRole) {
+                router.push('/login');
+            } else {
+                setIsAuthorized(true);
             }
+            setIsLoading(false);
         }
     }, [router, requiredRole]);
 
+    if (typeof window === 'undefined' || isLoading) {
+        return null; // Ou um componente de loading
+    }
 
-    // se user nao estiver autenticado, nao renderizado
-    if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token');
-        const userType = localStorage.getItem('usuarioType');
-
-        if (!token || userType !== requiredRole) {
-            return null;
-        }
-
+    if (!isAuthorized) {
+        return null;
     }
 
     return children;
