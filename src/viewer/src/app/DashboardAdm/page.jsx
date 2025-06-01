@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from "react";
+import { toast } from 'sonner';
 import axios from 'axios';
 
 // icons
@@ -12,11 +13,11 @@ import { FiSettings } from "react-icons/fi";
 import { IoIosMail } from "react-icons/io";
 import { TbNumber } from "react-icons/tb";
 
-// components
+// componentes
 import DashboardCard from '../Components/DashboardCard/Dashboard';
 import ProtegendoRota from '../Components/ProtegendoRota/ProtectRoute'
 
-// modals
+// modais
 import ModalCadastro from '../Components/Modals/ModalCadastroAluno';
 import ModalRelatorioAlunos from '../Components/Modals/ModalRelatorioAlunos';
 import ModalUpdateAluno from '../Components/Modals/ModalUpdateAluno';
@@ -52,7 +53,10 @@ const menu = [
 ];
 
 export default function PageAdmin() {
+  // estados para abas e modais
   const [abaAtiva, setAbaAtiva] = useState('Administradores');
+  
+  // estados para modais
   const [showModalCadastro, setShowModalCadastro] = useState(false);
   const [showModalRelatorioAlunos, setShowModalRelatorioAlunos] = useState(false);
   const [showModalUpdateAluno, setShowModalUpdateAluno] = useState(false);
@@ -71,11 +75,13 @@ export default function PageAdmin() {
   const [showModalUpdateMotorista, setShowModalUpdateMotorista] = useState(false);
   const [showModalRelatorioContatos, setShowModalRelatorioContatos] = useState(false);
 
+  // dados dos hooks
   const { totalAlunos, refetchAlunos } = useFetchTotalAlunos();
   const { totalResponsaveis, refetchResponsaveis } = useFetchTotalResponsaveis();
   const { totalAdm, refetchAdm } = useFetchTotalAdm();
   const { dataContato, totalContato, refetchContato } = useFetchTotalContatos();
 
+  // handlers para atualização de dados
   const handleAluno = async () => {
     await refetchAlunos();
   };
@@ -107,13 +113,12 @@ export default function PageAdmin() {
   return (
     <ProtegendoRota requiredRole='admin'>
       <div className='min-h-screen bg-slate-900 text-gray-100 p-4 sm:p-8 font-sans'>
-        {/* Header */}
+   
         <header className="mb-8">
           <h1 className='font-bold text-3xl sm:text-4xl text-white'>Painel de Coordenação</h1>
           <p className="text-slate-400 mt-1">Gerenciamento de rotas, alunos, responsáveis e mais.</p>
         </header>
 
-        {/* Navegação */}
         <nav className='mb-10 pb-4 border-b border-slate-700'>
           <ul className='flex flex-wrap gap-3 sm:gap-5'>
             {menu.map((item) => (
@@ -133,9 +138,8 @@ export default function PageAdmin() {
           </ul>
         </nav>
 
-        {/* Conteúdo Principal */}
-        <section>
-          {/* Administradores */}
+       <section>
+        
           {abaAtiva === 'Administradores' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Administradores</h2>
@@ -194,14 +198,14 @@ export default function PageAdmin() {
             </>
           )}
 
-          {/* Alunos */}
+          {/* Seção Alunos */}
           {abaAtiva === 'Alunos' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Alunos</h2>
               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                 <DashboardCard
                   icon={<TbNumber size={30} />}
-                  title="Alunos Totais"
+                  title="Total de Alunos"
                   value={totalAlunos}
                   description="Número total de alunos cadastrados."
                   color="text-blue-700"
@@ -230,6 +234,14 @@ export default function PageAdmin() {
                   color="text-blue-700"
                   action
                 />
+                <DashboardCard
+                  icon={<PiTrashBold size={30} />}
+                  title="Excluir Aluno"
+                  description="Remover um aluno do sistema."
+                  onClick={() => setShowModalExcluirAluno(true)}
+                  color="text-red-400"
+                  action
+                />
               </div>
 
               <ModalCadastro
@@ -253,7 +265,7 @@ export default function PageAdmin() {
             </>
           )}
 
-          {/* Responsáveis */}
+      
           {abaAtiva === 'Responsáveis' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Responsáveis</h2>
@@ -289,6 +301,14 @@ export default function PageAdmin() {
                   color="text-blue-700"
                   action
                 />
+                <DashboardCard
+                  icon={<PiTrashBold size={30} />}
+                  title="Excluir Responsável"
+                  description="Remover um responsável do sistema."
+                  onClick={() => setShowModalExcluirResponsavel(true)}
+                  color="text-red-400"
+                  action
+                />
               </div>
 
               <ModalCadastroResponsavel
@@ -311,8 +331,103 @@ export default function PageAdmin() {
               />
             </>
           )}
+          {abaAtiva === 'Motoristas' && (
+            <>
+              <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Motoristas</h2>
+              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                <DashboardCard
+                  icon={<PiPlusCircleBold size={30} />}
+                  title="Cadastrar Motorista"
+                  description="Adicionar um novo motorista ao sistema."
+                  onClick={() => setShowModalCadastroMotorista(true)}
+                  color="text-blue-700"
+                  action
+                />
+                <DashboardCard
+                  icon={<PiListChecksBold size={30} />}
+                  title="Relatório de Motoristas"
+                  description="Visualizar lista completa de motoristas."
+                  onClick={() => setShowModalRelatorioMotorista(true)}
+                  color="text-blue-700"
+                  action
+                />
+                <DashboardCard
+                  icon={<PiPencilSimpleBold size={30} />}
+                  title="Atualizar Motorista"
+                  description="Editar dados de um motorista existente."
+                  onClick={() => setShowModalUpdateMotorista(true)}
+                  color="text-blue-700"
+                  action
+                />
+                <DashboardCard
+                  icon={<PiTrashBold size={30} />}
+                  title="Excluir Motorista"
+                  description="Remover um motorista do sistema."
+                  onClick={() => setShowModalExcluirMotorista(true)}
+                  color="text-red-400"
+                  action
+                />
+              </div>
 
-          {/* Contatos */}
+              <ModalCadastroMotorista
+                isVisible={showModalCadastroMotorista}
+                onClose={() => setShowModalCadastroMotorista(false)}
+              />
+              <ModalRelatorioMotorista
+                isVisible={showModalRelatorioMotorista}
+                onClose={() => setShowModalRelatorioMotorista(false)}
+              />
+              <ModalUpdateMotorista
+                isVisible={showModalUpdateMotorista}
+                onClose={() => setShowModalUpdateMotorista(false)}
+              />
+              <ModalExcluirMotorista
+                isVisible={showModalExcluirMotorista}
+                onClose={() => setShowModalExcluirMotorista(false)}
+              />
+            </>
+          )}
+
+          {abaAtiva === 'Veículos' && (
+            <>
+              <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Veículos</h2>
+              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                <DashboardCard
+                  icon={<PiPlusCircleBold size={30} />}
+                  title="Cadastrar Veículo"
+                  description="Adicionar um novo veículo ao sistema."
+                  onClick={() => setShowModalCadastroResponsavel(true)}
+                  color="text-blue-700"
+                  action
+                />
+                <DashboardCard
+                  icon={<PiListChecksBold size={30} />}
+                  title="Relatório de Veículos"
+                  description="Visualizar lista completa de veículos."
+                  onClick={() => setShowModalRelatorioResponsaveis(true)}
+                  color="text-blue-700"
+                  action
+                />
+                <DashboardCard
+                  icon={<PiPencilSimpleBold size={30} />}
+                  title="Atualizar Veículo"
+                  description="Editar dados de um veículo existente."
+                  onClick={() => setShowModalUpdateResponsavel(true)}
+                  color="text-blue-700"
+                  action
+                />
+                <DashboardCard
+                  icon={<PiTrashBold size={30} />}
+                  title="Excluir Veículo"
+                  description="Remover um veículo do sistema."
+                  onClick={() => setShowModalExcluirResponsavel(true)}
+                  color="text-red-400"
+                  action
+                />
+              </div>
+            </>
+          )}
+
           {abaAtiva === 'Contatos' && (
             <>
               <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
