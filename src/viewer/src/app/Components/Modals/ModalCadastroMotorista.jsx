@@ -1,93 +1,81 @@
 'use client';
 
-import { useState } from 'react'
-import axios from 'axios'
-import { toast } from 'sonner'
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }) {
-
-    // abrigando minhas const para criar meu motorista
     const [nome, setNome] = useState('');
     const [cpf_motorista, setCpfMotorista] = useState('');
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
-    // formatando o front do cpf motorista
     function formatarCPF(valor) {
         valor = valor.replace(/\D/g, '');
         valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
         valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
         valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        return valor
+        return valor;
     }
 
-    // nao pode numero e caracter especial
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-
-    // modal
-    if (!isVisible) return null;
-
-    // modal close
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
+            setCpfMotorista('');
+            setNome('');
         }
     };
 
-    // envio do form
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
 
         let formsErrors = false;
 
-        // nao permitir envio sem preencher todo form
         if (!nome.trim() || !cpf_motorista.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
 
-        // validação
         if (!validarNome(nome)) {
             toast.error('Nome inválido. Apenas letras e espaços são permitidos.');
             formsErrors = true;
         }
 
-        // se form conter erros, nao envie
         if (formsErrors) {
             setLoading(false);
             return;
         }
 
-        // caso aprovado...
         try {
-
             const response = await axios.post('http://localhost:3001/motorista', {
                 nome,
                 cpf_motorista,
             });
 
+            if (onSuccess) onSuccess();
             toast.success('Motorista cadastrado com sucesso.');
-            console.log('Dados enviados: ', response)
-
+            console.log('Dados enviados: ', response);
+            setCpfMotorista('');
+            setNome('');
+            onClose();
         } catch (err) {
             console.error(err);
 
-            // aqui eu envio uma requisição ao meu controller
-            // que conversa com meu model, por isso consigo tratar o toast
-            // da forma que eu quero
             if (err.response && err.response.status === 400) {
                 toast.error('CPF já cadastrado.');
             } else {
                 toast.error('Erro ao cadastrar motorista.');
             }
-
         } finally {
             setLoading(false);
         }
     }
+
+    if (!isVisible) return null;
 
     return (
         <div
@@ -121,9 +109,9 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
                     </div>
 
                     <div className="flex flex-col">
-                        <label htmlFor="_motorista" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF</label>
+                        <label htmlFor="cpf_motorista" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF</label>
                         <input
-                            id="_motorista"
+                            id="cpf_motorista"
                             type="text"
                             value={cpf_motorista}
                             maxLength={14}
@@ -136,15 +124,12 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`mt-1 sm:mt-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-2 sm:py-3 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-700 hover:to-blue-900 hover:shadow-blue-900/30'
-                            }`}
+                        className={`mt-1 sm:mt-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-2 sm:py-3 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-700 hover:to-blue-900 hover:shadow-blue-900/30'}`}
                     >
-                        {/* mudar estado do envio, apenas front-end nada demais */}
                         {loading ? 'Cadastrando...' : 'Cadastrar'}
                     </button>
                 </form>
             </div>
         </div>
     );
-
 }
