@@ -99,7 +99,7 @@ export default function Login() {
       // traçando as rotas para cada user
       if (usuarioType === 'admin') {
         setTimeout(() => {
-          router.push('/dashboardAdm');
+          router.push('/DashboardAdm');
         }, 500)
       } else if (usuarioType === 'responsavel') {
         setTimeout(() => {
