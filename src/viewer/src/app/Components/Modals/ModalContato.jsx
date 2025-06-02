@@ -78,7 +78,7 @@ export default function ModalContatoAlunos({ isVisible, onClose }) {
                                         <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
                                         <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
                                         <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
-                                        <td className="px-4 py-2 border border-gray-600">{status}</td>
+                                        <td className={`px-4 py-2 border border-gray-600 ${status.toLowerCase() === 'pendente' ? 'text-green-500' : 'text-red-500'} `}>{status}</td>
                                     </tr>
                                 );
                             })}
@@ -87,7 +87,7 @@ export default function ModalContatoAlunos({ isVisible, onClose }) {
                     </table>
                 </div>
                 {contatosFiltrados.length === 0 && (
-                    <p className="text-center text-gray-400 mt-4">Nenhum aluno encontrado.</p>
+                    <p className="text-center text-gray-400 mt-4">Nenhuma Mensagem encontrado.</p>
                 )}
             </div>
         </div>
