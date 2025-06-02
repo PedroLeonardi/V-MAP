@@ -6,6 +6,7 @@ import authRoute from './router/authRoute.js'
 import motoristas from './router/motoristaRoute.js'
 import veiculoRoute from './router/veiculoRoute.js'
 import contatoRoute from './router/contatoRoute.js'
+import rotaRouter from './router/rotaRoute.js'
 import cors from 'cors';
 const app = express();
 const port = 3001;
@@ -25,6 +26,7 @@ app.use('/auth', authRoute)
 app.use('/motorista', motoristas)
 app.use('/veiculo', veiculoRoute)
 app.use('/contato', contatoRoute)
+app.use('/rota', rotaRouter )
 
 // se caso rota nao existir 
 app.use("/", (req,res) => {
