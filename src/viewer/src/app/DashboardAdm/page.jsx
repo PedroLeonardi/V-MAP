@@ -430,14 +430,20 @@ export default function PageAdmin() {
 
           {abaAtiva === 'Contatos' && (
             <>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
+
+                <div className="lg:col-start-2 flex justify-center">
                 <DashboardCard
                   icon={<TbNumber size={30} />}
                   title="Mensagens Pendentes"
                   value={totalContato}
                   description="Mensagens não respondidas"
                   color="text-blue-700"
-                />
+                  />
+                </div>
+
+                <div className="lg:col-start-3 flex justify-center">
+
                 <DashboardCard
                   icon={<PiListChecksBold size={30} />}
                   title="Relatório de Mensagens"
@@ -445,7 +451,8 @@ export default function PageAdmin() {
                   onClick={() => setShowModalRelatorioContatos(true)}
                   color="text-blue-700"
                   action
-                />
+                  />
+                  </div>
               </div>
 
               <ModalContatoAlunos
