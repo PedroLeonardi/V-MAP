@@ -13,11 +13,11 @@ import { FiSettings } from "react-icons/fi";
 import { IoIosMail } from "react-icons/io";
 import { TbNumber } from "react-icons/tb";
 
-// componentes
+// components
 import DashboardCard from '../Components/DashboardCard/Dashboard';
-import ProtegendoRota from '../Components/ProtegendoRota/ProtectRoute'
+import ProtegendoRota from '../Components/ProtegendoRota/ProtectRoute';
 
-// modais
+// modals
 import ModalCadastro from '../Components/Modals/ModalCadastroAluno';
 import ModalRelatorioAlunos from '../Components/Modals/ModalRelatorioAlunos';
 import ModalUpdateAluno from '../Components/Modals/ModalUpdateAluno';
@@ -35,12 +35,16 @@ import ModalRelatorioMotorista from '../Components/Modals/ModalRelatorioMotorist
 import ModalExcluirMotorista from '../Components/Modals/ModalExcluirMotorista';
 import ModalUpdateMotorista from '../Components/Modals/ModalUpdateMotorista';
 import ModalContatoAlunos from '../Components/Modals/ModalContato';
+import ModalRelatorioVeiculo from '../Components/Modals/ModalRelatorioVeiculo';
+import ModalRelatorioRotas from '../Components/Modals/ModalRelatorioRota';
 
 // hooks
-import useFetchTotalAlunos from '../Hooks/TotalAlunos'
-import useFetchTotalResponsaveis from '../Hooks/TotalResponsavel'
-import useFetchTotalContatos from '../Hooks/TotalContatos'
-import useFetchTotalAdm from '../Hooks/TotalAdm'
+import useFetchTotalAlunos from '../Hooks/TotalAlunos';
+import useFetchTotalResponsaveis from '../Hooks/TotalResponsavel';
+import useFetchTotalContatos from '../Hooks/TotalContatos';
+import useFetchTotalAdm from '../Hooks/TotalAdm';
+import useFetchTotalMotorista from "../Hooks/TotalMotoristas";
+import useFetchTotalVeiculo from "../Hooks/TotalVeiculos";
 
 const menu = [
   { nome: 'Administradores', icon: <MdPeopleAlt size={18} /> },
@@ -53,10 +57,10 @@ const menu = [
 ];
 
 export default function PageAdmin() {
-  // estados para abas e modais
+  // states for tabs and modals
   const [abaAtiva, setAbaAtiva] = useState('Administradores');
 
-  // estados para modais
+  // modal states
   const [showModalCadastro, setShowModalCadastro] = useState(false);
   const [showModalRelatorioAlunos, setShowModalRelatorioAlunos] = useState(false);
   const [showModalUpdateAluno, setShowModalUpdateAluno] = useState(false);
@@ -74,14 +78,18 @@ export default function PageAdmin() {
   const [showModalExcluirMotorista, setShowModalExcluirMotorista] = useState(false);
   const [showModalUpdateMotorista, setShowModalUpdateMotorista] = useState(false);
   const [showModalRelatorioContatos, setShowModalRelatorioContatos] = useState(false);
+  const [showModalRelatorioVeiculos, setShowModalRelatorioVeiculos] = useState(false);
+  const [showModalRelatorioRotas, setShowModalRelatorioRotas] = useState(false);
 
-  // dados dos hooks
+  // data hooks
   const { totalAlunos, refetchAlunos } = useFetchTotalAlunos();
   const { totalResponsaveis, refetchResponsaveis } = useFetchTotalResponsaveis();
   const { totalAdm, refetchAdm } = useFetchTotalAdm();
+  const { totalMotorista, refetchMotorista } = useFetchTotalMotorista();
+  const { totalVeiculo, refetchVeiculo } = useFetchTotalVeiculo();
   const { dataContato, totalContato, refetchContato } = useFetchTotalContatos();
 
-  // handlers para atualização de dados
+  // data handlers
   const handleAluno = async () => {
     await refetchAlunos();
   };
@@ -92,6 +100,14 @@ export default function PageAdmin() {
 
   const handleAdm = async () => {
     await refetchAdm();
+  };
+
+  const handleMotorista = async () => {
+    await refetchMotorista();
+  };
+
+  const handleVeiculo = async () => {
+    await refetchVeiculo();
   };
 
   const handleContato = async () => {
@@ -113,7 +129,6 @@ export default function PageAdmin() {
   return (
     <ProtegendoRota requiredRole='admin'>
       <div className='min-h-screen bg-slate-900 text-gray-100 p-4 sm:p-8 font-sans'>
-
         <header className="mb-8">
           <h1 className='font-bold text-3xl sm:text-4xl text-white'>Painel de Coordenação</h1>
           <p className="text-slate-400 mt-1">Gerenciamento de rotas, alunos, responsáveis e mais.</p>
@@ -139,7 +154,6 @@ export default function PageAdmin() {
         </nav>
 
         <section>
-
           {abaAtiva === 'Administradores' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Administradores</h2>
@@ -156,6 +170,14 @@ export default function PageAdmin() {
                   title="Cadastrar Administrador"
                   description="Adicionar um novo administrador ao sistema."
                   onClick={() => setShowModalCadastroAdmin(true)}
+                  color="text-blue-700"
+                  action
+                />
+                <DashboardCard
+                  icon={<PiListChecksBold size={30} />}
+                  title="Relatório de Administradores"
+                  description="Visualizar lista de administradores."
+                  onClick={() => setShowModalRelatorioAdmin(true)}
                   color="text-blue-700"
                   action
                 />
@@ -198,7 +220,6 @@ export default function PageAdmin() {
             </>
           )}
 
-          {/* Seção Alunos */}
           {abaAtiva === 'Alunos' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Alunos</h2>
@@ -265,7 +286,6 @@ export default function PageAdmin() {
             </>
           )}
 
-
           {abaAtiva === 'Responsáveis' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Responsáveis</h2>
@@ -331,10 +351,18 @@ export default function PageAdmin() {
               />
             </>
           )}
+
           {abaAtiva === 'Motoristas' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Motoristas</h2>
               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                <DashboardCard
+                  icon={<TbNumber size={30} />}
+                  title="Total Motoristas"
+                  description="Total de motoristas cadastrados."
+                  value={totalMotorista}
+                  color="text-blue-700"
+                />
                 <DashboardCard
                   icon={<PiPlusCircleBold size={30} />}
                   title="Cadastrar Motorista"
@@ -372,6 +400,7 @@ export default function PageAdmin() {
               <ModalCadastroMotorista
                 isVisible={showModalCadastroMotorista}
                 onClose={() => setShowModalCadastroMotorista(false)}
+                onSuccess={handleMotorista}
               />
               <ModalRelatorioMotorista
                 isVisible={showModalRelatorioMotorista}
@@ -384,30 +413,40 @@ export default function PageAdmin() {
               <ModalExcluirMotorista
                 isVisible={showModalExcluirMotorista}
                 onClose={() => setShowModalExcluirMotorista(false)}
+                onSuccess={handleMotorista}
               />
             </>
           )}
-
 
           {abaAtiva === 'Veículos' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Veículos</h2>
               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-
+                <DashboardCard
+                  icon={<TbNumber size={30} />}
+                  title="Total de Veículos"
+                  description="Total de veículos cadastrados."
+                  value={totalVeiculo}
+                  color="text-blue-700"
+                />
                 <DashboardCard
                   icon={<PiListChecksBold size={30} />}
                   title="Relatório de Veículos"
                   description="Visualizar lista completa de veículos."
-                  onClick={() => setShowModalRelatorioResponsaveis(true)}
+                  onClick={() => setShowModalRelatorioVeiculos(true)}
                   color="text-blue-700"
                   action
                 />
-
               </div>
+              <ModalRelatorioVeiculo
+                isVisible={showModalRelatorioVeiculos}
+                onClose={() => setShowModalRelatorioVeiculos(false)}
+                onSuccess={handleVeiculo}
+              />
             </>
           )}
-          {abaAtiva === 'Rotas' && (
 
+          {abaAtiva === 'Rotas' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Rotas</h2>
               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
@@ -415,39 +454,40 @@ export default function PageAdmin() {
                   icon={<PiListChecksBold size={30} />}
                   title="Relatório de Rotas"
                   description="Visualizar lista completa de rotas."
-                  onClick={() => setShowModalRelatorioMotorista(true)}
+                  onClick={() => setShowModalRelatorioRotas(true)}
                   color="text-blue-700"
                   action
                 />
               </div>
+              <ModalRelatorioRotas
+                isVisible={showModalRelatorioRotas}
+                onClose={() => setShowModalRelatorioRotas(false)}
+              />
             </>
           )}
 
           {abaAtiva === 'Contatos' && (
             <>
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
-
                 <div className="lg:col-start-2 flex justify-center">
-                <DashboardCard
-                  icon={<TbNumber size={30} />}
-                  title="Mensagens Pendentes"
-                  value={totalContato}
-                  description="Mensagens não respondidas"
-                  color="text-blue-700"
+                  <DashboardCard
+                    icon={<TbNumber size={30} />}
+                    title="Mensagens Pendentes"
+                    value={totalContato}
+                    description="Mensagens não respondidas"
+                    color="text-blue-700"
                   />
                 </div>
-
                 <div className="lg:col-start-3 flex justify-center">
-
-                <DashboardCard
-                  icon={<PiListChecksBold size={30} />}
-                  title="Relatório de Mensagens"
-                  description="Visualizar mensagens já respondidas e pendentes"
-                  onClick={() => setShowModalRelatorioContatos(true)}
-                  color="text-blue-700"
-                  action
+                  <DashboardCard
+                    icon={<PiListChecksBold size={30} />}
+                    title="Relatório de Mensagens"
+                    description="Visualizar mensagens já respondidas e pendentes"
+                    onClick={() => setShowModalRelatorioContatos(true)}
+                    color="text-blue-700"
+                    action
                   />
-                  </div>
+                </div>
               </div>
 
               <ModalContatoAlunos
@@ -467,29 +507,32 @@ export default function PageAdmin() {
                   </thead>
                   <tbody>
                     {Array.isArray(dataContato) &&
-
-                      dataContato.map((contato) => {
-
-                        return (
-                          <tr key={contato.id_mensagem_suporte} className="hover:bg-gray-700">
-                            <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
-                            <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
-                            <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
-                            <td className="px-4 py-2 border border-gray-600"><button onClick={async ()  => { changeStatus(contato.id_mensagem_suporte); await sleep(500); handleContato()}} className='bg-red-500 rounded-sm'>Responder</button></td>
-                          </tr>
-                        );
-                      })}
-
+                      dataContato.map((contato) => (
+                        <tr key={contato.id_mensagem_suporte} className="hover:bg-gray-700">
+                          <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
+                          <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
+                          <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
+                          <td className="px-4 py-2 border border-gray-600">
+                            <button 
+                              onClick={async () => { 
+                                await changeStatus(contato.id_mensagem_suporte); 
+                                await sleep(500); 
+                                handleContato(); 
+                              }} 
+                              className='bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition-colors'
+                            >
+                              Responder
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
-            
-            
-          </>
-
-        )}
-      </section>
-    </div>
+            </>
+          )}
+        </section>
+      </div>
     </ProtegendoRota>
-  )
-};
+  );
+}
