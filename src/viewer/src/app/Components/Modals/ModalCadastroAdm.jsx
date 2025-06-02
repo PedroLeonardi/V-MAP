@@ -47,8 +47,6 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
-
-
             setCPF('');
             setCargo('');
             setSenha('');
