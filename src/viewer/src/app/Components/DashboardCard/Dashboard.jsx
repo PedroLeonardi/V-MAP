@@ -13,6 +13,7 @@ export default function DashboardCard({
     flex flex-col items-center justify-center
     bg-slate-800 text-blue
     w-full sm:w-64 p-5
+    h-full
     shadow-xl rounded-2xl
     transition-all duration-300 ease-in-out
     ${action ? 'hover:bg-slate-700 hover:scale-[1.03] cursor-pointer' : ''}

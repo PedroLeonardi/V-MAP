@@ -425,14 +425,20 @@ export default function PageAdmin() {
 
           {abaAtiva === 'Contatos' && (
             <>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
+
+                <div className="lg:col-start-2 flex justify-center">
                 <DashboardCard
                   icon={<TbNumber size={30} />}
                   title="Mensagens Pendentes"
                   value={totalContato}
                   description="Mensagens não respondidas"
                   color="text-blue-700"
-                />
+                  />
+                </div>
+
+                <div className="lg:col-start-3 flex justify-center">
+
                 <DashboardCard
                   icon={<PiListChecksBold size={30} />}
                   title="Relatório de Mensagens"
@@ -440,7 +446,8 @@ export default function PageAdmin() {
                   onClick={() => setShowModalRelatorioContatos(true)}
                   color="text-blue-700"
                   action
-                />
+                  />
+                  </div>
               </div>
 
               <ModalContatoAlunos
@@ -460,30 +467,29 @@ export default function PageAdmin() {
                   </thead>
                   <tbody>
                     {Array.isArray(dataContato) &&
-                      dataContato.map((contato) => (
-                        <tr key={contato.id_mensagem_suporte} className="hover:bg-gray-700">
-                          <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
-                          <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
-                          <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
-                          <td className="px-4 py-2 border border-gray-600">
-                            <button
-                              onClick={async () => {
-                                await changeStatus(contato.id_mensagem_suporte);
-                              }}
-                              className='bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition-colors'
-                            >
-                              Responder
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+
+                      dataContato.map((contato) => {
+
+                        return (
+                          <tr key={contato.id_mensagem_suporte} className="hover:bg-gray-700">
+                            <td className="px-4 py-2 border border-gray-600">{contato.nome}</td>
+                            <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
+                            <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
+                            <td className="px-4 py-2 border border-gray-600"><button onClick={async ()  => { changeStatus(contato.id_mensagem_suporte); await sleep(500); handleContato()}} className='bg-red-500 rounded-sm'>Responder</button></td>
+                          </tr>
+                        );
+                      })}
+
                   </tbody>
                 </table>
               </div>
-            </>
-          )}
-        </section>
-      </div>
+            
+            
+          </>
+
+        )}
+      </section>
+    </div>
     </ProtegendoRota>
-  );
-}
+  )
+};
