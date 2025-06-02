@@ -40,6 +40,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
       <body
+<<<<<<< HEAD
         className={`${geistSans.variable} ${geistMono.variable} ${archivoBlack.variable}`}> 
 
         {/* 
@@ -65,6 +66,12 @@ export default function RootLayout({ children }) {
         {/* </div> */}
 
         {/* <Toaster
+=======
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+       {children}
+        <Toaster
+>>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
           position="top-right"
           theme="dark"
           richColors
@@ -79,9 +86,13 @@ export default function RootLayout({ children }) {
             className: "font-sans text-sm",
             duration: 3000,
           }}
+<<<<<<< HEAD
         /> */}
         <Footer/>
 
+=======
+        />
+>>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
       </body>
     </html>
   );

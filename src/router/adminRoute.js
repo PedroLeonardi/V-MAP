@@ -1,7 +1,6 @@
 // src/routes/adminRoutes.js
 import { Router } from 'express';
 import admin from '../controllers/adminController.js';
-
 const router = Router();
 
 router.get('/', admin.getAdminAllController);       

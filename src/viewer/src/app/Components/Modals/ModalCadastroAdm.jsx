@@ -47,8 +47,13 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
+            setCPF('');
+            setCargo('');
+            setSenha('');
+            onClose();
         }
     };
+
 
     // envio do form
     async function handleSubmit(e) {
@@ -91,6 +96,13 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
                 senha,
             });
 
+            setNome('');
+            setCPF('');
+            setCargo('');
+            setSenha('');
+            onClose();
+
+            if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
             toast.success('Admininstrador cadastrado com sucesso.');
             console.log('Dados enviados: ', response)
 
