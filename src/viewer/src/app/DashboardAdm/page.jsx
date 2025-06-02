@@ -55,7 +55,7 @@ const menu = [
 export default function PageAdmin() {
   // estados para abas e modais
   const [abaAtiva, setAbaAtiva] = useState('Administradores');
-  
+
   // estados para modais
   const [showModalCadastro, setShowModalCadastro] = useState(false);
   const [showModalRelatorioAlunos, setShowModalRelatorioAlunos] = useState(false);
@@ -113,7 +113,7 @@ export default function PageAdmin() {
   return (
     <ProtegendoRota requiredRole='admin'>
       <div className='min-h-screen bg-slate-900 text-gray-100 p-4 sm:p-8 font-sans'>
-   
+
         <header className="mb-8">
           <h1 className='font-bold text-3xl sm:text-4xl text-white'>Painel de Coordenação</h1>
           <p className="text-slate-400 mt-1">Gerenciamento de rotas, alunos, responsáveis e mais.</p>
@@ -138,8 +138,8 @@ export default function PageAdmin() {
           </ul>
         </nav>
 
-       <section>
-        
+        <section>
+
           {abaAtiva === 'Administradores' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Administradores</h2>
@@ -265,7 +265,7 @@ export default function PageAdmin() {
             </>
           )}
 
-      
+
           {abaAtiva === 'Responsáveis' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Responsáveis</h2>
@@ -388,18 +388,12 @@ export default function PageAdmin() {
             </>
           )}
 
+
           {abaAtiva === 'Veículos' && (
             <>
               <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Veículos</h2>
               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-                <DashboardCard
-                  icon={<PiPlusCircleBold size={30} />}
-                  title="Cadastrar Veículo"
-                  description="Adicionar um novo veículo ao sistema."
-                  onClick={() => setShowModalCadastroResponsavel(true)}
-                  color="text-blue-700"
-                  action
-                />
+
                 <DashboardCard
                   icon={<PiListChecksBold size={30} />}
                   title="Relatório de Veículos"
@@ -408,20 +402,21 @@ export default function PageAdmin() {
                   color="text-blue-700"
                   action
                 />
+
+              </div>
+            </>
+          )}
+          {abaAtiva === 'Rotas' && (
+
+            <>
+              <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Rotas</h2>
+              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                 <DashboardCard
-                  icon={<PiPencilSimpleBold size={30} />}
-                  title="Atualizar Veículo"
-                  description="Editar dados de um veículo existente."
-                  onClick={() => setShowModalUpdateResponsavel(true)}
+                  icon={<PiListChecksBold size={30} />}
+                  title="Relatório de Rotas"
+                  description="Visualizar lista completa de rotas."
+                  onClick={() => setShowModalRelatorioMotorista(true)}
                   color="text-blue-700"
-                  action
-                />
-                <DashboardCard
-                  icon={<PiTrashBold size={30} />}
-                  title="Excluir Veículo"
-                  description="Remover um veículo do sistema."
-                  onClick={() => setShowModalExcluirResponsavel(true)}
-                  color="text-red-400"
                   action
                 />
               </div>
@@ -471,10 +466,10 @@ export default function PageAdmin() {
                           <td className="px-4 py-2 border border-gray-600">{contato.email}</td>
                           <td className="px-4 py-2 border border-gray-600">{contato.mensagem}</td>
                           <td className="px-4 py-2 border border-gray-600">
-                            <button 
-                              onClick={async () => { 
-                                await changeStatus(contato.id_mensagem_suporte); 
-                              }} 
+                            <button
+                              onClick={async () => {
+                                await changeStatus(contato.id_mensagem_suporte);
+                              }}
                               className='bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition-colors'
                             >
                               Responder
