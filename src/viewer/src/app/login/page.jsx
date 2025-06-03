@@ -1,14 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { toast } from 'sonner';
-import { get } from 'lodash';
+import Link from 'next/link';
 
-export default function Login() {
-  const [cpf, setCpf] = useState('');
-  const [senha, setSenha] = useState('');
-  const [loading, setLoading] = useState(false);
+export default function login() {
+  const [doc, setDoc] = useState('');
 
   const router = useRouter();
 
@@ -115,8 +110,7 @@ export default function Login() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gray-900">
-      {/* Vídeo de fundo */}
+    <div className="relative min-h-screen w-full overflow-hidden">
       <video
         autoPlay
         loop
@@ -127,18 +121,25 @@ export default function Login() {
         <source src="/login/bg-login.mp4" type="video/mp4" />
         Seu navegador não suporta vídeo.
       </video>
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/70 to-blue-900/70 z-0" />
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+     <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
+        <Link href="/"><img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" /></Link>
+    </div>
 
-      {/* conteudo principal */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 py-8">
+         <div className="bg-black/50 border border-gray-300 rounded-xl p-6 sm:p-8 w-full max-w-sm text-white shadow-lg">
+          <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
 
-        <div className="relative w-full max-w-md">
-
-          <div className="absolute left-1/2 -top-12 transform -translate-x-1/2 z-20">
-            <div className="bg-slate-800 p-1 rounded-full border-2 border-sky-500 shadow-lg">
-              <img
-                src="/login/logo.png"
-                alt="Logo da Plataforma"
-                className="w-24 h-24 sm:w-26 sm:h-26 object-cover rounded-full"
+          <form className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold mb-1">CPF/CNPJ</label>
+              <input
+                type="text"
+                placeholder="000.000.000-00 ou 00.000.000/0000-00"
+                value={doc}
+                onChange={handleDocChange}
+                maxLength={18}
+                className="w-full px-4 py-2 rounded-md border border-gray-400 bg-transparent placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-[#5c83ff]"
               />
             </div>
           </div>
@@ -192,6 +193,5 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

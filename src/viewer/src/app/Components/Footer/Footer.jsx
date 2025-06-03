@@ -6,9 +6,9 @@ export default function Footer() {
         <div className="md:col-span-2 lg:col-span-2">
           <div className="flex items-center justify-center md:justify-start mb-4">
             <img 
-              src="./logo.png" 
+              src="./Logo.png" 
               alt="Logo" 
-              className="h-15 w-15 mr-3 lg:w-25 lg:h-25"
+              className="h-20 w-18 mr-3"
             />
             <span className="text-2xl font-bold text-white">
               VMAP
