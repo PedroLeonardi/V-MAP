@@ -22,9 +22,8 @@
    ];
  
    return (
-    <section> 
-      
-     <div className={`hidden lg:flex h-screen p-5 pt-8 flex-col justify-between ${open ? "w-100" : "w-20"} duration-300 relative `} style={{ background: 'linear-gradient(to right, #0F0F0F, #171717, #1E1E1E)'}}>
+    <section>
+     <div className={`hidden lg:flex h-screen p-5 pt-8 flex flex-col justify-between ${open ? "w-100" : "w-20"} duration-300 relative `} style={{ background: 'linear-gradient(to right, #0F0F0F, #171717, #1E1E1E)'}}>
        <BsArrowLeftCircle
          className={`text-white text-3xl bg-black rounded-full absolute -right-3 top-9 border border-gray-800 cursor-pointer ${!open && "rotate-180"}`}
          onClick={() => setOpen(!open)}
