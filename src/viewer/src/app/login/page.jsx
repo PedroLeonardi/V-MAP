@@ -87,29 +87,23 @@ export default function Login() {
         return;
       }
 
-      // armazenando meu localStorage
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('usuarioType', usuarioType);
-
       // envio com sucesso
       toast.success('Login efetuado com sucesso!!!');
       console.log(response.data);
 
+      // armazenando meu localStorage
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('usuarioType', usuarioType);
 
-      // traçando as rotas para cada user
-      if (usuarioType === 'admin') {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (usuarioType === 'admin') {
           router.push('/DashboardAdm');
-        }, 500)
-      } else if (usuarioType === 'responsavel') {
-        setTimeout(() => {
+        } else if (usuarioType === 'responsavel') {
           router.push('/dashboardResponsavel');
-        }, 500)
-      } else if (usuarioType === 'aluno') {
-        setTimeout(() => {
+        } else if (usuarioType === 'aluno') {
           router.push('/dashboardAluno');
-        }, 500)
-      }
+        }
+      }, 300);
 
       // tratamento de erros
     } catch (err) {

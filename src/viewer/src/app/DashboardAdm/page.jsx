@@ -45,6 +45,7 @@ import useFetchTotalContatos from '../Hooks/TotalContatos';
 import useFetchTotalAdm from '../Hooks/TotalAdm';
 import useFetchTotalMotorista from "../Hooks/TotalMotoristas";
 import useFetchTotalVeiculo from "../Hooks/TotalVeiculos";
+import useFetchTotalRotas from "../Hooks/TotalRotas";
 import Sidebar from "../Components/Sidebar/SidebarAdm";
 import Footer from "../Components/Footer/Footer";
 
@@ -87,8 +88,9 @@ export default function PageAdmin() {
   const { totalAlunos, refetchAlunos } = useFetchTotalAlunos();
   const { totalResponsaveis, refetchResponsaveis } = useFetchTotalResponsaveis();
   const { totalAdm, refetchAdm } = useFetchTotalAdm();
-  const { totalMotorista, refetchMotorista } = useFetchTotalMotorista();
-  const { totalVeiculo, refetchVeiculo } = useFetchTotalVeiculo();
+  const { totalMotorista, refetchMotoristas } = useFetchTotalMotorista();
+  const { totalVeiculo, refetchVeiculos } = useFetchTotalVeiculo();
+  const { totalRotas, refetchRotas } = useFetchTotalVeiculo();
   const { dataContato, totalContato, refetchContato } = useFetchTotalContatos();
 
   // data handlers
@@ -105,11 +107,15 @@ export default function PageAdmin() {
   };
 
   const handleMotorista = async () => {
-    await refetchMotorista();
+    await refetchMotoristas();
   };
 
   const handleVeiculo = async () => {
-    await refetchVeiculo();
+    await refetchVeiculos();
+  };
+
+  const handleRota = async () => {
+    await refetchRotas();
   };
 
   const handleContato = async () => {
@@ -455,6 +461,13 @@ export default function PageAdmin() {
               <>
                 <h2 className='text-2xl sm:text-3xl font-semibold text-slate-200 mb-8'>Gerenciamento de Rotas</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                <DashboardCard
+                    icon={<TbNumber size={30} />}
+                    title="Total de Rotas"
+                    description="Total de veículos rotas."
+                    value={totalRotas}
+                    color="text-blue-700"
+                  />
                   <DashboardCard
                     icon={<PiListChecksBold size={30} />}
                     title="Relatório de Rotas"
