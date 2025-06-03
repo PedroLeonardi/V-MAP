@@ -5,25 +5,107 @@ import Link from 'next/link';
 export default function login() {
   const [doc, setDoc] = useState('');
 
-  //mascara para cpf e cnpj
-  function handleDocChange(e) {
-    let value = e.target.value.replace(/\D/g, ''); //bloqueia (ou exclui) o que nao for numero
+  const router = useRouter();
 
-    if (value.length <= 11) {
-      // Defini o que seria um cpf, que é 11 digitos no maximo CPF: 000.000.000-00
-      //aqui atribui as diferenças, a cada 3 numeros ele gera um ponto e no fim o traço
-      value = value.replace(/(\d{3})(\d)/, '$1.$2');
-      value = value.replace(/(\d{3})(\d)/, '$1.$2');
-      value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-      setDoc(value.slice(0, 14)); // aqui eu limito pro tamanho máximo do cpf (contando os pontos e traços)
-    } else {
-      //Um else pro cpnj, dessa forma se o numero digitado passar do maximo do cpf ele "entende" que seria um cnpj e começa a tratar como tal
-      //Então aqui ele vai separar os digitos por pontos e barra como um cnpj
-      value = value.replace(/^(\d{2})(\d)/, '$1.$2');
-      value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-      value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
-      value = value.replace(/(\d{4})(\d)/, '$1-$2');
-      setDoc(value.slice(0, 18)); // aqui eu limito ao tamanho máximo do cnpj (contando os pontos, traços e barra)
+  // Formatando cpf para front-end
+  function formatarCPF(valor) {
+    valor = valor.replace(/\D/g, '');
+    if (valor.length <= 3) return valor;
+    if (valor.length <= 6) return valor.replace(/(\d{3})(\d)/, '$1.$2');
+    if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
+    return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+  }
+
+  // Função para envio do form
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    let formErrors = false;
+
+    if (!cpf.trim() || !senha.trim()) {
+      formErrors = true;
+      toast.error('Preencha todos os campos.');
+      setLoading(false)
+      return;
+    }
+
+    if (cpf.length !== 14) {
+      formErrors = true;
+      toast.error('CPF inválido');
+      setLoading(false)
+      return;
+    }
+
+    if (senha.length < 6) {
+      formErrors = true;
+      toast.error('Senha precisa conter pelo menos 6 caracteres');
+      setLoading(false)
+      return;
+    } else if (senha.length > 255) {
+      formErrors = true;
+      toast.error('Senha maior que 255 caracteres');
+      setLoading(false)
+      return;
+    }
+
+    if (formErrors) return;
+
+
+    try {
+      const endPoints = [
+        { url: 'http://localhost:3001/auth/admin/login', type: 'admin' },
+        { url: 'http://localhost:3001/auth/responsavel/login', type: 'responsavel' },
+        { url: 'http://localhost:3001/auth/aluno/login', type: 'aluno' }
+      ];
+
+      let response;
+      let usuarioType = '';
+
+      for (const { url, type } of endPoints) {
+        try {
+          response = await axios.post(url, { cpf, senha });
+          if (response.data?.token) {
+            usuarioType = type;
+            break;
+          };
+        } catch (err) {
+          console.error('Não foi possivel efetuar login');
+        }
+      }
+
+      if (!response || !response.data?.token) {
+        toast.error('Usuário ou senha incorretos');
+        return;
+      }
+
+      toast.success('Login efetuado com sucesso!!!');
+
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('usuarioType', usuarioType);
+
+      setTimeout(() => {
+        if (usuarioType === 'admin') {
+          router.push('/DashboardAdm');
+        } else if (usuarioType === 'responsavel') {
+          router.push('/dashboardResponsavel');
+        } else if (usuarioType === 'aluno') {
+          router.push('/dashboardAluno');
+        }
+      }, 300);
+
+    } catch (err) {
+      const message = get(err, 'response.data.message', '');
+
+      if (message === 'Usuário não encontrado.') {
+        toast.error('Usuário não encontrado!');
+      } else if (message === 'Senha incorreta') {
+        toast.error('Senha incorreta!');
+      } else {
+        toast.error('Erro ao fazer login.');
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -34,7 +116,7 @@ export default function login() {
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-40"
       >
         <source src="/login/bg-login.mp4" type="video/mp4" />
         Seu navegador não suporta vídeo.
@@ -60,24 +142,56 @@ export default function login() {
                 className="w-full px-4 py-2 rounded-md border border-gray-400 bg-transparent placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-[#5c83ff]"
               />
             </div>
+          </div>
 
-            <div>
-              <label className="block text-sm font-semibold mb-1">Senha</label>
-              <input
-                type="password"
-                className="w-full px-4 py-2 rounded-md border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5c83ff]"
-              />
+
+          <div className="bg-slate-800/70 backdrop-blur-md border border-slate-700 rounded-xl pt-20 pb-8 px-6 sm:px-10 w-full text-white shadow-2xl">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-sky-400">Bem-vindo(a)!</h1>
+              <p className="text-slate-300 mt-2">Acesse sua conta para continuar</p>
             </div>
 
-            <button
-              type="submit"
-              className="w-full mt-4 py-2 rounded-md bg-[#3a5dbf] hover:bg-[#2d50a0] transition text-white font-bold border border-gray-300 cursor-pointer"
-            >
-              Entrar
-            </button>
-          </form>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="cpf" className="block text-sm font-medium text-slate-300 mb-2">CPF</label>
+                <input
+                  id="cpf"
+                  name="cpf"
+                  type="text"
+                  placeholder="000.000.000-00"
+                  value={cpf}
+                  onChange={e => setCpf(formatarCPF(e.target.value))}
+                  maxLength={14}
+                  className="w-full px-4 py-3 rounded-lg bg-slate-700/60 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="senha" className="block text-sm font-medium text-slate-300 mb-2">Senha</label>
+                <input
+                  id="senha"
+                  name="senha"
+                  type="password"
+                  placeholder="Sua senha"
+                  value={senha}
+                  onChange={e => setSenha(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg bg-slate-700/60 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-all
+                  bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700
+                  focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-800
+                  disabled:opacity-60 disabled:cursor-not-allowed ${loading ? 'animate-pulse' : ''}`}
+              >
+                {loading ? 'Logando...' : 'Login'}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
   );
 }

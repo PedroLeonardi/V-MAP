@@ -1,21 +1,12 @@
-import dynamic from 'next/dynamic';
-import Head from 'next/head';
-import MapaRota from '../Components/MapaRota/MapaRota.jsx'
+import MapWrapper from '../Components/MapaRota/MapWrapper';
 
-// const MapaRota = dynamic(() => import('../components/MapaRota'), { ssr: false });
-
-export default function Home() {
+export default function MapPage() {
   return (
-    <>
-
-
-      <main style={{ padding: '1rem' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          Mapa com Rota e Imagem
-        </h1>
-
-        <MapaRota />
-      </main>
-    </>
+    <main>
+      <h1>Mapa com Rota e Marcador</h1>
+      <div className='h-500 w-full'>
+      <MapWrapper />
+      </div>
+    </main>
   );
 }

@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="w-full bg-gradient-to-t from-gray-900 via-gray-800 to-gray-900 text-white px-6 py-12 border-t border-gray-700">
-      <div className="max-w-7xl mx-auto grid gap-8 md:grid-cols-4 lg:grid-cols-5">
+      <div className="max-w-7xl mx-auto grid gap-8 md:grid-cols-4 lg:grid-cols-4">
         {/* Logo e descrição */}
         <div className="md:col-span-2 lg:col-span-2">
           <div className="flex items-center justify-center md:justify-start mb-4">
@@ -10,16 +10,16 @@ export default function Footer() {
               alt="Logo" 
               className="h-20 w-18 mr-3"
             />
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold text-white">
               VMAP
             </span>
           </div>
-          <p className="text-gray-400 text-sm text-center md:text-left max-w-md">
+          <p className="text-gray-300 font-bold text-sm text-center md:text-left max-w-md lg:text-[20px]">
             Sistema de Gestão de Transporte Escolar
           </p>
         </div>
 
-        {/* Redes sociais */}
+     
         <div>
           <h3 className="font-bold text-lg mb-4 text-center md:text-left relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 md:after:left-0 after:w-10 after:h-0.5 after:bg-gradient-to-r from-blue-400 to-purple-500">
             Redes Sociais
@@ -45,7 +45,7 @@ export default function Footer() {
             Links Úteis
           </h3>
           <ul className="space-y-3 text-sm text-gray-400">
-            {['Termos de Uso', 'Política de Privacidade', 'FAQ', 'Contato'].map((link) => (
+            {['Termos de Uso', 'Política de Privacidade', 'FAQ'].map((link) => (
               <li key={link}>
                 <a 
                   href="#" 

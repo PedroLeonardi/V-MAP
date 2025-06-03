@@ -1,4 +1,4 @@
-import contato from "../Models/contatoModels.js"
+import contato from "../models/contatoModels.js"
 
 const sendMensage = async (req,res)=>{
     try {
