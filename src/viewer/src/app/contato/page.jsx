@@ -1,6 +1,6 @@
 'use client'
 import { use, useEffect, useState } from 'react';
-import DashboardCard from '../Components/DashboardCard/Dashboard';
+import DashboardCard from '../Components/DashboardCard/Card';
 import { CiViewList } from "react-icons/ci";
 import axios from 'axios';
 import ModalContatoAlunos from '../Components/Modals/ModalContato';
