@@ -25,16 +25,18 @@ export default function DashboardCard({
     const estiloCard = `
   relative group
   flex flex-col items-center justify-start
-  bg-slate-800
+  bg-gradient-to-br from-slate-700 via-slate-800 to-${corPrincipal}-${tomCor}/20
   w-full sm:w-60 md:w-64
   min-h-[200px] sm:min-h-[220px]
   p-4 pt-14 sm:pt-16
   rounded-xl 
   border border-slate-700 border-l-4 border-l-sky-500
-  shadow-[0_4px_10px_rgba(0,0,0,0.2),_0_1px_3px_rgba(0,0,0,0.1)]
+  shadow-[0_4px_10px_rgba(0,0,0,0.2),_0_1px_3px_rgba(0,0,0,0.1)] shadow-sky-500/30
   transition-all duration-300 ease-out
   text-center
 `;
+
+
 
 
 
