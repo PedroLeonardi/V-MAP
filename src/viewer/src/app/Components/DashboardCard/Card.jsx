@@ -23,18 +23,20 @@ export default function DashboardCard({
 
     // classes base do card (aparência geral)
     const estiloCard = `
-    relative group
-    flex flex-col items-center justify-start
-    bg-slate-800
-    w-full sm:w-60 md:w-64
-    min-h-[200px] sm:min-h-[220px]
-    p-4 pt-14 sm:pt-16
-    rounded-xl 
-    border border-slate-700
-    shadow-[0_4px_10px_rgba(0,0,0,0.2),_0_1px_3px_rgba(0,0,0,0.1)]
-    transition-all duration-300 ease-out
-    text-center
-  `;
+  relative group
+  flex flex-col items-center justify-start
+  bg-slate-800
+  w-full sm:w-60 md:w-64
+  min-h-[200px] sm:min-h-[220px]
+  p-4 pt-14 sm:pt-16
+  rounded-xl 
+  border border-slate-700 border-l-4 border-l-sky-500
+  shadow-[0_4px_10px_rgba(0,0,0,0.2),_0_1px_3px_rgba(0,0,0,0.1)]
+  transition-all duration-300 ease-out
+  text-center
+`;
+
+
 
     // efeitos se for clicável
     const estiloClickavel = action ? `
@@ -89,10 +91,10 @@ export default function DashboardCard({
 
             {/* título, descrição e valor */}
             <div className="flex flex-col items-center w-full h-full">
-                <h3 className="text-md sm:text-lg font-semibold text-slate-100 mb-1 leading-tight mt-1">{title}</h3>
+                <h3 className="text-md sm:text-lg font-extrabold text-slate-100 mb-1 leading-tight mt-1">{title}</h3>
 
                 {description && (
-                    <p className="text-xs text-slate-400 mb-2 px-1 leading-snug flex-grow">
+                    <p className="text-xs font-bold text-slate-400 mb-2 px-1 leading-snug flex-grow">
                         {description}
                     </p>
                 )}
