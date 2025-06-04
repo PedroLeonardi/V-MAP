@@ -62,9 +62,10 @@ export default function ModalExcluirAdm({ isVisible, onClose, onSuccess }) {
 
             if (response.status === 200) {
                 toast.success('Administrador excluído com sucesso!');
-            if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
+            if (onSuccess) onSuccess(); 
                 setAdm(null);
                 setCpfBusca('');
+                onClose();
             } else {
                 throw new Error('Erro ao excluir responsável');
             }

@@ -22,6 +22,27 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         return valor
     }
 
+       // validar cpf real segundo a RF
+       function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, '');
+
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        const calcDV = (cpfSlice, factor) => {
+            let total = 0;
+            for (let i = 0; i < cpfSlice.length; i++) {
+                total += parseInt(cpfSlice[i]) * (factor - i);
+            }
+            const resto = total % 11;
+            return resto < 2 ? 0 : 11 - resto;
+        };
+
+        const dv1 = calcDV(cpf.slice(0, 9), 10);
+        const dv2 = calcDV(cpf.slice(0, 10), 11);
+
+        return dv1 === parseInt(cpf[9]) && dv2 === parseInt(cpf[10]);
+    }
+
     // nao pode numero e caracter especial
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
@@ -38,7 +59,6 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
     // modal close
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
-            onClose();
             setCPF('');
             setNome('');
             setSenha('');
@@ -47,7 +67,6 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         }
     };
 
-    // envio do form
     // envio do form
     async function handleSubmit(e) {
         e.preventDefault();
@@ -58,6 +77,12 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
+        }
+        
+        if(!validarCPF(cpf_aluno)){
+            toast.error('CPF inválido');
+            formsErrors = true;
+            return;
         }
 
         if (!validarNome(nome)) {
@@ -86,7 +111,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                     senha,
                     cpf_responsavel
                 });
-                if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
+                if (onSuccess) onSuccess(); 
                 console.log('Dados recebidos: ', response);
                 toast.success('Aluno cadastrado com sucesso.');
 
@@ -116,7 +141,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
 
     return (
         <div
-            className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 p-4"
+            className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 p-4"
             onClick={handleClose}
         >
             <div className="w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-700 relative transform transition-all duration-300 scale-100 hover:scale-[1.01] max-h-[90vh] overflow-y-auto">
