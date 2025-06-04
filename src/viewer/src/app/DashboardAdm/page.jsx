@@ -13,7 +13,7 @@ import { IoIosMail } from "react-icons/io";
 import { TbNumber } from "react-icons/tb";
 
 // components
-import DashboardCard from '../Components/DashboardCard/Dashboard'; // Supondo que aceita props de estilo
+import DashboardCard from '../Components/DashboardCard/Card'; // Supondo que aceita props de estilo
 import ProtegendoRota from '../Components/ProtegendoRota/ProtectRoute';
 
 // modals - Precisam de estilização interna consistente
@@ -130,8 +130,7 @@ export default function PageAdmin() {
 
         <div className='flex-1 min-h-screen text-slate-300 p-4 sm:p-6 lg:p-8 font-sans overflow-y-auto'>
           <header className="mb-8">
-            <h1 className='font-bold text-2xl sm:text-3xl lg:text-4xl text-white'>Painel de Coordenação</h1>
-            <p className="text-slate-400 mt-1 text-sm sm:text-base">Visão geral e gerenciamento completo do sistema.</p>
+            <h1 className='font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white underline underline-offset-6 font-mono '>Painel de Coordenação</h1>
           </header>
 
           <nav className='mb-10 pb-4 border-b border-slate-700'>
@@ -140,7 +139,7 @@ export default function PageAdmin() {
                 <li key={item.sectionId}>
                   <button
                     onClick={() => setAbaAtiva(item.sectionId)}
-                    className={`group flex items-center gap-x-2 py-2 px-3 sm:py-2.5 sm:px-4 rounded-lg text-xs sm:text-sm font-medium transition-all duration-150 ease-in-out
+                    className={`group flex items-center gap-x-2 py-2 px-3 sm:py-2.5 sm:px-4 rounded-lg text-xs sm:text-sm font-extrabold transition-all duration-150 ease-in-out
                     focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900 cursor-pointer
                     ${abaAtiva === item.sectionId
                         ? 'bg-sky-600 text-white shadow-sm shadow-sky-700/40'
@@ -160,7 +159,7 @@ export default function PageAdmin() {
           <section>
             {abaAtiva === 'Administradores' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8'>Gerenciamento de Administradores</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-110'>Gerenciamento de Administradores</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
                   <DashboardCard
                     cardStyle={cardBaseStyle} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle} valueStyle={cardValueStyle}
@@ -211,7 +210,7 @@ export default function PageAdmin() {
 
             {abaAtiva === 'Alunos' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8'>Gerenciamento de Alunos</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-85'>Gerenciamento de Alunos</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
                   <DashboardCard
                     cardStyle={cardBaseStyle} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle} valueStyle={cardValueStyle}
@@ -262,7 +261,7 @@ export default function PageAdmin() {
             
             {abaAtiva === 'Responsáveis' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8'>Gerenciamento de Responsáveis</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-105'>Gerenciamento de Responsáveis</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
                   <DashboardCard
                     cardStyle={cardBaseStyle} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle} valueStyle={cardValueStyle}
@@ -313,7 +312,7 @@ export default function PageAdmin() {
 
             {abaAtiva === 'Motoristas' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8'>Gerenciamento de Motoristas</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-95'>Gerenciamento de Motoristas</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
                   <DashboardCard
                     cardStyle={cardBaseStyle} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle} valueStyle={cardValueStyle}
@@ -364,7 +363,7 @@ export default function PageAdmin() {
 
             {abaAtiva === 'Veículos' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8'>Gerenciamento de Veículos</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-88'>Gerenciamento de Veículos</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
                    <DashboardCard
                     cardStyle={cardBaseStyle} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle} valueStyle={cardValueStyle}
@@ -381,7 +380,7 @@ export default function PageAdmin() {
                     onClick={() => setShowModalRelatorioVeiculos(true)}
                     action
                   />
-                  {/* Cards de Cadastrar, Editar, Excluir Veículo podem ser adicionados aqui se houver modais para eles */}
+                  
                 </div>
                 <ModalRelatorioVeiculo isVisible={showModalRelatorioVeiculos} onClose={() => setShowModalRelatorioVeiculos(false)} onSuccess={handleVeiculo} />
               </>
@@ -389,7 +388,7 @@ export default function PageAdmin() {
 
             {abaAtiva === 'Rotas' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8'>Gerenciamento de Rotas</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-80'>Gerenciamento de Rotas</h2>
                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
                   <DashboardCard
                     cardStyle={cardBaseStyle} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle} valueStyle={cardValueStyle}
@@ -414,7 +413,7 @@ export default function PageAdmin() {
 
             {abaAtiva === 'Contatos' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8'>Central de Atendimento</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-80'>Central de Atendimento</h2>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-8 items-stretch'>
                   <div className="flex">
                     <DashboardCard
@@ -484,7 +483,6 @@ export default function PageAdmin() {
           </section>
         </div>
       </div>
-      <Footer /> 
     </ProtegendoRota>
   );
 }
