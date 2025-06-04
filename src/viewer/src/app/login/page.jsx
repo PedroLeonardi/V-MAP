@@ -1,23 +1,33 @@
 'use client';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState } from 'react';
 import Link from 'next/link';
 =======
 import { useState, useEffect } from 'react';
+=======
+
+import { useState } from 'react';
+>>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import axios from 'axios';
 import { toast } from 'sonner';
+<<<<<<< HEAD
 import { get } from 'lodash'
 >>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
+=======
+import get from 'lodash/get';
+>>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
 
 export default function Login() {
+  const router = useRouter();
+
   const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const router = useRouter()
-
-  // formantando cpf para front-end
+  // Formatando cpf para front-end
   function formatarCPF(valor) {
     valor = valor.replace(/\D/g, '');
     if (valor.length <= 3) return valor;
@@ -26,97 +36,74 @@ export default function Login() {
     return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   }
 
-  // function para envio do form
-  async function handleSubmit(e) {
+  async function handleSubmit(e)  {
     e.preventDefault();
     setLoading(true);
 
-    let formErrors = false; // armazenando erros na variavel
-
-    // precisa preencher campo de cpf e senha
     if (!cpf.trim() || !senha.trim()) {
-      formErrors = true;
       toast.error('Preencha todos os campos.');
+      setLoading(false);
+      return;
     }
 
-    // cpf n pode ser diferente de 14
     if (cpf.length !== 14) {
-      formErrors = true;
       toast.error('CPF inválido');
+      setLoading(false);
+      return;
     }
 
-    // valid de senhas
     if (senha.length < 6) {
-      formErrors = true;
       toast.error('Senha precisa conter pelo menos 6 caracteres');
+      setLoading(false);
+      return;
     } else if (senha.length > 255) {
-      formErrors = true;
-      toast.error('Senha maior que 255');
+      toast.error('Senha maior que 255 caracteres');
+      setLoading(false);
+      return;
     }
 
-    if (formErrors) return; // para aq se houver erros
-
-    // caso passar vamos para ca
     try {
-
-      // cadastrando meus possiveis end points
       const endPoints = [
-        // end point                                      tipo de user
         { url: 'http://localhost:3001/auth/admin/login', type: 'admin' },
         { url: 'http://localhost:3001/auth/responsavel/login', type: 'responsavel' },
         { url: 'http://localhost:3001/auth/aluno/login', type: 'aluno' }
       ];
 
       let response;
-      let usuarioType = ''; // esse type vai armezenar qual é o tipo de usuario
+      let usuarioType = '';
 
-      // vou percorrer meu array dessa forma
-      // recebo minha ulr e tipo
       for (const { url, type } of endPoints) {
         try {
-          // e envio uma requisição ao back-end com as informações
           response = await axios.post(url, { cpf, senha });
-          // passando token...
           if (response.data?.token) {
             usuarioType = type;
             break;
-          };
+          }
         } catch (err) {
-          console.error('Não foi possivel efetuar login');
+          console.error('Não foi possível efetuar login com:', url);
         }
       }
 
-      // se response não for real
       if (!response || !response.data?.token) {
         toast.error('Usuário ou senha incorretos');
         return;
       }
 
-      // armazenando meu localStorage
+      toast.success('Login efetuado com sucesso!');
+
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('usuarioType', usuarioType);
 
-      // envio com sucesso
-      toast.success('Login efetuado com sucesso!!!');
-      console.log(response.data);
-
-
-      // traçando as rotas para cada user
-      if (usuarioType === 'admin') {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (usuarioType === 'admin') {
           router.push('/DashboardAdm');
-        }, 500)
-      } else if (usuarioType === 'responsavel') {
-        setTimeout(() => {
-          router.push('/DashboardResponsavel');
-        }, 500)
-      } else if (usuarioType === 'aluno') {
-        setTimeout(() => {
-          router.push('/DashboardAluno');
-        }, 500)
-      }
+        } else if (usuarioType === 'responsavel') {
+          router.push('/dashboardResponsavel');
+        } else if (usuarioType === 'aluno') {
+          router.push('/dashboardAluno');
+        }
+      }, 300);
 
-      // tratamento de erros
     } catch (err) {
       const message = get(err, 'response.data.message', '');
 
@@ -134,66 +121,78 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      {/* Vídeo de fundo */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-40"
       >
         <source src="/login/bg-login.mp4" type="video/mp4" />
         Seu navegador não suporta vídeo.
       </video>
-
-      {/* Camada de sobreposição com degradê */}
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/70 to-blue-900/70 z-0" />
-
-      {/* Conteúdo principal */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+<<<<<<< HEAD
 <<<<<<< HEAD
      <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
         <Link href="/"><img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" /></Link>
     </div>
 =======
+=======
+>>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
         <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
-          <img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 sm:w-75 sm:h-50" />
+          <Link href="/">
+            <img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" />
+          </Link>
         </div>
+<<<<<<< HEAD
 >>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
+=======
+>>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
 
-        <div className="bg-black/50 border border-gray-300 rounded-xl p-6 sm:p-8 w-full max-w-sm text-white shadow-lg">
-          <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+        <div className="bg-slate-800/70 backdrop-blur-md border border-slate-700 rounded-xl pt-20 pb-8 px-6 sm:px-10 w-full max-w-sm text-white shadow-2xl">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-sky-400">Bem-vindo(a)!</h1>
+            <p className="text-slate-300 mt-2">Acesse sua conta para continuar</p>
+          </div>
 
-          <form className="space-y-4"
-            onSubmit={handleSubmit}>
-
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm font-semibold mb-1">CPF</label>
+              <label htmlFor="cpf" className="block text-sm font-medium text-slate-300 mb-2">CPF</label>
               <input
+                id="cpf"
+                name="cpf"
                 type="text"
                 placeholder="000.000.000-00"
                 value={cpf}
                 onChange={e => setCpf(formatarCPF(e.target.value))}
                 maxLength={14}
-                className="w-full px-4 py-2 rounded-md border border-gray-400 bg-transparent placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-[#5c83ff]"
+                className="w-full px-4 py-3 rounded-lg bg-slate-700/60 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-1">Senha</label>
+              <label htmlFor="senha" className="block text-sm font-medium text-slate-300 mb-2">Senha</label>
               <input
+                id="senha"
+                name="senha"
                 type="password"
+                placeholder="Sua senha"
                 value={senha}
                 onChange={e => setSenha(e.target.value)}
-                className="w-full px-4 py-2 rounded-md border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5c83ff]"
+                className="w-full px-4 py-3 rounded-lg bg-slate-700/60 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full mt-4 py-2 rounded-md bg-[#3a5dbf] hover:bg-[#2d50a0] transition text-white font-bold border border-gray-300 cursor-pointer"
+              disabled={loading}
+              className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-all
+                bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700
+                focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-800
+                disabled:opacity-60 disabled:cursor-not-allowed ${loading ? 'animate-pulse' : ''}`}
             >
-              {/* mudar estado do envio, apenas front-end nada demais */}
               {loading ? 'Logando...' : 'Login'}
             </button>
           </form>

@@ -41,6 +41,9 @@ export default function RootLayout({ children }) {
     <html lang="pt-br">
       <body
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
         className={`${geistSans.variable} ${geistMono.variable} ${archivoBlack.variable}`}> 
 
         {/* 
@@ -66,12 +69,15 @@ export default function RootLayout({ children }) {
         {/* </div> */}
 
         {/* <Toaster
+<<<<<<< HEAD
 =======
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
        {children}
         <Toaster
 >>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
+=======
+>>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
           position="top-right"
           theme="dark"
           richColors
@@ -87,12 +93,18 @@ export default function RootLayout({ children }) {
             duration: 3000,
           }}
 <<<<<<< HEAD
+<<<<<<< HEAD
         /> */}
         <Footer/>
 
 =======
         />
 >>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
+=======
+        /> */}
+        <Footer/>
+
+>>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
       </body>
     </html>
   );

@@ -39,6 +39,11 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
+            setCPF('');
+            setNome('');
+            setSenha('');
+            setCpfResponsavel('');
+            onClose();
         }
     };
 
@@ -84,6 +89,12 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                 if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
                 console.log('Dados recebidos: ', response);
                 toast.success('Aluno cadastrado com sucesso.');
+
+                setCPF('');
+                setNome('');
+                setSenha('');
+                setCpfResponsavel('');
+                onClose();
             } catch (err) {
 
                 // verificações enviadas ao back-end

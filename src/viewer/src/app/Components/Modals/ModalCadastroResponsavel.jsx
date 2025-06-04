@@ -38,6 +38,10 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
+            setCPF('');
+            setNome('');
+            setSenha('');
+            onClose();
         }
     };
 
@@ -83,6 +87,11 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
             if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
             toast.success('Responsável cadastrado com sucesso.');
             console.log('Dados enviados: ', response)
+
+            setCPF('');
+            setNome('');
+            setSenha('');
+            onClose();
 
         } catch (err) {
             console.error(err);

@@ -1,113 +1,76 @@
 'use client';
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from 'sonner';
-import { BsArrowLeftCircle, BsSearch } from "react-icons/bs";
+import { BsArrowLeftCircle } from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import { IoLogOut, IoChatboxEllipses } from "react-icons/io5";
 import { MdOutlineSupportAgent } from "react-icons/md";
 
 export default function Sidebar() {
-  const [open, setOpen] = useState(false);
-  const [menuAtivo, setMenuAtivo] = useState("Dashboard");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [mostrar, setMostrar] = useState(false); // controla se a sidebar está expandida ou contraída
+  const [abaAtiva, setAbaAtiva] = useState("Dashboard"); // controla qual aba está ativa
+  const router = useRouter();
 
-  const menus = [
+  // cores e estilos reutilizáveis com base na paleta do layout
+  const corFundo = "bg-slate-800";
+  const corBorda = "border-slate-700";
+  const textoNormal = "text-slate-300";
+  const textoHover = "text-white";
+  const textoDestaque = "text-sky-400";
+  const fundoAtivo = "bg-sky-600/90";
+  const textoAtivo = "text-white";
+  const iconeNormal = "text-slate-400";
+  const iconeAtivo = "text-white";
+  const iconeHover = "text-sky-400";
+
+  const itensMenu = [
     { title: "Dashboard", icon: <RiDashboardFill /> },
     { title: "ChatBox", icon: <IoChatboxEllipses />, spacing: true },
     { title: "Suporte", icon: <MdOutlineSupportAgent /> },
-
   ];
 
-  // filtrar menus
-  const filteredMenus = menus.filter(menu =>
-    menu.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // função de logout limpa o token e redireciona para login
+  const logout = () => {
+    localStorage.removeItem('token');
+    toast.success('Logout realizado com sucesso!');
+    setTimeout(() => {
+      router.push('/login');
+    }, 300);
+  };
+
+  const sombraCustom = "shadow-[3px_3px_0px_#1e293b]"; // sombra customizada para destacar a sidebar
 
   return (
-    <div className={`bg-gradient-to-br from-gray-900 to-gray-800 h-screen p-5 pt-8 flex flex-col justify-between ${open ? "w-72" : "w-20"} duration-300 relative shadow-2xl`}>
-      {/* botão de toggle */}
-      <BsArrowLeftCircle
-        className={`text-white text-3xl bg-gray-800 rounded-full absolute -right-3 top-9 border-2 border-gray-700 cursor-pointer hover:bg-gray-700 hover:scale-110 transition-all ${!open && "rotate-180"}`}
-        onClick={() => setOpen(!open)}
-      />
-
-
+    <div className={`relative ${corFundo} h-screen p-5 pt-8 flex flex-col justify-between ${mostrar ? "w-72" : "w-20"} duration-300 border-r ${corBorda} ${sombraCustom}`}>
+      {/* botão de expandir/recolher a sidebar */}
+      <BsArrowLeftCircle className={`absolute cursor-pointer -right-3.5 top-9 z-10 text-3xl ${textoDestaque} bg-slate-900 rounded-full border-2 ${corBorda} hover:bg-slate-700 hover:text-sky-300 hover:scale-105 active:scale-100 transition-all duration-200 ${!mostrar && "rotate-180"}`} onClick={() => setMostrar(!mostrar)} />
+      
       <div>
-        {/* logo ee titulo */}
-        <div className="flex items-center gap-3 pb-6 border-b border-gray-700">
-          <img
-            src="./logo.png"
-            className={`w-10 h-10 object-contain duration-500 ${open && "rotate-[360deg]"}`}
-            alt="Logo"
-          />
-          <h1 className={`text-white text-2xl font-bold duration-200 ${!open && "scale-0"}`}>DASHBOARD</h1>
+        {/* logo e nome do painel */}
+        <div className={`flex items-center gap-x-3 pb-5 mb-5 border-b ${corBorda}`}>
+          <img src="./logo.png" className={`w-10 h-10 object-contain rounded-full bg-slate-700 p-0.5 border-2 border-sky-500 transition-all duration-500 ${mostrar ? "rotate-[360deg]" : "mx-auto"} ${!mostrar && "w-10 h-10"}`} alt="Logo Plataforma" />
+          <h1 className={`text-white text-xl font-bold uppercase tracking-wider transition-all duration-300 ease-out ${!mostrar && "opacity-0 scale-0 w-0"}`}>painel</h1>
         </div>
 
-        {/* barra de busca só quando estiver expandido */}
-        {open && (
-          <div className="relative mt-6 mb-4">
-            <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-gray-700 text-white pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400"
-            />
-          </div>
-        )}
-
-        {/* Menus */}
-        <ul className="pt-2">
-          {filteredMenus.map((menu, index) => (
-            <li
-              key={index}
-              title={!open ? menu.title : ""}
-              onClick={() => setMenuAtivo(menu.title)}
-              className={`flex items-center gap-4 cursor-pointer text-sm p-3 rounded-lg transition-all hover:bg-blue-900 hover:pl-4 ${menu.spacing ? "mt-4" : "mt-1"
-                } ${menuAtivo === menu.title
-                  ? "bg-blue-900 text-white border-l-4 border-blue-500 pl-4 font-semibold"
-                  : "text-gray-300"
-                }`}
-            >
-              <span className={`text-xl ${menuAtivo === menu.title ? "text-blue-600" : "text-gray-400"}`}>
-                {menu.icon}
-              </span>
-              <span className={`text-base transition-all ${!open && "hidden"}`}>
-                {menu.title}
-              </span>
+        {/* menu lateral com abas */}
+        <ul className="pt-1">
+          {itensMenu.map((item, index) => (
+            <li key={index} title={!mostrar ? item.title : ""} onClick={() => setAbaAtiva(item.title)} className={`group flex items-center gap-x-3.5 cursor-pointer p-2.5 rounded-md ${textoNormal} text-sm font-medium transition-all duration-150 ease-in-out hover:bg-slate-700/70 ${abaAtiva !== item.title && `hover:${textoHover}`} ${item.spacing ? "mt-4 mb-1" : "my-1"} ${abaAtiva === item.title ? `${fundoAtivo} ${textoAtivo} font-semibold shadow-sm shadow-sky-800/50` : ""}`}>
+              {/* ícone do item */}
+              <span className={`text-xl transition-colors duration-150 ${abaAtiva === item.title ? iconeAtivo : iconeNormal} group-hover:${iconeHover}`}>{item.icon}</span>
+              {/* texto do item */}
+              <span className={`text-base whitespace-nowrap transition-opacity duration-200 ${!mostrar && "opacity-0 scale-0 w-0 h-0 absolute"}`}>{item.title}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Bottom section */}
-      <div className="pb-4 border-t border-gray-700 pt-4">
-        {/* nav perfil */}
-        {open && (
-          <div className="flex items-center gap-3 mb-4 p-2 rounded-lg hover:bg-gray-700/50 cursor-pointer transition-all">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
-              U
-            </div>
-            <div className={`transition-all ${!open && "hidden"}`}>
-              <p className="text-white font-medium">Usuário</p>
-              <p className="text-gray-400 text-xs">Admin</p>
-            </div>
-          </div>
-        )}
-
-        {/* Logout */}
-        <div
-          title={!open ? "Logout" : ""}
-          className="flex items-center gap-4 cursor-pointer text-sm p-3 rounded-lg transition-all hover:bg-red-500/20 hover:text-red-400 group"
-          onClick={() => toast.success('Logout realizado com sucesso!')}
-        >
-          <span className="text-xl text-red-400 group-hover:scale-110 transition-transform">
-            <IoLogOut />
-          </span>
-          <span className={`text-base transition-all ${!open && "hidden"}`}>
-            Sair
-          </span>
+      {/* botão de logout */}
+      <div className={`pb-3 border-t ${corBorda} pt-4 mt-6`}>
+        <div title={!mostrar ? "Sair" : ""} onClick={logout} className="group flex items-center gap-x-3.5 cursor-pointer p-2.5 rounded-md text-red-400 text-sm font-medium transition-all duration-150 ease-in-out hover:bg-red-700/30 hover:text-red-300">
+          <span className="text-xl text-red-500 group-hover:text-red-400 transition-colors duration-150"><IoLogOut /></span>
+          <span className={`text-base whitespace-nowrap transition-opacity duration-200 ${!mostrar && "opacity-0 scale-0 w-0 h-0 absolute"}`}>sair</span>
         </div>
       </div>
     </div>
