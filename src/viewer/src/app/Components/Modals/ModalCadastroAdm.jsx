@@ -56,7 +56,7 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // maior que 6
+    // maior que 6 e menor que 255
     function validarSenha(senha) {
         return senha.length >= 6 && senha.length <= 255;
     }
@@ -99,13 +99,13 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
         }
 
         if (!validarCPF(cpf)) {
-            toast.error('CPF inválido');
+            toast.error('CPF inválido.');
             formsErrors = true;
             return;
         }
 
         if (!validarSenha(senha)) {
-            toast.error('Senha deve conter entre 6 e 255 caracteres');
+            toast.error('Senha deve conter entre 6 e 255 caracteres.');
             formsErrors = true;
         }
         
@@ -175,7 +175,7 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
 
                 <form className="flex flex-col gap-3 sm:gap-5" onSubmit={handleSubmit}>
                     <div className="flex flex-col">
-                        <label htmlFor="nome" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome</label>
+                        <label htmlFor="nome" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome Completo</label>
                         <input
                             id="nome"
                             type="text"

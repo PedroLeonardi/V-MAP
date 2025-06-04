@@ -122,7 +122,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
 
                 <form className="flex flex-col gap-3 sm:gap-5" onSubmit={handleSubmit}>
                     <div className="flex flex-col">
-                        <label htmlFor="nome" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome</label>
+                        <label htmlFor="nome" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome Completo</label>
                         <input
                             id="nome"
                             type="text"
