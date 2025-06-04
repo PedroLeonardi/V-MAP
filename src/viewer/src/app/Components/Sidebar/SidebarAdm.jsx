@@ -42,19 +42,19 @@ export default function Sidebar() {
   const sombraCustom = "shadow-[3px_3px_0px_#1e293b]"; // sombra customizada para destacar a sidebar
 
   return (
-    <div className={`relative ${corFundo} h-screen p-5 pt-8 flex flex-col justify-between ${mostrar ? "w-72" : "w-20"} duration-300 border-r ${corBorda} ${sombraCustom}`}>
+    <div className={`relative ${corFundo} h-screen p-5 pt-10 flex flex-col justify-between ${mostrar ? "w-90" : "w-20"} duration-300 border-r ${corBorda} ${sombraCustom}`}>
       {/* botão de expandir/recolher a sidebar */}
-      <BsArrowLeftCircle className={`absolute cursor-pointer -right-3.5 top-9 z-10 text-3xl ${textoDestaque} bg-slate-900 rounded-full border-2 ${corBorda} hover:bg-slate-700 hover:text-sky-300 hover:scale-105 active:scale-100 transition-all duration-200 ${!mostrar && "rotate-180"}`} onClick={() => setMostrar(!mostrar)} />
+      <BsArrowLeftCircle className={`absolute cursor-pointer -right-3.5 top-9 z-10 text-3xl ${textoDestaque} bg-slate-900 rounded-full border-2 ${corBorda} hover:bg-slate-700 hover:text-sky-300 hover:scale-105 active:scale-100 transition-all duration-200 rotate-180 ${!mostrar && "rotate-360"}`} onClick={() => setMostrar(!mostrar)} />
       
       <div>
         {/* logo e nome do painel */}
         <div className={`flex items-center gap-x-3 pb-5 mb-5 border-b ${corBorda}`}>
-          <img src="./logo.png" className={`w-10 h-10 object-contain rounded-full bg-slate-700 p-0.5 border-2 border-sky-500 transition-all duration-500 ${mostrar ? "rotate-[360deg]" : "mx-auto"} ${!mostrar && "w-10 h-10"}`} alt="Logo Plataforma" />
-          <h1 className={`text-white text-xl font-bold uppercase tracking-wider transition-all duration-300 ease-out ${!mostrar && "opacity-0 scale-0 w-0"}`}>painel</h1>
+          <img src="./logo.png" className={`w-10 h-10 object-contain rounded-full bg-slate-700 p-0.5 border-2 border-sky-500 transition-all duration-500 ${!mostrar && "w-10 h-10"}`} alt="Logo Plataforma" />
+          <h1 className={`text-white text-4xl ml-2 font-bold uppercase tracking-wider transition-all duration-300 ease-out ${!mostrar && "opacity-0 scale-0 w-0"}`}>painel</h1>
         </div>
 
         {/* menu lateral com abas */}
-        <ul className="pt-1">
+        <ul className="pt-2">
           {itensMenu.map((item, index) => (
             <li key={index} title={!mostrar ? item.title : ""} onClick={() => setAbaAtiva(item.title)} className={`group flex items-center gap-x-3.5 cursor-pointer p-2.5 rounded-md ${textoNormal} text-sm font-medium transition-all duration-150 ease-in-out hover:bg-slate-700/70 ${abaAtiva !== item.title && `hover:${textoHover}`} ${item.spacing ? "mt-4 mb-1" : "my-1"} ${abaAtiva === item.title ? `${fundoAtivo} ${textoAtivo} font-semibold shadow-sm shadow-sky-800/50` : ""}`}>
               {/* ícone do item */}

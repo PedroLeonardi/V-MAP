@@ -24,7 +24,7 @@ export default function SidebarAluno() {
 
     return (
 
-        <div className={`bg-gradient-to-r from-gray-950 to-gray-900 h-screen p-5 pt-8 flex flex-col justify-between ${open ? "w-100" : "w-20"} duration-300 relative`}>
+        <div className={`bg-gradient-to-r from-gray-950 to-gray-900 h-screen p-5 pt-8 flex flex-col justify-between ${open ? "w-110" : "w-20"} duration-300 relative`}>
             <BsArrowLeftCircle
                 className={`text-white text-3xl bg-black rounded-full absolute -right-3 top-9 border border-gray-800 cursor-pointer rotate-180 ${!open && "rotate-360"}`}
                 onClick={() => setOpen(!open)}

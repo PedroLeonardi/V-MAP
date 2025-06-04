@@ -358,7 +358,7 @@ export default function Home() {
         <textarea
           id="mensagem"
           name="mensagem"
-          placeholder="Escreva aqui sua dúvida ou problema"
+          placeholder="Escreva aqui sua mensagem"
           rows="5"
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 resize-none"
           required

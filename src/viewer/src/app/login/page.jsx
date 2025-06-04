@@ -1,24 +1,11 @@
 'use client';
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { useState } from 'react';
-import Link from 'next/link';
-=======
-import { useState, useEffect } from 'react';
-=======
 
 import { useState } from 'react';
->>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { toast } from 'sonner';
-<<<<<<< HEAD
-import { get } from 'lodash'
->>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
-=======
 import get from 'lodash/get';
->>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
 
 export default function Login() {
   const router = useRouter();
@@ -126,35 +113,23 @@ export default function Login() {
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-40"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-80 brightness-140"
       >
         <source src="/login/bg-login.mp4" type="video/mp4" />
         Seu navegador não suporta vídeo.
       </video>
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/70 to-blue-900/70 z-0" />
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-<<<<<<< HEAD
-<<<<<<< HEAD
-     <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
-        <Link href="/"><img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" /></Link>
-    </div>
-=======
-=======
->>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
         <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
           <Link href="/">
             <img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" />
           </Link>
         </div>
-<<<<<<< HEAD
->>>>>>> 9a1e555a0f52fbe401fbeea829a627dcb55391d6
-=======
->>>>>>> 8015950859231636b5bfc4bcb470f47bae0f296f
 
-        <div className="bg-slate-800/70 backdrop-blur-md border border-slate-700 rounded-xl pt-20 pb-8 px-6 sm:px-10 w-full max-w-sm text-white shadow-2xl">
+        <div className="bg-slate-800/70 backdrop-blur-md border border-slate-700 rounded-xl pt-10 pb-10 px-6 sm:px-10 w-full max-w-md text-white shadow-2xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-sky-400">Bem-vindo(a)!</h1>
-            <p className="text-slate-300 mt-2">Acesse sua conta para continuar</p>
+            <h1 className="text-3xl font-bold text-sky-400 pb-10">Bem-vindo(a)!</h1>
+            <p className="text-slate-300 -mt-6">Acesse sua conta para continuar</p>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>

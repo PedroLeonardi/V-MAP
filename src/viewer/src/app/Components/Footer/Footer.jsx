@@ -8,7 +8,7 @@ export default function Footer() {
             <img 
               src="./Logo.png" 
               alt="Logo" 
-              className="h-20 w-18 mr-3"
+              className="h-24 w-18 mr-3"
             />
             <span className="text-2xl font-bold text-white">
               VMAP
