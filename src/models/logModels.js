@@ -9,7 +9,7 @@ const knex = knexInstance;
 const createLogOnibus = async (cordenadas) => {
     try {
         const sendLogOnibus = knex('Log_onibus').insert({
-            localizacao: `ST_GeomFromText('POINT(${cordenadas.localizacao[0]} ${cordenadas.localizacao[1]})')`,
+            localizacao: knex.raw(`ST_GeomFromText('POINT(${cordenadas.localizacao[0]} ${cordenadas.localizacao[1]})', 4326)` ),
             id_rota_onibus: cordenadas.id_rota_onibus
         })
 
