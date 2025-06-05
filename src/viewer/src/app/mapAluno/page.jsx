@@ -19,7 +19,7 @@ useEffect(()=> {
 
   setCpf_user(localStorage.getItem("cpf_User"))
   let local = JSON.parse(localStorage.getItem('currentLocation'));
-  setCoordenada
+  setCoordenada(local)
 
   
 }, [])
