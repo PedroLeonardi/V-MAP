@@ -23,9 +23,18 @@ export default function Login() {
     return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   }
 
-  async function handleSubmit(e)  {
+  function formatarCPF(valor) {
+    valor = valor.replace(/\D/g, '');
+    if (valor.length <= 3) return valor;
+    if (valor.length <= 6) return valor.replace(/(\d{3})(\d)/, '$1.$2');
+    if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
+    return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+
 
     if (!cpf.trim() || !senha.trim()) {
       toast.error('Preencha todos os campos.');

@@ -8,6 +8,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
     const [cpfBusca, setCpfBusca] = useState('');
     const [admin, setAdmin] = useState(null);
     const [nome, setNome] = useState('');
+    const [senha, setSenha] = useState('');
     const [cpf, setCpf] = useState('');
     const [cargo, setCargo] = useState('');
     const [loading, setLoading] = useState(false);
@@ -34,9 +35,12 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
-   
+
+    function validarSenha(senha) {
+        return senha.length >= 6 && senha.length <= 255;
+    }
     const buscarAdmin = async () => {
-       
+
         if (!cpfBusca) return toast.warning('Informe o CPF para buscar.');
 
         try {
@@ -47,9 +51,9 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
             console.log('Administrador encontrado:', adminEncontrado);
 
             setAdmin(adminEncontrado);
-            setCpf(formatarCPF(adminEncontrado.cpf));
             setNome(adminEncontrado.nome);
             setCargo(adminEncontrado.cargo);
+            setSenha(adminEncontrado.senha);
             toast.success('Administrador encontrado!');
         } catch (err) {
             console.error(err);
@@ -64,31 +68,38 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf.trim() || !cargo.trim()) {
+        if (!nome.trim() || !senha.trim() || !cargo.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
+            return;
         }
 
         if (!validarNome(nome)) {
             toast.error('Nome Inválido. O nome deve conter apenas letras e espaços.');
             formsErrors = true;
+            return;
         }
 
+        if (!validarSenha(senha)) {
+            toast.error('Senha deve conter pelo menos 6 caracteres');
+            formsErrors = true;
+            return;
+        }
         if (formsErrors) return;
 
         try {
             setLoading(true);
 
             await axios.put(`http://localhost:3001/admin/${admin.id_admin}`, {
-                cpf,
                 nome,
+                senha,
                 cargo
             });
 
             toast.success('Administrador atualizado com sucesso!');
             setAdmin(null);
             setCpfBusca('');
-            setCpf('');
+            setSenha('');
             setNome('');
             setCargo('');
         } catch (err) {
@@ -109,7 +120,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="p-6 max-w-md w-full mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl shadow-2xl border border-gray-700 relative">
                 <button
                     onClick={onClose}
@@ -148,7 +159,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
 
                             <div className="space-y-3">
                                 <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome Completo</label>
                                     <input
                                         type="text"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -158,12 +169,12 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Senha</label>
                                     <input
-                                        type="text"
+                                        type="password"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={cpf}
-                                        onChange={(e) => setCpf(formatarCPF(e.target.value))}
+                                        value={senha}
+                                        onChange={(e) => setSenha(e.target.value)}
                                         maxLength={14}
                                     />
                                 </div>

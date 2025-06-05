@@ -52,7 +52,7 @@ export default function ModalExcluirMotorista({ isVisible, onClose, onSuccess })
 
     const excluirMotorista = async () => {
         if (!motorista?.id_motorista) {
-            return toast.error('Nenhum responsável selecionado para exclusão.');
+            return toast.error('Nenhum motorista selecionado para exclusão.');
         }
 
         try {
