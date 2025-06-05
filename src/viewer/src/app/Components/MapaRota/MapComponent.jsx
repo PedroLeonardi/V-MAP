@@ -15,10 +15,6 @@ export default function MapComponent({ selectedIndex }) {
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [idOnibusAtual, setIdOnibusAtual] = useState([]);
 
-  const limite = [
-    [-48.68449, -20.92510],
-    [-48.60369, -20.89062],
-  ];
 
   // 1. Carrega rota da API
   useEffect(() => {
@@ -50,7 +46,6 @@ export default function MapComponent({ selectedIndex }) {
       pitch: 0,
       bearing: -10,
       center: centerInicial,
-      maxBounds: limite,
       style: 'mapbox://styles/phleonardi/cmazfo0p4008y01sd73upb4xx',
     });
 

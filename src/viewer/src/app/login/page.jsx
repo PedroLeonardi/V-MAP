@@ -67,12 +67,14 @@ export default function Login() {
 
       let response;
       let usuarioType = '';
+      let cpf_User = ''
 
       for (const { url, type } of endPoints) {
         try {
           response = await axios.post(url, { cpf, senha });
           if (response.data?.token) {
             usuarioType = type;
+            cpf_User = cpf;
             break;
           }
         } catch (err) {
@@ -89,6 +91,7 @@ export default function Login() {
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('usuarioType', usuarioType);
+      localStorage.setItem('cpf_User', cpf_User);
 
       setTimeout(() => {
         if (usuarioType === 'admin') {
