@@ -42,7 +42,7 @@ export default function Sidebar() {
   const sombraCustom = "shadow-[3px_3px_0px_#1e293b]"; // sombra customizada para destacar a sidebar
 
   return (
-    <div className={`relative ${corFundo} h-screen p-5 pt-10 flex flex-col justify-between ${mostrar ? "w-90" : "w-20"} duration-300 border-r ${corBorda} ${sombraCustom}`}>
+    <div className={`hidden sm:flex relative ${corFundo} h-screen p-5 pt-10 flex flex-col justify-between ${mostrar ? "w-90" : "w-20"} duration-300 border-r ${corBorda} ${sombraCustom}`}>
       {/* botão de expandir/recolher a sidebar */}
       <BsArrowLeftCircle className={`absolute cursor-pointer -right-3.5 top-9 z-10 text-3xl ${textoDestaque} bg-slate-900 rounded-full border-2 ${corBorda} hover:bg-slate-700 hover:text-sky-300 hover:scale-105 active:scale-100 transition-all duration-200 rotate-180 ${!mostrar && "rotate-360"}`} onClick={() => setMostrar(!mostrar)} />
       

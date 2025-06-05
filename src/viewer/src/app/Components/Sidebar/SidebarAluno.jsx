@@ -18,13 +18,13 @@ export default function SidebarAluno() {
     // map items
     const menus = [
         { title: "Dashboard", icon: <RiDashboardFill />, link: "./DashboardAluno" },
-        { title: "Minhas informações", icon: <FaGraduationCap />, link: "./tes2" },
-        { title: "Rota", icon: <MdDirectionsBus />, link: "./tes3" },
+        { title: "Minhas informações", icon: <FaGraduationCap />, link: "./AlunoPerf" },
+        { title: "Rota", icon: <MdDirectionsBus />, link: "./" },
     ];
 
     return (
 
-        <div className={`bg-gradient-to-r from-gray-950 to-gray-900 h-screen p-5 pt-8 flex flex-col justify-between ${open ? "w-110" : "w-20"} duration-300 relative`}>
+        <div className={`hidden sm:flex bg-gradient-to-r from-gray-950 to-gray-900 h-screen p-5 pt-8 flex flex-col justify-between ${open ? "w-110" : "w-20"} duration-300 relative`}>
             <BsArrowLeftCircle
                 className={`text-white text-3xl bg-black rounded-full absolute -right-3 top-9 border border-gray-800 cursor-pointer rotate-180 ${!open && "rotate-360"}`}
                 onClick={() => setOpen(!open)}

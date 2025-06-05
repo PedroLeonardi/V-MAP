@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-t from-gray-900 via-gray-800 to-gray-900 text-white px-6 py-12 border-t border-gray-700">
+    <footer className="hidden lg:flex w-full bg-gradient-to-t from-gray-900 via-gray-800 to-gray-900 text-white px-6 py-12 border-t border-gray-700">
       <div className="max-w-7xl mx-auto grid gap-8 md:grid-cols-4 lg:grid-cols-4">
         {/* Logo e descrição */}
         <div className="md:col-span-2 lg:col-span-2">
