@@ -21,8 +21,8 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
         return valor
     }
 
-       // validar cpf real segundo a RF
-       function validarCPF(cpf) {
+    // validar cpf real segundo a RF
+    function validarCPF(cpf) {
         cpf = cpf.replace(/\D/g, '');
 
         if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -47,9 +47,9 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // maior que 6
+    // maior que 6 e menor que 255
     function validarSenha(senha) {
-        return senha.length >= 6;
+        return senha.length >= 6 && senha.length <= 255;
     }
 
     // modal
@@ -85,14 +85,14 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
         }
 
         // valid
-        if(!validarCPF(cpf_responsavel)){
+        if (!validarCPF(cpf_responsavel)) {
             toast.error('CPF inválido');
             formsErrors = true;
         }
 
         // validação 
         if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
+            toast.error('Senha deve conter entre 6 e 255 caracteres.');
             formsErrors = true;
         }
 

@@ -48,10 +48,11 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // maior que 6
+    // maior que 6 e menor que 255
     function validarSenha(senha) {
-        return senha.length >= 6;
+        return senha.length >= 6 && senha.length <= 255;
     }
+
 
     // modal
     if (!isVisible) return null;
@@ -90,8 +91,8 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
 
-        if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
+      if (!validarSenha(senha)) {
+            toast.error('Senha deve conter entre 6 e 255 caracteres.');
             formsErrors = true;
         }
 

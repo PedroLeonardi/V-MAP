@@ -120,7 +120,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="p-6 max-w-md w-full mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl shadow-2xl border border-gray-700 relative">
                 <button
                     onClick={onClose}
@@ -159,7 +159,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
 
                             <div className="space-y-3">
                                 <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome Completo</label>
                                     <input
                                         type="text"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
