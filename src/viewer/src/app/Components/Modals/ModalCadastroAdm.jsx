@@ -98,11 +98,11 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
 
-        if (!validarCPF(cpf)) {
-            toast.error('CPF inválido.');
-            formsErrors = true;
-            return;
-        }
+        // if (!validarCPF(cpf)) {
+        //     toast.error('CPF inválido.');
+        //     formsErrors = true;
+        //     return;
+        // }
 
         if (!validarSenha(senha)) {
             toast.error('Senha deve conter entre 6 e 255 caracteres.');

@@ -80,11 +80,11 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
         
-        if(!validarCPF(cpf_aluno)){
-            toast.error('CPF inválido');
-            formsErrors = true;
-            return;
-        }
+        // if(!validarCPF(cpf_aluno)){
+        //     toast.error('CPF inválido');
+        //     formsErrors = true;
+        //     return;
+        // }
 
         if (!validarNome(nome)) {
             toast.error('Nome Inválido. O nome deve conter apenas letras e espaços.');

@@ -170,8 +170,9 @@ export default function MapComponent({ selectedIndex }) {
     const dataLog = {
       localizacao: routeCoordinates[selectedIndex],
       id_rota_onibus: idOnibusAtual[selectedIndex]
+      
     };
-  
+  //  console.log("-----------------------------------------", dataLog)
     axios.post('http://localhost:3001/log/onibus', dataLog)
       .then(() => console.log("Log enviado"))
       .catch(err => console.error("Erro ao enviar log:", err));

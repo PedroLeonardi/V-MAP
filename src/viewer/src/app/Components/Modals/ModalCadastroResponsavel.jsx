@@ -85,10 +85,10 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
         }
 
         // valid
-        if (!validarCPF(cpf_responsavel)) {
-            toast.error('CPF inválido');
-            formsErrors = true;
-        }
+        // if (!validarCPF(cpf_responsavel)) {
+        //     toast.error('CPF inválido');
+        //     formsErrors = true;
+        // }
 
         // validação 
         if (!validarSenha(senha)) {
