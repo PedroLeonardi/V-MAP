@@ -13,10 +13,11 @@ import { IoIosMail } from "react-icons/io";
 import { TbNumber } from "react-icons/tb";
 
 // components
-import DashboardCard from '../Components/DashboardCard/Card'; // Supondo que aceita props de estilo
+import DashboardCard from '../Components/DashboardCard/Card';
 import ProtegendoRota from '../Components/ProtegendoRota/ProtectRoute';
+import ChatBox from '../Components/Chatbot/Chatbot'
 
-// modals - Precisam de estilização interna consistente
+// modals
 import ModalCadastro from '../Components/Modals/ModalCadastroAluno';
 import ModalRelatorioAlunos from '../Components/Modals/ModalRelatorioAlunos';
 import ModalUpdateAluno from '../Components/Modals/ModalUpdateAluno';
@@ -36,6 +37,7 @@ import ModalUpdateMotorista from '../Components/Modals/ModalUpdateMotorista';
 import ModalContatoAlunos from '../Components/Modals/ModalContato';
 import ModalRelatorioVeiculo from '../Components/Modals/ModalRelatorioVeiculo';
 import ModalRelatorioRotas from '../Components/Modals/ModalRelatorioRota';
+import ModalHistoricoAdm from "../Components/Modals/ModalHistoricoAdm";
 
 // hooks
 import useFetchTotalAlunos from '../Hooks/TotalAlunos';
@@ -45,8 +47,8 @@ import useFetchTotalAdm from '../Hooks/TotalAdm';
 import useFetchTotalMotorista from "../Hooks/TotalMotoristas";
 import useFetchTotalVeiculo from "../Hooks/TotalVeiculos";
 import useFetchTotalRotas from "../Hooks/TotalRotas";
-import Sidebar from "../Components/Sidebar/SidebarAdm"; // Assumindo estilizado
-import Footer from "../Components/Footer/Footer"; // Assumindo estilizado
+import Sidebar from "../Components/Sidebar/SidebarAdm";
+import Footer from "../Components/Footer/Footer";
 
 const menu = [
   { nome: 'Administradores', icon: <MdPeopleAlt size={18} />, sectionId: 'Administradores' },
@@ -58,19 +60,18 @@ const menu = [
   { nome: 'Contatos', icon: <IoIosMail size={18} />, sectionId: 'Contatos' },
 ];
 
-// Estilos para DashboardCard (a serem passados como props)
-const cardBaseStyle = "bg-slate-800/80 border border-slate-700 rounded-xl p-5 shadow-lg hover:shadow-sky-700/20 transition-all duration-200 flex flex-col min-h-[180px] sm:min-h-[200px]"; // Adicionado min-h para consistência
+const cardBaseStyle = "bg-slate-800/80 border border-slate-700 rounded-xl p-5 shadow-lg hover:shadow-sky-700/20 transition-all duration-200 flex flex-col min-h-[180px] sm:min-h-[200px]";
 const cardActionStyle = "cursor-pointer hover:border-sky-500 active:bg-slate-700/70";
 const cardIconColor = "text-sky-400";
 const cardIconSize = 30;
 const cardTitleStyle = "font-semibold text-slate-100 text-base sm:text-lg mb-1 mt-2";
-const cardDescriptionStyle = "text-slate-400 text-xs sm:text-sm flex-grow"; // flex-grow para empurrar conteúdo para baixo se necessário
+const cardDescriptionStyle = "text-slate-400 text-xs sm:text-sm flex-grow";
 const cardValueStyle = `font-bold text-2xl sm:text-3xl mb-1 ${cardIconColor}`;
 
 export default function PageAdmin() {
   const [abaAtiva, setAbaAtiva] = useState('Administradores');
 
-  // modal states (mantidos como antes)
+  // modal states
   const [showModalCadastro, setShowModalCadastro] = useState(false);
   const [showModalRelatorioAlunos, setShowModalRelatorioAlunos] = useState(false);
   const [showModalUpdateAluno, setShowModalUpdateAluno] = useState(false);
@@ -90,8 +91,9 @@ export default function PageAdmin() {
   const [showModalRelatorioContatos, setShowModalRelatorioContatos] = useState(false);
   const [showModalRelatorioVeiculos, setShowModalRelatorioVeiculos] = useState(false);
   const [showModalRelatorioRotas, setShowModalRelatorioRotas] = useState(false);
+  const [showModalHistorico, setShowModalHistorico] = useState(false);
 
-  // data hooks (mantidos como antes)
+  // data hooks
   const { totalAlunos, refetchAlunos } = useFetchTotalAlunos();
   const { totalResponsaveis, refetchResponsaveis } = useFetchTotalResponsaveis();
   const { totalAdm, refetchAdm } = useFetchTotalAdm();
@@ -100,7 +102,7 @@ export default function PageAdmin() {
   const { totalRotas, refetchRotas } = useFetchTotalRotas();
   const { dataContato, totalContato, refetchContato } = useFetchTotalContatos();
 
-  // data handlers (mantidos como antes)
+  // data handlers
   const handleAluno = async () => { await refetchAlunos(); };
   const handleResponsaveis = async () => { await refetchResponsaveis(); };
   const handleAdm = async () => { await refetchAdm(); };
@@ -125,12 +127,12 @@ export default function PageAdmin() {
 
   return (
     <ProtegendoRota requiredRole='admin'>
-     <div className="flex min-h-screen w-full bg-slate-900"> 
+      <div className="flex min-h-screen w-full bg-slate-900"> 
         <Sidebar /> 
 
         <div className='flex-1 min-h-screen text-slate-300 p-4 sm:p-6 lg:p-8 font-sans overflow-y-auto'>
           <header className="mb-8">
-            <h1 className='font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white underline underline-offset-6 font-mono '>Painel de Coordenação</h1>
+            <h1 className='font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white underline underline-offset-6 font-mono'>Painel de Coordenação</h1>
           </header>
 
           <nav className='mb-10 pb-4 border-b border-slate-700'>
@@ -149,7 +151,7 @@ export default function PageAdmin() {
                     <span className={`text-lg ${abaAtiva === item.sectionId ? 'text-white' : 'text-slate-400 group-hover:text-sky-400 transition-colors'}`}>
                         {item.icon}
                     </span>
-                     {item.nome}
+                    {item.nome}
                   </button>
                 </li>
               ))}
@@ -200,14 +202,22 @@ export default function PageAdmin() {
                     onClick={() => setShowModalExcluirAdmin(true)}
                     action
                   />
+                  <DashboardCard
+                    cardStyle={`${cardBaseStyle} ${cardActionStyle} hover:border-red-500 group`} iconColor="text-red-400 group-hover:text-red-500" titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle}
+                    icon={<PiTrashBold size={cardIconSize} />}
+                    title="Historico"
+                    description="Visualize o historico de alterações"
+                    onClick={() => setShowModalHistorico(true)}
+                    action
+                  />
                 </div>
                 <ModalCadastroAdmin isVisible={showModalCadastroAdmin} onClose={() => setShowModalCadastroAdmin(false)} onSuccess={handleAdm} />
                 <ModalUpdateAdmin isVisible={showModalUpdateAdmin} onClose={() => setShowModalUpdateAdmin(false)} />
                 <ModalRelatorioAdm isVisible={showModalRelatorioAdmin} onClose={() => setShowModalRelatorioAdmin(false)} />
                 <ModalExcluirAdm isVisible={showModalExcluirAdmin} onClose={() => setShowModalExcluirAdmin(false)} onSuccess={handleAdm} />
+                <ModalHistoricoAdm isVisible={showModalHistorico} onClose={() => setShowModalHistorico(false)} />
               </>
             )}
-
             {abaAtiva === 'Alunos' && (
               <>
                 <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-85'>Gerenciamento de Alunos</h2>
@@ -482,6 +492,7 @@ export default function PageAdmin() {
             )}
           </section>
         </div>
+        <ChatBox/>
       </div>
     </ProtegendoRota>
   );
