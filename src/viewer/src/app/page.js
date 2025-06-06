@@ -294,8 +294,6 @@ export default function Home() {
       zIndex: 0,
     }}
   />
-
-  {/* Card amarelo, para ficar em cima do degradê, FAC do site*/}
   <div id="faq" className="relative z-10 max-w-6xl mx-auto bg-yellow-400 text-black rounded-3xl shadow-xl px-6 md:px-20 py-20 mt-[6rem] mb-[6rem]">
     <h2 className="text-4xl md:text-6xl font-bold text-center mb-16">Dúvidas Frequentes</h2>
     <div className="flex flex-col gap-8">

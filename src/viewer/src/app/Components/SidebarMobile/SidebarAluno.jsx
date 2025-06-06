@@ -19,7 +19,7 @@ export default function SidebarAluno() {
   return (
     <div
       className={`
-        fixed bottom-0 left-0 w-full
+        fixed bottom-0 left-0 w-full h-15
         bg-gradient-to-r from-gray-950 to-gray-900
         text-white
         flex justify-around items-center
@@ -28,7 +28,6 @@ export default function SidebarAluno() {
         z-50
       `}
     >
-      {/* Menus */}
       {menus.map((menu, index) => (
         <Link
           key={index}
@@ -40,17 +39,15 @@ export default function SidebarAluno() {
             ${menuAtivo === menu.link ? "text-white font-bold" : "text-gray-400"}
           `}
         >
-          <span className="text-[20px]">{menu.icon}</span>
+          <span className="text-[25px]">{menu.icon}</span>
           <span>{menu.title}</span>
         </Link>
       ))}
-
-      {/* Logout */}
       <button
         onClick={() => toast.success('Logout')}
-        className="flex flex-col items-center justify-center text-md text-red-400 hover:text-white"
+        className="flex flex-col items-center justify-center text-md text-red-400 hover:text-white absolute ml-60"
       >
-        <span className="text-[20px] mb-1"><IoLogOut /></span>
+        <span className="text-[25px]"><IoLogOut /></span>
       </button>
     </div>
   );
