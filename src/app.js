@@ -8,6 +8,7 @@ import veiculoRoute from './router/veiculoRoute.js'
 import contatoRoute from './router/contatoRoute.js'
 import rotaRouter from './router/rotaRoute.js'
 import mapaRouter from './router/mapaRoute.js'
+import log from "./router/logRoute.js"
 import cors from 'cors';
 const app = express();
 const port = 3001;
@@ -29,6 +30,7 @@ app.use('/veiculo', veiculoRoute)
 app.use('/contato', contatoRoute)
 app.use('/rota', rotaRouter )
 app.use('/mapa', mapaRouter)
+app.use('/log', log)
 
 // se caso rota nao existir 
 app.use("/", (req,res) => {

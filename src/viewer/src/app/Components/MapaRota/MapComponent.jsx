@@ -13,43 +13,39 @@ export default function MapComponent({ selectedIndex }) {
   const mapRef = useRef(null);
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const limite = [
-    [-48.68449, -20.92510],
-    [-48.60369, -20.89062],
-  ];
+  const [idOnibusAtual, setIdOnibusAtual] = useState([]);
 
-  // 🔹 1. Carrega dados da API /mapa e monta coordenadas
+
+  // 1. Carrega rota da API
   useEffect(() => {
     axios.get('http://localhost:3001/mapa')
       .then((response) => {
         const pontos = response.data.mensagem;
-
         const pontoInicial = [-48.63251, -20.90702];
         const pontoEscola = [-48.65079, -20.92392];
 
-        // Transforma em [[lng, lat], ...]
         const checkpoints = pontos.map(p => [p.longitude, p.latitude]);
         const completa = [pontoInicial, ...checkpoints, pontoEscola];
+        const idOnibus = pontos.map(p => p.rota_id);
 
         setRouteCoordinates(completa);
-        
+        setIdOnibusAtual(idOnibus);
       })
-      .catch(err => {
-        console.error('Erro ao buscar o mapa: ', err);
-      });
+      .catch(err => console.error('Erro ao buscar o mapa: ', err));
   }, []);
 
-  // 🔹 2. Cria o mapa com a rota
+  // 2. Inicializa o mapa
   useEffect(() => {
     if (routeCoordinates.length === 0) return;
+
+    const centerInicial = routeCoordinates[selectedIndex] || routeCoordinates[0];
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       zoom: 15.2,
       pitch: 0,
       bearing: -10,
-      center: routeCoordinates[1],
-      maxBounds: limite,
+      center: centerInicial,
       style: 'mapbox://styles/phleonardi/cmazfo0p4008y01sd73upb4xx',
     });
 
@@ -57,14 +53,14 @@ export default function MapComponent({ selectedIndex }) {
 
     map.on('load', async () => {
       try {
-        // 🔸 Dados dos checkpoints simulando GeoJSON
+        // Dados GeoJSON para checkpoints
         const geoData = {
           type: 'FeatureCollection',
           features: routeCoordinates.slice(1, -1).map((coord, i) => ({
             type: 'Feature',
             properties: {
               nome_rua: `Parada ${i + 1}`,
-              horario: '06:00' // você pode colocar horário real se quiser
+              horario: '06:00'
             },
             geometry: {
               type: 'Point',
@@ -73,18 +69,14 @@ export default function MapComponent({ selectedIndex }) {
           }))
         };
 
-        map.addSource('geojson-data', {
-          type: 'geojson',
-          data: geoData,
-        });
-
-        // 🔸 Criar rota via Directions API
+        // Direções da rota
         const coord_string = routeCoordinates.map(c => c.join(',')).join(';');
         const directionsUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${coord_string}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
         const directionsRes = await fetch(directionsUrl);
         const directionsData = await directionsRes.json();
         const rotas = directionsData.routes[0].geometry;
 
+        // Rota
         map.addSource('rotas', {
           type: 'geojson',
           data: {
@@ -109,6 +101,12 @@ export default function MapComponent({ selectedIndex }) {
           paint: { 'line-color': '#bacafb', 'line-width': 6 },
         });
 
+        // Checkpoints (após a linha)
+        map.addSource('geojson-data', {
+          type: 'geojson',
+          data: geoData,
+        });
+
         map.addLayer({
           id: 'rota_checkpoint',
           type: 'circle',
@@ -121,20 +119,7 @@ export default function MapComponent({ selectedIndex }) {
           },
         });
 
-        // 🔸 Marcador customizado
-        const el = document.createElement('div');
-        el.style.backgroundImage = 'url(https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg)';
-        el.style.width = '32px';
-        el.style.height = '32px';
-        el.style.backgroundSize = 'cover';
-
-        const customMarker = new mapboxgl.Marker(el)
-          .setLngLat(routeCoordinates[selectedIndex])
-          .addTo(map);
-
-        markerRef.current = customMarker;
-
-        // 🔸 Popups
+        // Popups
         const rota_popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false });
 
         map.on('mouseenter', 'rota_checkpoint', (e) => {
@@ -150,6 +135,20 @@ export default function MapComponent({ selectedIndex }) {
         map.on('mouseleave', 'rota_checkpoint', () => {
           rota_popup.remove();
         });
+
+        // Marcador do ônibus
+        const el = document.createElement('div');
+        el.style.backgroundImage = 'url(https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg)';
+        el.style.width = '32px';
+        el.style.height = '32px';
+        el.style.backgroundSize = 'cover';
+
+        const customMarker = new mapboxgl.Marker(el)
+          .setLngLat(centerInicial)
+          .addTo(map);
+
+        markerRef.current = customMarker;
+
       } catch (err) {
         console.error('Erro ao carregar mapa:', err);
       }
@@ -158,12 +157,53 @@ export default function MapComponent({ selectedIndex }) {
     return () => map.remove();
   }, [routeCoordinates]);
 
-  // 🔹 3. Atualiza marcador ao mudar o selectedIndex
+  // 3. Atualiza marcador e envia log
   useEffect(() => {
-    if (markerRef.current && routeCoordinates[selectedIndex]) {
+    if (!routeCoordinates || !routeCoordinates[selectedIndex]) return;
+  
+    // Atualiza marcador
+    if (markerRef.current) {
       markerRef.current.setLngLat(routeCoordinates[selectedIndex]);
     }
+  
+    // Envia log de localização
+    const dataLog = {
+      localizacao: routeCoordinates[selectedIndex],
+      id_rota_onibus: idOnibusAtual[selectedIndex]
+      
+    };
+  //  console.log("-----------------------------------------", dataLog)
+    axios.post('http://localhost:3001/log/onibus', dataLog)
+      // .then(() => console.log("Log enviado"))
+      .catch(err => console.error("Erro ao enviar log:", err));
+  
+    // Salva local no localStorage
+    try {
+      const localizacao = routeCoordinates[selectedIndex];
+      localStorage.setItem("currentLocation", JSON.stringify(localizacao));
+      // console.log("Localização salva no localStorage:", localizacao);
+    } catch (err) {
+      console.error("Erro ao salvar localização:", err);
+    }
+  
+    // Recupera local do localStorage com verificação segura
+    try {
+      const stored = localStorage.getItem("currentLocation");
+      if (stored) {
+        const local = JSON.parse(stored);
+        // console.log("Localização recuperada:", local);
+      } else {
+        // console.log("Nenhuma localização salva no localStorage.");
+      }
+    } catch (err) {
+      console.error("Erro ao recuperar localização:", err);
+    }
   }, [selectedIndex, routeCoordinates]);
+  
 
-  return <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }} />;
+
+  
+
+
+  return <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />;
 }

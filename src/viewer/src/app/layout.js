@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, Archivo_Black } from "next/font/google";
 import Header from "./Components/Header/Header";
 import "./globals.css";
-// import { Toaster } from "sonner";
+import { Toaster } from "sonner";
 // import Header from "./Components/Header/Header";
 // import Sidebar from "./Components/Sidebar/SidebarAdm";
 import Footer from "./Components/Footer/Footer";
@@ -64,7 +64,7 @@ export default function RootLayout({ children }) {
           <main className="flex-1">{children}</main>
         {/* </div> */}
 
-        {/* <Toaster
+        <Toaster
           position="top-right"
           theme="dark"
           richColors
@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
             className: "font-sans text-sm",
             duration: 3000,
           }}
-        /> */}
+        />
         <Footer/>
 
       </body>

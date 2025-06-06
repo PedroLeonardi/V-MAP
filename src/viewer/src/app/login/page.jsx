@@ -23,9 +23,18 @@ export default function Login() {
     return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   }
 
-  async function handleSubmit(e)  {
+  function formatarCPF(valor) {
+    valor = valor.replace(/\D/g, '');
+    if (valor.length <= 3) return valor;
+    if (valor.length <= 6) return valor.replace(/(\d{3})(\d)/, '$1.$2');
+    if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
+    return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+
 
     if (!cpf.trim() || !senha.trim()) {
       toast.error('Preencha todos os campos.');
@@ -58,12 +67,14 @@ export default function Login() {
 
       let response;
       let usuarioType = '';
+      let cpf_User = ''
 
       for (const { url, type } of endPoints) {
         try {
           response = await axios.post(url, { cpf, senha });
           if (response.data?.token) {
             usuarioType = type;
+            cpf_User = cpf;
             break;
           }
         } catch (err) {
@@ -80,10 +91,11 @@ export default function Login() {
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('usuarioType', usuarioType);
+      localStorage.setItem('cpf_User', cpf_User);
 
       setTimeout(() => {
         if (usuarioType === 'admin') {
-          router.push('/DashboardAdm');
+          router.push('/dashboardAdm');
         } else if (usuarioType === 'responsavel') {
           router.push('/dashboardResponsavel');
         } else if (usuarioType === 'aluno') {
