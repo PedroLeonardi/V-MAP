@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
+import ChatBox from "./Components/Chatbot/Chatbot";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -374,6 +375,8 @@ export default function Home() {
   </div>
   </div>
 </section>
+  <ChatBox/>
+
 
 
 
