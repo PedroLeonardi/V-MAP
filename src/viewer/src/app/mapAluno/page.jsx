@@ -39,16 +39,22 @@ useEffect(()=> {
     };
 
     fetchAcaoAluno();
-  }, []);  useEffect(() => {
+  }, []); 
+   useEffect(() => {
     const fetchAcaoAluno = async () => {
       try {
         const response = await axios.get('http://localhost:3001/log/alunoLast/000.000.000-00');
         const acao = response.data.evento;
+
         if (acao === 'subir') {
           setAcaoAluno('descer');
         } else if (acao === 'descer') {
           setAcaoAluno('subir');
         }
+        if (!acao) {
+          setAcaoAluno('subir');
+        }
+        
       } catch (err) {
         console.log('Erro ao buscar ação do aluno:', err);
       }
@@ -83,7 +89,7 @@ useEffect(()=> {
       <div className='h-100 mb-10 w-[50%]'>
       <MapWrapper />
       </div>
-      <button className='bg-red-500 border' onClick={ ()=> {sendLog(), inverterAcao()}} >{acaoAluno}</button>
+      <button className='bg-red-500 border w-50 h-50' onClick={ ()=> {sendLog(), inverterAcao()}} >{acaoAluno}</button>
     </main>
   );
 }
