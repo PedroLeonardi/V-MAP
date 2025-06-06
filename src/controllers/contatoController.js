@@ -1,14 +1,16 @@
 import contato from "../models/contatoModels.js"
 
-const sendMensage = async (req,res)=>{
+const sendMensage = async (req, res) => {
     try {
-        await contato.create(req.body.mensagem)
-        res.status(201).json({mensagem: "Mensagem enviado com sucesso"})
+        console.log("DADOS RECEBIDOS:", req.body); // debug
+        await contato.create(req.body); // <-- Aqui está o ajuste!
+        res.status(201).json({ mensagem: "Mensagem enviada com sucesso" });
     } catch (err) {
-        res.status(500).json({mensagem:"Não foi possivel enviar a mensagem"})
-        console.error("Houve um erro ao envair a mensagem: ",err)
+        console.error("Houve um erro ao enviar a mensagem: ", err);
+        res.status(500).json({ mensagem: "Não foi possível enviar a mensagem" });
     }
-}
+};
+
 
 const readMensage = async (req,res )=> {
     try {
