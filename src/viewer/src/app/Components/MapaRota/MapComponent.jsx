@@ -15,24 +15,32 @@ export default function MapComponent({ selectedIndex }) {
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [idOnibusAtual, setIdOnibusAtual] = useState([]);
 
-
-  // 1. Carrega rota da API
   useEffect(() => {
-    axios.get('http://localhost:3001/mapa')
+    const stored = localStorage.getItem('rotaAtual');
+    if (stored !== null) {
+      const id = Number(stored);
+      setIdOnibusAtual(id);
+    }
+  }, []);
+  
+  useEffect(() => {
+    // Evita fazer a requisição se idOnibusAtual for 0, null, undefined ou qualquer falsy
+    if (idOnibusAtual === null || idOnibusAtual === undefined) return;
+    if (!idOnibusAtual) return;
+  
+    axios.get(`http://localhost:3001/mapa/${idOnibusAtual}`)
       .then((response) => {
         const pontos = response.data.mensagem;
         const pontoInicial = [-48.63251, -20.90702];
         const pontoEscola = [-48.65079, -20.92392];
-
+  
         const checkpoints = pontos.map(p => [p.longitude, p.latitude]);
         const completa = [pontoInicial, ...checkpoints, pontoEscola];
-        const idOnibus = pontos.map(p => p.rota_id);
-
+  
         setRouteCoordinates(completa);
-        setIdOnibusAtual(idOnibus);
       })
       .catch(err => console.error('Erro ao buscar o mapa: ', err));
-  }, []);
+  }, [idOnibusAtual]);
 
   // 2. Inicializa o mapa
   useEffect(() => {
