@@ -29,12 +29,13 @@ export default function MapWrapper() {
 
   return ( 
     <>
-    <div className='mb-10'>
-        <button onClick={() => setSelectedIndex(selectedIndex+1)}>mais</button>
-        <button onClick={() => setSelectedIndex(selectedIndex-1)}>menos</button>
-
-    </div>
+    <div></div>
+<div className="grid grid-cols-[1fr_700px_1fr] gap-4 items-center h-full">
+  <button onClick={() => setSelectedIndex(prev => prev + 1)}>Mais</button>
   <MapComponent selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+  <button onClick={() => setSelectedIndex(prev => prev - 1)}>Menos</button>
+</div>
+    
     </>
   )
 }

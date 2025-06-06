@@ -174,14 +174,14 @@ export default function MapComponent({ selectedIndex }) {
     };
   //  console.log("-----------------------------------------", dataLog)
     axios.post('http://localhost:3001/log/onibus', dataLog)
-      .then(() => console.log("Log enviado"))
+      // .then(() => console.log("Log enviado"))
       .catch(err => console.error("Erro ao enviar log:", err));
   
     // Salva local no localStorage
     try {
       const localizacao = routeCoordinates[selectedIndex];
       localStorage.setItem("currentLocation", JSON.stringify(localizacao));
-      console.log("Localização salva no localStorage:", localizacao);
+      // console.log("Localização salva no localStorage:", localizacao);
     } catch (err) {
       console.error("Erro ao salvar localização:", err);
     }
@@ -191,9 +191,9 @@ export default function MapComponent({ selectedIndex }) {
       const stored = localStorage.getItem("currentLocation");
       if (stored) {
         const local = JSON.parse(stored);
-        console.log("Localização recuperada:", local);
+        // console.log("Localização recuperada:", local);
       } else {
-        console.log("Nenhuma localização salva no localStorage.");
+        // console.log("Nenhuma localização salva no localStorage.");
       }
     } catch (err) {
       console.error("Erro ao recuperar localização:", err);

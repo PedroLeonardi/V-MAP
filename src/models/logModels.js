@@ -44,5 +44,35 @@ const createLogAluno = async (data) => {
 
 }
 
+const readLogAlunos = async () => {
+    try {
+        const dataLogAlunos = await knex('Log_Alunos').select('*')
+        return dataLogAlunos
+    } catch (err) {
+        console.error("Houve um erro ao listar todos os log de alunos: ", err)
+        return []
+    }
+}
+
+const readLogAlunosByCpf = async (cpf_aluno) => {
+    try {
+        const dataLogAlunos = await knex('Log_Alunos').where({cpf_aluno})
+        return dataLogAlunos
+    } catch (err) {
+        console.error("Houve um erro ao listar todos os log de alunos: ", err)
+        return []
+    }
+}
+
+const readLogAlunosLast = async (cpf_aluno) => {
+    try {
+        const dataLogAlunosLast = await knex('log_Alunos').where({cpf_aluno}).orderBy('dataehora', 'desc').limit(1).then(rows => rows[0]);
+        return dataLogAlunosLast 
+    } catch (err) {
+        console.error("Houve um erro ao listar todos os log de alunos: ", err)
+        return []
+    }
+}
+
 // -------------------------
-export default { createLogOnibus, createLogAluno }
+export default { createLogOnibus, createLogAluno, readLogAlunos, readLogAlunosLast , readLogAlunosByCpf}

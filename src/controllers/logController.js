@@ -1,4 +1,4 @@
-import log from "../Models/logModels.js"
+import log from "../models/logModels.js"
 
 const sendLonOnibus = async (req,res)=>{
     try {
@@ -20,4 +20,46 @@ const sendLogAluno = async (req, res) =>{
     }
 }
 
-export default {sendLonOnibus, sendLogAluno}
+const readLogAlunos = async (req, res) =>{
+    try {
+        const data = await log.readLogAlunos()
+        res.status(200).json(data)
+    } catch (err) {
+        res.status(500).json({mensagem:"Não foi possivel ler a LOG"})
+        console.error("Houve um erro ao ler o LOG da mensagem: ",err)
+    }
+}
+
+const readLogAlunosLast = async (req, res) =>{
+    try {
+        const data = await log.readLogAlunosLast(req.params.cpf)
+
+        if(!data)
+            {
+            res.status(404).json({mensagem: 'log com cpf do aluno não encontrado'})
+            return
+        }
+        res.status(200).json( data)
+    } catch (err) {
+        res.status(500).json({mensagem:"Não foi possivel ler a LOG"})
+        console.error("Houve um erro ao ler o LOG da mensagem: ",err)
+    }
+}
+
+const readLogAlunosByCpf = async (req, res) =>{
+    try {
+        const data = await log.readLogAlunosLast(req.params.cpf)
+
+        if(!data)
+            {
+            res.status(404).json({mensagem: 'log com cpf do aluno não encontrado'})
+            return
+        }
+        res.status(200).json( data)
+    } catch (err) {
+        res.status(500).json({mensagem:"Não foi possivel ler a LOG"})
+        console.error("Houve um erro ao ler o LOG da mensagem: ",err)
+    }
+}
+
+export default {sendLonOnibus, sendLogAluno, readLogAlunos, readLogAlunosLast, readLogAlunosByCpf}

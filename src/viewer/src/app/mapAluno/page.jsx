@@ -9,20 +9,54 @@ import { use, useEffect, useState } from 'react';
 
 export default function MapPage() {
   
-  const [acaoAluno, setAcaoAluno] = useState('subir')
+  const [acaoAluno, setAcaoAluno] = useState('')
   const [cpf_user, setCpf_user] = useState('')
   const [coordenada, setCoordenada] = useState('')
 
-  
+
   
 useEffect(()=> {
 
   setCpf_user(localStorage.getItem("cpf_User"))
   let local = JSON.parse(localStorage.getItem('currentLocation'));
-  setCoordenada(local)
-
+  setCoordenada(local)                                               
   
 }, [])
+
+  useEffect(() => {
+    const fetchAcaoAluno = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/log/alunoLast/000.000.000-00');
+        const acao = response.data.evento;
+        if (acao === 'subir') {
+          setAcaoAluno('descer');
+        } else if (acao === 'descer') {
+          setAcaoAluno('subir');
+        }
+      } catch (err) {
+        console.error('Erro ao buscar ação do aluno:', err);
+      }
+    };
+
+    fetchAcaoAluno();
+  }, []);  useEffect(() => {
+    const fetchAcaoAluno = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/log/alunoLast/000.000.000-00');
+        const acao = response.data.evento;
+        if (acao === 'subir') {
+          setAcaoAluno('descer');
+        } else if (acao === 'descer') {
+          setAcaoAluno('subir');
+        }
+      } catch (err) {
+        console.error('Erro ao buscar ação do aluno:', err);
+      }
+    };
+
+    fetchAcaoAluno();
+  }, []); 
+
 
     const inverterAcao = () =>{
       if(acaoAluno=== 'subir'){setAcaoAluno('descer')} else if (acaoAluno=== 'descer'){setAcaoAluno('subir')}
@@ -38,7 +72,7 @@ useEffect(()=> {
         lat: coordenada[0],
         lgt: coordenada[1]
       })
-      .then(response=> console.log(response))
+      
       .catch(err => console.error('Houve um erro ao enviar o Log (Front)',err))
     }
   
@@ -46,10 +80,10 @@ useEffect(()=> {
   return (
     <main>
       <h1>Mapa Aluno </h1>
-      <button onClick={ ()=> {sendLog(), inverterAcao()}} >Clique aqui para salvar o log</button>
-      <div className='h-100 w-[50%]'>
+      <div className='h-100 mb-10 w-[50%]'>
       <MapWrapper />
       </div>
+      <button className='bg-red-500 border' onClick={ ()=> {sendLog(), inverterAcao()}} >{acaoAluno}</button>
     </main>
   );
 }
