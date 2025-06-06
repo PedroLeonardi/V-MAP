@@ -12,13 +12,7 @@ import { HiUserGroup } from "react-icons/hi2";
 
 const menu = [
   { title: "Dashboard", icon: <RiDashboardFill /> },
-  { title: "Alunos", icon: <FaGraduationCap /> },
-  { title: "Responsáveis", icon: <HiUserGroup /> },
-  { title: "Rotas", icon: <FaLocationDot /> },
-  { title: "Motoristas", icon: <AiFillEnvironment /> },
-  { title: "Veículos", icon: <IoBus /> },
-  { title: "ChatBox", icon: <IoChatboxEllipses />, spacing: true },
-  { title: "Suporte", icon: <MdOutlineSupportAgent /> },
+  { title: "Suporte", icon: <MdOutlineSupportAgent /> }
 ];
 
 export default function Header() {

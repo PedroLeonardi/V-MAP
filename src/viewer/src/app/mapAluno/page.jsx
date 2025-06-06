@@ -34,7 +34,7 @@ useEffect(()=> {
           setAcaoAluno('subir');
         }
       } catch (err) {
-        console.error('Erro ao buscar ação do aluno:', err);
+        console.log('Erro ao buscar ação do aluno:', err);
       }
     };
 
@@ -56,7 +56,7 @@ useEffect(()=> {
         }
         
       } catch (err) {
-        console.error('Erro ao buscar ação do aluno:', err);
+        console.log('Erro ao buscar ação do aluno:', err);
       }
     };
 
@@ -79,7 +79,7 @@ useEffect(()=> {
         lgt: coordenada[1]
       })
       
-      .catch(err => console.error('Houve um erro ao enviar o Log (Front)',err))
+      .catch(err => console.log('Houve um erro ao enviar o Log (Front)',err))
     }
   
   

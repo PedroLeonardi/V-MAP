@@ -44,7 +44,7 @@
 
                 // tratando erros
             } catch (err) {
-                console.error(err);
+                console.log(err);
                 toast.error('Aluno não encontrado. Verifique o CPF.');
                 setAluno(null);
             } finally {
@@ -74,7 +74,7 @@
                     throw new Error('Erro ao excluir aluno');
                 }
             } catch (err) {
-                console.error('Erro na exclusão:', err);
+                console.log('Erro na exclusão:', err);
 
                 // mais tratamentos de erros
                 let errorMessage = 'Erro ao excluir aluno';

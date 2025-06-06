@@ -15,7 +15,7 @@ export default function ModalRelatorioResponsaveis({ isVisible, onClose }) {
           setResponsaveis(response.data)
         })
         .catch((err) => {
-          console.error('Erro ao buscar responsáveis: ', err)
+          console.log('Erro ao buscar responsáveis: ', err)
         })
     }
   }, [isVisible])

@@ -42,7 +42,7 @@ export default function ModalExcluirMotorista({ isVisible, onClose, onSuccess })
             toast.success('Motorista encontrado!');
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Motorista não encontrado. Verifique o CPF.');
             setMotorista(null);
         } finally {
@@ -69,7 +69,7 @@ export default function ModalExcluirMotorista({ isVisible, onClose, onSuccess })
             }
 
         } catch (err) {
-            console.error('Erro na exclusão:', err);
+            console.log('Erro na exclusão:', err);
 
             let errorMessage = 'Erro ao excluir responsável';
 

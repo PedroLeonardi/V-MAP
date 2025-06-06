@@ -88,7 +88,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
             setNome('');
             onClose();
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             if (err.response && err.response.status === 400) {
                 toast.error('CPF já cadastrado.');

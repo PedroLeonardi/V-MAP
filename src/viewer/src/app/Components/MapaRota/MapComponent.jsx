@@ -39,8 +39,10 @@ export default function MapComponent({ selectedIndex }) {
   
         setRouteCoordinates(completa);
       })
+
       .catch(err => console.error('Erro ao buscar o mapa: ', err));
   }, [idOnibusAtual]);
+
 
   // 2. Inicializa o mapa
   useEffect(() => {
@@ -158,7 +160,7 @@ export default function MapComponent({ selectedIndex }) {
         markerRef.current = customMarker;
 
       } catch (err) {
-        console.error('Erro ao carregar mapa:', err);
+        console.log('Erro ao carregar mapa:', err);
       }
     });
 
@@ -183,7 +185,7 @@ export default function MapComponent({ selectedIndex }) {
   //  console.log("-----------------------------------------", dataLog)
     axios.post('http://localhost:3001/log/onibus', dataLog)
       // .then(() => console.log("Log enviado"))
-      .catch(err => console.error("Erro ao enviar log:", err));
+      .catch(err => console.log("Erro ao enviar log:", err));
   
     // Salva local no localStorage
     try {
@@ -191,7 +193,7 @@ export default function MapComponent({ selectedIndex }) {
       localStorage.setItem("currentLocation", JSON.stringify(localizacao));
       // console.log("Localização salva no localStorage:", localizacao);
     } catch (err) {
-      console.error("Erro ao salvar localização:", err);
+      console.log("Erro ao salvar localização:", err);
     }
   
     // Recupera local do localStorage com verificação segura
@@ -204,7 +206,7 @@ export default function MapComponent({ selectedIndex }) {
         // console.log("Nenhuma localização salva no localStorage.");
       }
     } catch (err) {
-      console.error("Erro ao recuperar localização:", err);
+      console.log("Erro ao recuperar localização:", err);
     }
   }, [selectedIndex, routeCoordinates]);
   

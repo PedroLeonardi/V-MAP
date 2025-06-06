@@ -14,7 +14,7 @@ export default function ModalRelatorioVeiculo({ isVisible, onClose }) {
           setVeiculos(response.data);
         })
         .catch((err) => {
-          console.error('Erro ao buscar veículos: ', err);
+          console.log('Erro ao buscar veículos: ', err);
         });
     }
   }, [isVisible]);
