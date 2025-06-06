@@ -22,15 +22,7 @@ export default function Login() {
     if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
     return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   }
-
-  function formatarCPF(valor) {
-    valor = valor.replace(/\D/g, '');
-    if (valor.length <= 3) return valor;
-    if (valor.length <= 6) return valor.replace(/(\d{3})(\d)/, '$1.$2');
-    if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
-    return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
-  }
-
+  
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -78,7 +70,7 @@ export default function Login() {
             break;
           }
         } catch (err) {
-          console.error('Não foi possível efetuar login com:', url);
+          console.log('Não foi possível efetuar login com:', url);
         }
       }
 
@@ -95,7 +87,7 @@ export default function Login() {
 
       setTimeout(() => {
         if (usuarioType === 'admin') {
-          router.push('/dashboardAdm');
+          router.push('/DashboardAdm');
         } else if (usuarioType === 'responsavel') {
           router.push('/dashboardResponsavel');
         } else if (usuarioType === 'aluno') {

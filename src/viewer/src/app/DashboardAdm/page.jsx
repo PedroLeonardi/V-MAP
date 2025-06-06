@@ -56,7 +56,7 @@ const menu = [
   { nome: 'Alunos', icon: <PiStudentBold size={18} />, sectionId: 'Alunos' },
   { nome: 'Motoristas', icon: <HiUser size={18} />, sectionId: 'Motoristas' },
   { nome: 'Veículos', icon: <IoBusSharp size={18} />, sectionId: 'Veículos' },
-  { nome: 'Rotas', icon: <FaLocationDot size={18} />, sectionId: 'Rotas' },
+  { nome: 'Percursos', icon: <FaLocationDot size={18} />, sectionId: 'Percursos' },
   { nome: 'Contatos', icon: <IoIosMail size={18} />, sectionId: 'Contatos' },
 ];
 
@@ -121,7 +121,7 @@ export default function PageAdmin() {
       await handleContato();
     } catch (err) {
       toast.error("Erro ao alterar status.");
-      console.error("Houve um erro ao atualizar o status: ", err);
+      console.log("Houve um erro ao atualizar o status: ", err);
     }
   };
 
@@ -396,21 +396,21 @@ export default function PageAdmin() {
               </>
             )}
 
-            {abaAtiva === 'Rotas' && (
+            {abaAtiva === 'Percursos' && (
               <>
-                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-80'>Gerenciamento de Rotas</h2>
+                <h2 className='text-xl sm:text-2xl font-bold text-sky-400 mb-6 sm:mb-8 border-b-2 md:w-80'>Gerenciamento de Percursos</h2>
                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
                   <DashboardCard
                     cardStyle={cardBaseStyle} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle} valueStyle={cardValueStyle}
                     icon={<TbNumber size={cardIconSize} />}
-                    title="Total de Rotas"
+                    title="Total de Percursos"
                     description="Número de rotas de transporte definidas."
                     value={totalRotas}
                   />
                   <DashboardCard
                     cardStyle={`${cardBaseStyle} ${cardActionStyle}`} iconColor={cardIconColor} titleStyle={cardTitleStyle} descriptionStyle={cardDescriptionStyle}
                     icon={<PiListChecksBold size={cardIconSize} />}
-                    title="Listar Rotas"
+                    title="Listar Percursos"
                     description="Visualize todas as rotas e seus detalhes."
                     onClick={() => setShowModalRelatorioRotas(true)}
                     action

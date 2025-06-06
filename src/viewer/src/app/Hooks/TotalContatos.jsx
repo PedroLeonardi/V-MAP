@@ -11,7 +11,7 @@ export default function useFetchTotalContatos() {
       setTotal(response.data.mensagem.length);
       setData(response.data.mensagem)
     } catch (error) {
-      console.error("Erro ao buscar total de mensagens", error);
+      console.log("Erro ao buscar total de mensagens", error);
     }
   };
 

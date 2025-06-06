@@ -42,7 +42,7 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
             toast.success('Responsável encontrado!');
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Responsável não encontrado. Verifique o CPF.');
             setResponsavel(null);
         } finally {
@@ -70,7 +70,7 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
             }
 
         } catch (err) {
-            console.error('Erro na exclusão:', err);
+            console.log('Erro na exclusão:', err);
 
             let errorMessage = 'Erro ao excluir responsável';
 

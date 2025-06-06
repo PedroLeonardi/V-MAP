@@ -56,7 +56,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
             setSenha(adminEncontrado.senha);
             toast.success('Administrador encontrado!');
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Administrador não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
@@ -103,7 +103,7 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
             setNome('');
             setCargo('');
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             if (err.response && err.response.status === 404) {
                 toast.error('Administrador não encontrado.');

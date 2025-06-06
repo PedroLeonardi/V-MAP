@@ -9,7 +9,7 @@ export default function useFetchTotalVeiculo() {
       const response = await axios.get('http://localhost:3001/veiculo');
       setTotal(response.data.length);
     } catch (error) {
-      console.error("Erro ao buscar total de veiculo", error);
+      console.log("Erro ao buscar total de veiculo", error);
     }
   };
 

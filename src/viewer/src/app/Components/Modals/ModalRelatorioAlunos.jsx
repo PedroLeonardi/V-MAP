@@ -15,7 +15,7 @@ export default function ModalRelatorioAlunos({ isVisible, onClose }) {
           setAlunos(response.data)
         })
         .catch((err) => {
-          console.error('Erro ao buscar alunos: ', err)
+          console.log('Erro ao buscar alunos: ', err)
         })
     }
   }, [isVisible])

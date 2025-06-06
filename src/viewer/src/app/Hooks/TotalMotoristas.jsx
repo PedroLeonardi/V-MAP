@@ -9,7 +9,7 @@ export default function useFetchTotalMotorista() {
       const response = await axios.get('http://localhost:3001/motorista');
       setTotal(response.data.length);
     } catch (error) {
-      console.error("Erro ao buscar total de motorista", error);
+      console.log("Erro ao buscar total de motorista", error);
     }
   };
 

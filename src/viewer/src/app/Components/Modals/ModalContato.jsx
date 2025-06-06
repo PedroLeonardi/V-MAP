@@ -13,7 +13,7 @@ export default function ModalContatoAlunos({ isVisible, onClose }) {
                     setContatos(response.data.mensagem);
                 })
                 .catch((err) => {
-                    console.error('Erro ao buscar alunos: ', err);
+                    console.log('Erro ao buscar alunos: ', err);
                 });
         }
     }, [isVisible]);

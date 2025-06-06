@@ -15,7 +15,7 @@ export default function ModalRelatorioAdm({ isVisible, onClose }) {
           setAdm(response.data)
         })
         .catch((err) => {
-          console.error('Erro ao buscar admin: ', err)
+          console.log('Erro ao buscar admin: ', err)
         })
     }
   }, [isVisible])

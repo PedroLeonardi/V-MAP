@@ -49,7 +49,7 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
             toast.success('Aluno encontrado!');
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Aluno não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
@@ -91,7 +91,7 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
             setCpfBusca('');
             onClose();
         } catch (err) {
-            console.error(err);
+            console.log(err);
         
             // tratamentros de erros
             // nele envio as msg do controller atraves de uma requisicao ao back-end
