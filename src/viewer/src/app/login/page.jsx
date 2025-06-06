@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
@@ -14,6 +14,12 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuarioType');
+    localStorage.removeItem('cpf_User');
+  }, []);
+
   // Formatando cpf para front-end
   function formatarCPF(valor) {
     valor = valor.replace(/\D/g, '');
@@ -26,6 +32,7 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+
 
 
     if (!cpf.trim() || !senha.trim()) {
@@ -85,7 +92,7 @@ export default function Login() {
       localStorage.setItem('usuarioType', usuarioType);
       localStorage.setItem('cpf_User', cpf_User);
 
-      setTimeout(() => {
+      
         if (usuarioType === 'admin') {
           router.push('/DashboardAdm');
         } else if (usuarioType === 'responsavel') {
@@ -93,8 +100,7 @@ export default function Login() {
         } else if (usuarioType === 'aluno') {
           router.push('/dashboardAluno');
         }
-      }, 300);
-
+     
     } catch (err) {
       const message = get(err, 'response.data.message', '');
 
