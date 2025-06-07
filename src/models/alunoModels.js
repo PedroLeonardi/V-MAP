@@ -29,15 +29,13 @@ const getById = async (id_aluno) => {
 const create = async (data) => {
     try {
 
-        //  verificando se aluno ja existe         
-        const alunoExist = await knex('Alunos').where({ cpf_aluno: data.cpf_aluno }).first();
+        // checkando se cpf ja existe no bd
+        const cpfJaExiste = await cpfExisteEmQualquerTabela(data.cpf_aluno);
 
-        // aqui eu faço com que se o aluno existir
-        // eu mando ele pro meu controller 
-        if (alunoExist) {
-            const error = new Error('Aluno já cadastrado.');
+        if (cpfJaExiste) {
+            const error = new Error('CPF já cadastrado em algum usuário do sistema.');
             error.status = 400;
-            throw error
+            throw error;
         }
 
         // verificando se existe responsavel para criar um aluno
@@ -106,5 +104,23 @@ const getByCPF = async (cpf) => {
     }
 };
 
+// funtion para verificar se cpf ja existe no bd
+const cpfExisteEmQualquerTabela = async (cpf) => {
+    try {
+        const admin = await knex('administrador').where({ cpf }).first();
+        if (admin) return true;
 
-export default { getAll, getById, create, update, deleteRecord, getByCPF };
+        const aluno = await knex('alunos').where({ cpf_aluno: cpf }).first();
+        if (aluno) return true;
+
+        const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
+        if (responsavel) return true;
+
+        return false;
+    } catch (err) {
+        console.error('Erro ao verificar CPF nas tabelas:', err);
+        throw err;
+    }
+};
+
+export default { getAll, getById, create, update, deleteRecord, getByCPF, cpfExisteEmQualquerTabela };

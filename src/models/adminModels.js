@@ -21,24 +21,22 @@ const getById = async (id) => {
     const dataGetById = await knex("administrador").where({ id_admin: id }).first();
     return dataGetById;
   } catch (err) {
-   console.error('Houve um erro ao listar um adm por ID: ',err);
-   return null;
+    console.error('Houve um erro ao listar um adm por ID: ', err);
+    return null;
   }
 };
 
 // create
 const create = async (data) => {
   try {
-    const adminExist = await knex("administrador").where({ cpf: data.cpf }).first();
+    const cpfJaExiste = await cpfExisteEmQualquerTabela(data.cpf);
 
-   
-        // aqui eu faço com que se o adm existir
-        // eu mando ele pro meu controller 
-        if (adminExist) {
-            const error = new Error('Administrador já cadastrado.');
-            error.status = 400;
-            throw error
-        }
+    if (cpfJaExiste) {
+      const error = new Error('CPF já cadastrado em algum usuário do sistema.');
+      error.status = 400;
+      throw error;
+    }
+
 
     // aplicando senha hash para senha no bd
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
@@ -60,7 +58,7 @@ const create = async (data) => {
 // update
 const update = async (id_admin, user) => {
   try {
-    
+
     // aplicando hash ao atualizar
     if (user.senha) {
       user.senha = await bcrypt.hash(user.senha, saltRounds);
@@ -83,13 +81,32 @@ const deleteRecord = async (id_admin) => {
 
 // puxar cpf do administrador
 const getByCPF = async (cpf) => {
-    try {
-        const administrador = await knex('administrador').where({ cpf: cpf }).first();
-        return administrador;
-    } catch (err) {
-        console.error('Erro ao buscar administrador por CPF: ', err);
-        return null;
-    }
+  try {
+    const administrador = await knex('administrador').where({ cpf: cpf }).first();
+    return administrador;
+  } catch (err) {
+    console.error('Erro ao buscar administrador por CPF: ', err);
+    return null;
+  }
 };
 
-export default { getAll, getById, create, update, deleteRecord, getByCPF};
+const cpfExisteEmQualquerTabela = async (cpf) => {
+  try {
+    const admin = await knex('administrador').where({ cpf }).first();
+    if (admin) return true;
+
+    const aluno = await knex('alunos').where({ cpf_aluno: cpf }).first();
+    if (aluno) return true;
+
+    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
+    if (responsavel) return true;
+
+    return false;
+  } catch (err) {
+    console.error('Erro ao verificar CPF nas tabelas:', err);
+    throw err;
+  }
+};
+
+
+export default { getAll, getById, create, update, deleteRecord, getByCPF, cpfExisteEmQualquerTabela};
