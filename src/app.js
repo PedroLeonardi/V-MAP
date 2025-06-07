@@ -10,8 +10,17 @@ import rotaRouter from './router/rotaRoute.js'
 import mapaRouter from './router/mapaRoute.js'
 import log from "./router/logRoute.js"
 import cors from 'cors';
+
+import logger from "./logs/logger.js"
+
 const app = express();
 const port = 3001;
+
+app.use((req, res, next) => {
+  logger.info(`Acessando: ${req.method} da URL: ${req.originalUrl}`);
+  next();
+});
+
 
 // middlewares
 app.use(express.json());
