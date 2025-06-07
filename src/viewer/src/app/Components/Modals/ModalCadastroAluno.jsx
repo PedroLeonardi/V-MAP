@@ -11,6 +11,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
     const [senha, setSenha] = useState('');
     const [cpf_aluno, setCPF] = useState('');
     const [cpf_responsavel, setCpfResponsavel] = useState('');
+    const [id_rota_onibus, setid_rota_onibus] = useState('')
     const [loading, setLoading] = useState(false)
 
     // formatando o front do cpf
@@ -22,8 +23,8 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         return valor
     }
 
-       // validar cpf real segundo a RF
-       function validarCPF(cpf) {
+    // validar cpf real segundo a RF
+    function validarCPF(cpf) {
         cpf = cpf.replace(/\D/g, '');
 
         if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -64,6 +65,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             setNome('');
             setSenha('');
             setCpfResponsavel('');
+            setid_rota_onibus('')
             onClose();
         }
     };
@@ -79,7 +81,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
-        
+
         // if(!validarCPF(cpf_aluno)){
         //     toast.error('CPF inválido');
         //     formsErrors = true;
@@ -91,7 +93,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
 
-      if (!validarSenha(senha)) {
+        if (!validarSenha(senha)) {
             toast.error('Senha deve conter entre 6 e 255 caracteres.');
             formsErrors = true;
         }
@@ -110,9 +112,10 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                     nome,
                     cpf_aluno,
                     senha,
-                    cpf_responsavel
+                    cpf_responsavel,
+                    id_rota_onibus
                 });
-                if (onSuccess) onSuccess(); 
+                if (onSuccess) onSuccess();
                 console.log('Dados recebidos: ', response);
                 toast.success('Aluno cadastrado com sucesso.');
 
@@ -120,6 +123,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                 setNome('');
                 setSenha('');
                 setCpfResponsavel('');
+                setid_rota_onibus('')
                 onClose();
             } catch (err) {
 
@@ -195,6 +199,22 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                             className="text-sm sm:text-base border border-gray-600 p-2 sm:p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             placeholder="000.000.000-00"
                         />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="id_rota_onibus" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">
+                            Rota do Ônibus
+                        </label>
+                        <select
+                            id="id_rota_onibus"
+                            className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            value={id_rota_onibus}
+                            onChange={e => setid_rota_onibus(e.target.value)}
+                        >
+                            <option value="">Selecione a rota</option>
+                            <option value="1">Rota 1</option>
+                            <option value="2">Rota 2</option>
+                        </select>
                     </div>
 
                     <div className="flex flex-col">

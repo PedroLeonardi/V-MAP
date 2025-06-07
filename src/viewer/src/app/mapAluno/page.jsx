@@ -63,24 +63,30 @@ useEffect(()=> {
     fetchAcaoAluno();
   }, []); 
 
-
+if (!acaoAluno) {setAcaoAluno('subir')}
     const inverterAcao = () =>{
       if(acaoAluno=== 'subir'){setAcaoAluno('descer')} else if (acaoAluno=== 'descer'){setAcaoAluno('subir')}
 
   
     }
 
-    const sendLog = async () => {
-      axios.post('http://localhost:3001/log/aluno', {
-        cpf_user: cpf_user,
-        id_rota_onibus: 1,
-        evento: acaoAluno,
-        lat: coordenada[0],
-        lgt: coordenada[1]
-      })
-      
-      .catch(err => console.log('Houve um erro ao enviar o Log (Front)',err))
-    }
+    
+const sendLog = async () => {
+  const idRota = localStorage.getItem('rotaAtual');
+
+  if (idRota && idRota.trim() !== '') {
+    axios.post('http://localhost:3001/log/aluno', {
+      cpf_user: cpf_user,
+      id_rota_onibus: idRota,
+      evento: acaoAluno,
+      lat: coordenada[0],
+      lgt: coordenada[1]
+    })
+    .catch(err => console.log('Houve um erro ao enviar o Log (Front)', err));
+  } else {
+    console.warn('idRota não está disponível no localStorage');
+  }
+}
   
   
   return (

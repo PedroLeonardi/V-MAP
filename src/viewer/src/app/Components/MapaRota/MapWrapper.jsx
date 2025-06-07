@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import axios from 'axios'
 import dynamic from 'next/dynamic';
 
 // Importa o componente de mapa desabilitando SSR
@@ -31,7 +32,11 @@ export default function MapWrapper() {
 
   useEffect(() => {
     localStorage.setItem('rotaAtual', rotaAtual.toString());
+     window.dispatchEvent(new Event('rotaAtualChanged'));
+    
   }, [rotaAtual]);
+
+  axios.get('http://localhost:3001/aluno/cpf/')
 
   useEffect(() => {
     localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
