@@ -8,7 +8,6 @@
  import { MdDirectionsBus } from "react-icons/md";
  import { IoLogOut, IoChatboxEllipses } from "react-icons/io5";
  import { MdOutlineSupportAgent } from "react-icons/md";
- import RotaProtegidaAdm from "../Components/ProtegendoRota/ProtectRoute";
  
  
  export default function DashAluno () {
@@ -23,7 +22,6 @@
    ];
  
    return (
-     <RotaProtegidaAdm requiredRole="aluno">
     <section>
      <div className={`hidden lg:flex h-screen p-5 pt-8 flex flex-col justify-between ${open ? "w-100" : "w-20"} duration-300 relative `} style={{ background: 'linear-gradient(to right, #0F0F0F, #171717, #1E1E1E)'}}>
        <BsArrowLeftCircle
@@ -38,7 +36,7 @@
              src="./logo.png"
              className={`w-20 duration-300 ${open}`}
              alt="Logo"
-             />
+           />
            <h1 className={`text-white text-3xl ml-5 font-extrabold origin-left duration-200 ${!open && "scale-0"}`}>DASHBOARD</h1>
          </div>
  
@@ -46,13 +44,13 @@
          <ul className="pt-6">
            {menus.map((menu, index) => (
              <li
-             key={index}
-             title={!open ? menu.title : ""}
-             onClick={() => setMenuAtivo(menu.title)}
-             className={`flex items-center gap-4 cursor-pointer text-gray-300 text-sm p-2 rounded-md duration-200 hover:bg-gray-700 hover:text-white  ${
-              menu.spacing ? "mt-6" : "mt-2"
-              } ${menuAtivo === menu.title ? "bg-gray-600 text-white font-bold" : ""}`}
-              >
+               key={index}
+               title={!open ? menu.title : ""}
+               onClick={() => setMenuAtivo(menu.title)}
+               className={`flex items-center gap-4 cursor-pointer text-gray-300 text-sm p-2 rounded-md duration-200 hover:bg-gray-700 hover:text-white  ${
+                 menu.spacing ? "mt-6" : "mt-2"
+               } ${menuAtivo === menu.title ? "bg-gray-600 text-white font-bold" : ""}`}
+             >
                <span className={`text-2xl duration-300 ${open}`}>{menu.icon}</span>
                <span className={`text-base duration-200 ${!open && "hidden"}`}>
                  {menu.title}
@@ -68,7 +66,7 @@
            title={!open ? "Logout" : ""}
            className="flex items-center gap-4 cursor-pointer text-red-400 text-sm p-2 rounded-md duration-200 hover:bg-red-500 hover:text-white"
            onClick={() => toast.success('Logout')}
-           >
+         >
            <span className="text-xl">
              <IoLogOut />
            </span>
@@ -84,12 +82,11 @@
              src="./logo.png"
              className={'w-20 justify-start'}
              alt="Logo"
-             />
+           />
      </div>
      </div>
     </section>
-  </RotaProtegidaAdm> 
    );
-  }
-  
-  
+ }
+ 
+ 
