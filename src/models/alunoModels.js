@@ -3,6 +3,16 @@ import bcrypt from 'bcryptjs';
 
 const saltRounds = 10; // sequencia de caracteres aleatorio
 
+const logAlteracao = async (tabela_nome, operacao_tipo, dados_antigos, dados_novos, admin_cpf) => {
+    await knex("Log_Alteracoes").insert({
+        tabela_nome,
+        operacao_tipo,
+        dados_antigos: dados_antigos ? JSON.stringify(dados_antigos) : null,
+        dados_novos: dados_novos ? JSON.stringify(dados_novos) : null,
+        admin_cpf
+    });
+};
+
 // model select all
 const getAll = async () => {
     try {
@@ -58,6 +68,8 @@ const create = async (data) => {
             id_rota_onibus: data.id_rota_onibus
         });
 
+        await logAlteracao("Alunos", "INSERT", 'null', data, data.admin_cpf);
+        console.log(data.cpf_admin)
         return id_aluno;
 
     } catch (err) {
@@ -67,30 +79,35 @@ const create = async (data) => {
 };
 
 // atualizar
-const update = async (id_aluno, data) => {
-
-    // função para atualizar 
+const update = async (id_aluno, data, cpf_admin) => {
     try {
         if (data.senha) {
             data.senha = await bcrypt.hash(data.senha, saltRounds);
         }
 
+        const alunoAntigo = await knex("Alunos").where({ id_aluno }).first();
         const dataUpdate = await knex("Alunos").where({ id_aluno }).update(data);
+
+        await logAlteracao("Alunos", "UPDATE", alunoAntigo, data, data.cpf_admin);
 
         return dataUpdate;
     } catch (err) {
-        console.error("Houve um erro ao realizar um Update no aluno: ", err);
+        console.error("Erro ao atualizar aluno: ", err);
         return 0;
     }
 };
 
 // delete
-const deleteRecord = async (id_aluno) => {
+const deleteRecord = async (id_aluno, cpf_admin) => {
     try {
+        const alunoAntigo = await knex("Alunos").where({ id_aluno }).first();
         const dataDeleteRecord = await knex("Alunos").where({ id_aluno }).delete();
+
+        await logAlteracao("Alunos", "DELETE", alunoAntigo, null, cpf_admin);
+
         return dataDeleteRecord;
     } catch (err) {
-        console.error("Houve um erro ao deletar um aluno: ", err);
+        console.error("Erro ao deletar aluno: ", err);
         return 0;
     }
 };
@@ -105,6 +122,10 @@ const getByCPF = async (cpf) => {
         return null;
     }
 };
+
+//----------------------------------------------------------------
+
+
 
 
 export default { getAll, getById, create, update, deleteRecord, getByCPF };

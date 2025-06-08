@@ -12,8 +12,11 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
     const [cpf_aluno, setCPF] = useState('');
     const [cpf_responsavel, setCpfResponsavel] = useState('');
     const [id_rota_onibus, setid_rota_onibus] = useState('')
+    const [cpf_admin, setCpf_admin] = useState('111.111.111-11')
     const [loading, setLoading] = useState(false)
 
+
+    setCpf_admin('111.111.111-11')
     // formatando o front do cpf
     function formatarCPF(valor) {
         valor = valor.replace(/\D/g, '');
@@ -77,7 +80,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim()) {
+        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim() || id_rota_onibus.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -102,9 +105,10 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             setLoading(false);
             return;
         }
-
+        
         // definindo uma função para buscar se ja existe um responsavel
         const buscarResponsavel = async (cpf) => {
+            const admin_cpf = '111.111.111-11'
             try {
                 await axios.get(`http://localhost:3001/responsavel/cpf/${cpf}`);
 
@@ -113,7 +117,8 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                     cpf_aluno,
                     senha,
                     cpf_responsavel,
-                    id_rota_onibus
+                    id_rota_onibus,
+                    admin_cpf
                 });
                 if (onSuccess) onSuccess();
                 console.log('Dados recebidos: ', response);

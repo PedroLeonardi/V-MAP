@@ -83,7 +83,8 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
 
             await axios.put(`http://localhost:3001/aluno/${aluno.id_aluno}`, {
                 senha,
-                nome
+                nome,
+                
             });
             
             toast.success('Aluno atualizado com sucesso!');
