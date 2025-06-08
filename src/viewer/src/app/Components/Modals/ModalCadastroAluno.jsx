@@ -80,7 +80,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim() || id_rota_onibus.trim()) {
+        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim() || !id_rota_onibus.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -108,7 +108,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         
         // definindo uma função para buscar se ja existe um responsavel
         const buscarResponsavel = async (cpf) => {
-            const admin_cpf = '111.111.111-11'
+            const admin_cpf = await localStorage.getItem('cpf_User')
             try {
                 await axios.get(`http://localhost:3001/responsavel/cpf/${cpf}`);
 

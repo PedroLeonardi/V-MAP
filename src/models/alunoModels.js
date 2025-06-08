@@ -68,8 +68,15 @@ const create = async (data) => {
             id_rota_onibus: data.id_rota_onibus
         });
 
-        await logAlteracao("Alunos", "INSERT", 'null', data, data.admin_cpf);
-        console.log(data.cpf_admin)
+        const dataSimples = {
+            nome: data.nome,
+            cpf_aluno: data.cpf_aluno,
+            senha: senhaHashed,
+            cpf_responsavel: data.cpf_responsavel,
+            id_rota_onibus: data.id_rota_onibus
+        }
+
+        await logAlteracao("Alunos", "INSERT", null, dataSimples, data.admin_cpf);
         return id_aluno;
 
     } catch (err) {
