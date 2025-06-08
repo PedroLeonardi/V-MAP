@@ -199,7 +199,7 @@ useEffect(() => {
     // Envia log de localização
     const dataLog = {
       localizacao: routeCoordinates[selectedIndex],
-      id_rota_onibus: idOnibusAtual[selectedIndex]
+      id_rota_onibus: idOnibusAtual
       
     };
   //  console.log("-----------------------------------------", dataLog)

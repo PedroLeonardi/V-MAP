@@ -1,7 +1,7 @@
 'use client'
 
 import axios from 'axios';
-import MapWrapper from '../Components/MapaRota/MapWrapper';
+import MapWrapper from '../Components/MapaRota/MapWrapperBase';
 import { use, useEffect, useState } from 'react';
 
 

@@ -74,12 +74,7 @@ export default function MapWrapper() {
   return ( 
     <>
     <div className="flex justify-center mb-4">
-        <button
-          onClick={handleChangeRota}
-          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition"
-        >
-          Alternar para Rota {rotaAtual === 1 ? 2 : 1}
-        </button>
+        
       </div>
 <div className="grid grid-cols-[1fr_700px_1fr] gap-4 items-center h-full">
   <button onClick={handlePrevious}>Mais</button>
