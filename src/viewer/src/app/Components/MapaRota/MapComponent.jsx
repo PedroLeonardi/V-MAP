@@ -13,18 +13,38 @@ export default function MapComponent({ selectedIndex }) {
   const mapRef = useRef(null);
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [idOnibusAtual, setIdOnibusAtual] = useState([]);
+  const [idOnibusAtual, setIdOnibusAtual] = useState(null);
 
-  useEffect(() => {
+ useEffect(() => {
     const stored = localStorage.getItem('rotaAtual');
-    if (stored !== null) {
-      const id = Number(stored);
-      setIdOnibusAtual(id);
+    const id = stored ? Number(stored) : null;
+
+    // 💥 Adicionado isNaN e id > 0 para garantir valor válido
+    if (stored !== null && !isNaN(id) && id > 0) {
+      setIdOnibusAtual(id); // 💥 Agora só atualiza se o valor for válido
     }
   }, []);
+
+useEffect(() => {
+  const handleCustomStorageChange = () => {
+    const stored = localStorage.getItem('rotaAtual');
+    const id = stored ? Number(stored) : null;
+    
+     if (stored !== null && !isNaN(id) && id > 0) {
+        setIdOnibusAtual(id);
+      
+    }
+  };
+
+  window.addEventListener('rotaAtualChanged', handleCustomStorageChange);
+  return () => {
+    window.removeEventListener('rotaAtualChanged', handleCustomStorageChange);
+  };
+}, []);;
   
   useEffect(() => {
     // Evita fazer a requisição se idOnibusAtual for 0, null, undefined ou qualquer falsy
+     if (!idOnibusAtual || isNaN(idOnibusAtual)) return;
     if (idOnibusAtual === null || idOnibusAtual === undefined) return;
     if (!idOnibusAtual) return;
   
@@ -179,7 +199,7 @@ export default function MapComponent({ selectedIndex }) {
     // Envia log de localização
     const dataLog = {
       localizacao: routeCoordinates[selectedIndex],
-      id_rota_onibus: idOnibusAtual[selectedIndex]
+      id_rota_onibus: idOnibusAtual
       
     };
   //  console.log("-----------------------------------------", dataLog)

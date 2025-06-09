@@ -31,28 +31,27 @@ const getAlunoController = async (req, res) => {
 // create
 const createAlunoController = async (req, res) => {
     try {
+        
         await userModel.create(req.body);
+        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", req.body)
+
         return res.status(201).json({ message: 'Aluno criado com sucesso' });
     } catch (err) {
-
-        // se o usuario cadastrar cpf ja existente
-        // vai cair nesse erro (requisição ja pronta do model)
         if (err.status === 400) {
             return res.status(400).json({ message: err.message });
         }
-
         console.error("Erro ao criar aluno", err);
         return res.status(500).json({ message: 'Erro ao criar aluno' });
     }
-}
+};
 
 // update
 const updateAlunoController = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const aluno = await userModel.update(id, req.body);
+        const cpf_admin = req.adminCpf;
+        const aluno = await userModel.update(id, req.body, cpf_admin);
 
-        // verificando se aluno existe
         if (!aluno) {
             return res.status(404).json({ message: 'Aluno não encontrado' });
         }
@@ -61,15 +60,15 @@ const updateAlunoController = async (req, res) => {
         console.error("Erro ao atualizar aluno", err);
         return res.status(500).json({ message: 'Erro ao atualizar aluno' });
     }
-}
+};
 
 // delete 
 const deleteAlunoController = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const aluno = await userModel.deleteRecord(id);
+        const cpf_admin = req.body.adminCpf;
+        const aluno = await userModel.deleteRecord(id, cpf_admin);
 
-        // verificando se aluno existe
         if (!aluno) {
             return res.status(404).json({ message: 'Aluno não encontrado' });
         }
@@ -78,7 +77,7 @@ const deleteAlunoController = async (req, res) => {
         console.error("Erro ao deletar aluno", err);
         return res.status(500).json({ message: 'Erro ao deletar aluno' });
     }
-}
+};
 
 const getAlunoByCpfController = async (req, res) => {
     try {

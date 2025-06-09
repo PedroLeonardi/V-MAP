@@ -2,8 +2,8 @@ import userModel from "../models/veiculoModels.js";
 
 const getVeiculoAll = async (req, res) => {
     try {
-        const users = await userModel.getAll();
-        return res.status(200).json(users);
+        const data = await userModel.getAll();
+        return res.status(200).json(data);
     } catch (err) {
         console.error("Erro ao buscar todos os veículos", err);
         return res.status(500).json({ message: 'Erro ao buscar todos os veículos' });
