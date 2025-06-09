@@ -3,6 +3,15 @@ import bcrypt from 'bcryptjs';
 
 const saltRounds = 10; // gerando caracteres aleatorios
 
+const logAlteracao = async (tabela_nome, operacao_tipo, dados_antigos, dados_novos, admin_cpf) => {
+  await knex("Log_Alteracoes").insert({
+      tabela_nome,
+      operacao_tipo,
+      dados_antigos: dados_antigos ? JSON.stringify(dados_antigos) : null,
+      dados_novos: dados_novos ? JSON.stringify(dados_novos) : null,
+      admin_cpf
+  });
+};
 // select * from responsaveis
 const getAll = async () => {
   try {
@@ -64,6 +73,14 @@ const create = async (data) => {
       senha: senhaHashed
     });
 
+    const dataSimples = {
+      nome: data.nome,
+      cpf_responsavel: data.cpf_responsavel,
+      senha: senhaHashed
+    }
+
+    await logAlteracao("Responsaveis", "INSERT", null, dataSimples, data.admin_cpf);
+
     return id_responsavel;
   } catch (err) {
     console.error('Houve um erro ao criar um responsável: ', err);
@@ -84,7 +101,18 @@ const update = async (id_responsavel, data) => {
       delete dataUpdate.cpf;
     }
 
-    const updatedRows = await knex('responsaveis').where({ id_responsavel }).update(dataUpdate);
+    const responsavelAntigo = await knex("responsaveis").where({ id_responsavel }).first();
+
+    const dataSimples = {
+      nome: data.nome,
+      cpf_responsavel: responsavelAntigo.cpf_responsavel,
+      senha: dataUpdate.senha
+    }
+
+    const updatedRows = await knex('responsaveis').where({ id_responsavel }).update(dataSimples);
+
+    await logAlteracao("Responsaveis", "UPDATE", responsavelAntigo, dataSimples, data.admin_cpf);
+
     return updatedRows;
   } catch (err) {
     console.error('Houve um erro ao realizar um update no responsável: ', err);
@@ -93,9 +121,15 @@ const update = async (id_responsavel, data) => {
 };
 
 // delete
-const deleteRecord = async (id_responsavel) => {
+const deleteRecord = async (id_responsavel, cpf_admin) => {
   try {
+    
+    const responsavelAntigo = await knex("responsaveis").where({ id_responsavel }).first();
+
     const deletedRows = await knex('responsaveis').where({ id_responsavel }).delete();
+
+
+    await logAlteracao("Responsaveis", "DELETE", responsavelAntigo, null, cpf_admin);
     return deletedRows;
   } catch (err) {
     console.error('Houve um erro ao deletar um responsável: ', err);
