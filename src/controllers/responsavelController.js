@@ -62,7 +62,9 @@ const updateResponsavelController = async (req, res) => {
 // deletando responsavel
 const deleteResponsavelController = async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const admin_cpf = req.body.admin_cpf
+    const id = parseInt(req.params.id, admin_cpf);
+
     const responsaveis = await userModel.deleteRecord(id);
     if (!responsaveis) {
       return res.status(404).json({ message: 'Responsável não encontrado' });

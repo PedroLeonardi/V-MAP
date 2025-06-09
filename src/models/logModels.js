@@ -74,5 +74,14 @@ const readLogAlunosLast = async (cpf_aluno) => {
     }
 }
 
+const getLogsAdmin = async () => {
+  try {
+    const data = await knex('Log_Alteracoes').select('*')
+    return data
+  } catch (err) {
+    console.log("Houve um erro ao buscar o Log Completo de Ações de Administradores")
+  }
+}
+
 // -------------------------
-export default { createLogOnibus, createLogAluno, readLogAlunos, readLogAlunosLast , readLogAlunosByCpf}
+export default { createLogOnibus, createLogAluno, readLogAlunos, readLogAlunosLast , readLogAlunosByCpf, getLogsAdmin}

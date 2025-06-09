@@ -61,5 +61,14 @@ const readLogAlunosByCpf = async (req, res) =>{
         console.error("Houve um erro ao ler o LOG da mensagem: ",err)
     }
 }
+const getLogsAdminController = async (req, res) => {
+  try {
+    const logs = await userModel.getLogsAdmin();
+   return res.status(200).json(logs);
+  } catch (err) {
+    console.error("Erro ao buscar todos os logs ", err);
+    res.status(500).json({ message: 'Erro ao buscar todos logs' });
+  }
+};
 
-export default {sendLonOnibus, sendLogAluno, readLogAlunos, readLogAlunosLast, readLogAlunosByCpf}
+export default {sendLonOnibus, sendLogAluno, readLogAlunos, readLogAlunosLast, readLogAlunosByCpf, getLogsAdminController}
