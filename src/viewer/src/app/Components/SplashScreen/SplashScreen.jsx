@@ -7,7 +7,7 @@ export default function SplashScreen({ children }) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 800); // Duração da splash
+    }, ); 
 
     return () => clearTimeout(timeout);
   }, []);
@@ -15,11 +15,11 @@ export default function SplashScreen({ children }) {
   return (
     <>
       {loading ? (
-        <div className="fixed inset-0 z-50 bg-blue-700 text-white flex items-center justify-center text-3xl font-bold transition-opacity duration-700 opacity-100">
-          V-MAP 🚍
+        <div className="fixed inset-0 bg-black flex items-center justify-center z-50 transition-opacity duration-700 opacity-90">
+          <img src="/Logo.png" alt="Logo" className="w-40 animate-pulse" />
         </div>
       ) : (
-        <div className="fade-in">{children}</div>
+        <div className="animate-fade-in">{children}</div>
       )}
     </>
   );
