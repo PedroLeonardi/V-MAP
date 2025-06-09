@@ -89,11 +89,12 @@ export default function ModalUpdateAdmin({ isVisible, onClose, onSuccess }) {
 
         try {
             setLoading(true);
-
+            const admin_cpf = await localStorage.getItem('cpf_User')
             await axios.put(`http://localhost:3001/admin/${admin.id_admin}`, {
                 nome,
                 senha,
-                cargo
+                cargo,
+                admin_cpf
             });
 
             toast.success('Administrador atualizado com sucesso!');

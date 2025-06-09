@@ -69,7 +69,8 @@ const updateAdminController = async (req, res) => {
 const deleteAdminController = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const admin = await userModel.deleteRecord(id);
+    const cpf_admin = req.body.admin_cpf;
+    const admin = await userModel.deleteRecord(id, cpf_admin);
 
     // se admin nao exisitir
     if (!admin) {

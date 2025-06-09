@@ -4,6 +4,20 @@ import bcrypt from 'bcryptjs';
 
 const saltRounds = 10; // sequencia de caracteres aleatorios
 
+const logAlteracao = async (tabela_nome, operacao_tipo, dados_antigos, dados_novos, admin_cpf) => {
+  try {
+    await knex("Log_Alteracoes").insert({
+      tabela_nome,
+      operacao_tipo,
+      dados_antigos: dados_antigos ? JSON.stringify(dados_antigos) : null,
+      dados_novos: dados_novos ? JSON.stringify(dados_novos) : null,
+      admin_cpf
+    });
+  } catch (err) {
+    console.error("Erro ao registrar log de alteração:", err);
+  }
+};
+
 // select * from
 const getAll = async () => {
   try {
@@ -41,12 +55,16 @@ const create = async (data) => {
     // aplicando senha hash para senha no bd
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
 
-    const [id_admin] = await knex("administrador").insert({
-      cpf: data.cpf,
-      senha: senhaHashed,
-      nome: data.nome,
-      cargo: data.cargo
-    });
+const dataSimples = {
+  cpf: data.cpf,
+  senha: senhaHashed,
+  nome: data.nome,
+  cargo: data.cargo
+}
+
+    const [id_admin] = await knex("administrador").insert(dataSimples);
+
+    await logAlteracao("Administradores", "INSERT", null, dataSimples, data.admin_cpf);
 
     return id_admin;
 
@@ -56,24 +74,42 @@ const create = async (data) => {
 };
 
 // update
-const update = async (id_admin, user) => {
+const update = async (id_admin, data) => {
   try {
 
     // aplicando hash ao atualizar
-    if (user.senha) {
-      user.senha = await bcrypt.hash(user.senha, saltRounds);
+    if (data.senha) {
+      data.senha = await bcrypt.hash(data.senha, saltRounds);
     }
+    const admAntigo = await knex("administrador").where({ id_admin }).first();
+    const dataSimples = {
+      cpf: admAntigo.cpf,
+      senha: data.senha,
+      nome: data.nome,
+      cargo: data.cargo
+    }
+    const dataUpdate = await knex("administrador").where({ id_admin }).update(dataSimples);
 
-    return await knex("administrador").where({ id_admin }).update(user);
+    await logAlteracao("Administradores", "UPDATE", data, dataSimples, data.admin_cpf);
+
+    return dataUpdate
   } catch (err) {
     throw new Error("Erro ao atualizar administrador");
   }
 };
 
 // delete 
-const deleteRecord = async (id_admin) => {
+const deleteRecord = async (id_admin, admin_cpf) => {
   try {
-    return await knex("administrador").where({ id_admin }).delete();
+
+    const admAntigo = await knex("administrador").where({ id_admin }).first();
+ 
+
+    const Delte = await knex("administrador").where({ id_admin }).delete();
+
+    await logAlteracao("Administradores", "DELETE", null, admAntigo, admin_cpf);
+
+    return Delte
   } catch (err) {
     throw new Error("Erro ao deletar administrador");
   }
