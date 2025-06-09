@@ -145,4 +145,6 @@ const cpfExisteEmQualquerTabela = async (cpf) => {
 };
 
 
+
+
 export default { getAll, getById, create, update, deleteRecord, getByCPF, cpfExisteEmQualquerTabela};
