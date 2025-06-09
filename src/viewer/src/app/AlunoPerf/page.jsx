@@ -2,7 +2,7 @@ export default function alunoPerf() {
     return (
         <main className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-500 flex items-center justify-center p-4">
             <div
-                className="bg-opacity-10 backdrop-blur-md rounded-xl p-6 w-full max-w-4xl shadow-xl"
+                className="bg-opacity-10 backdrop-blur-md rounded-xl p-6 w-full max-w-3xl shadow-xl h-145 sm:h-110 -mt-15 sm:-mt-0"
                 style={{ background: 'linear-gradient(to right, #1E1E1E, #1E1E1E, #595959, #595959, #848484)' }}
             >
                 <h1 className="text-white text-2xl font-bold mb-4 text-center sm:hidden">Minhas informações</h1>
@@ -57,7 +57,7 @@ export default function alunoPerf() {
                         <div className="text-right">
                             <button
                                 type="submit"
-                                className="mt-4 bg-gradient-to-r from-gray-600 to-gray-800 hover:invert text-white px-4 py-2 rounded text-base sm:text-lg transition"
+                                className="mt-4 bg-gradient-to-r from-gray-600 to-gray-800 hover:invert text-white px-4 py-2 rounded text-base sm:text-lg transition cursor-pointer"
                             >
                                 Mudar dados?
                             </button>

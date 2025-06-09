@@ -47,7 +47,6 @@ import useFetchTotalAdm from '../Hooks/TotalAdm';
 import useFetchTotalMotorista from "../Hooks/TotalMotoristas";
 import useFetchTotalVeiculo from "../Hooks/TotalVeiculos";
 import useFetchTotalRotas from "../Hooks/TotalRotas";
-import Sidebar from "../Components/Sidebar/SidebarAdm";
 import Footer from "../Components/Footer/Footer";
 
 const menu = [
@@ -128,7 +127,7 @@ export default function PageAdmin() {
   return (
     <ProtegendoRota requiredRole='admin'>
       <div className="flex min-h-screen w-full bg-slate-900"> 
-        <Sidebar /> 
+    
 
         <div className='flex-1 min-h-screen text-slate-300 p-4 sm:p-6 lg:p-8 font-sans overflow-y-auto'>
           <header className="mb-8">

@@ -24,7 +24,6 @@ export default function SidebarAluno() {
       className={`
         hidden sm:flex
         ${open ? "w-100" : "w-20"}
-        bg-gradient-to-r from-gray-950 to-gray-900
         p-5 pt-8
         flex-col justify-between
         duration-300
@@ -32,7 +31,7 @@ export default function SidebarAluno() {
         relative md:absolute lg:relative
         top-0 left-0
         h-full
-      `}
+      `}  style={{ background: 'linear-gradient(to right, #122e5d, #1c3a6b, #1c3a6b  , #1a4283, #1a4283, #2051a1' }}
     >
       <BsArrowLeftCircle
         className={`
@@ -60,13 +59,13 @@ export default function SidebarAluno() {
                 onClick={() => setMenuAtivo(menu.link)}
                 className={`
                   flex items-center gap-4 cursor-pointer
-                  text-gray-300 text-sm p-2 rounded-md
+                  text-white-300 text-sm p-2 rounded-md
                   duration-200 hover:bg-gray-700 hover:text-white
                   ${menuAtivo === menu.link ? "bg-gray-600 text-white font-bold" : ""}
                 `}
               >
-                <span className="text-xl">{menu.icon}</span>
-                <span className={`text-base duration-200 ${!open && "hidden"}`}>{menu.title}</span>
+                <span className="text-xl text-white">{menu.icon}</span>
+                <span className={`text-base duration-200 text-white ${!open && "hidden"}`}>{menu.title}</span>
               </Link>
             </li>
           ))}

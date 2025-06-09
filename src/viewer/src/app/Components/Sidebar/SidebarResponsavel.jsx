@@ -13,7 +13,7 @@ import { MdDirectionsBus } from "react-icons/md";
 
 export default function SidebarAluno() {
     // função para dashboard
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const [menuAtivo, setMenuAtivo] = useState("./");
 
     // map items
