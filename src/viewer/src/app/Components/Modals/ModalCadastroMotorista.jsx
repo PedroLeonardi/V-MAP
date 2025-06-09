@@ -76,9 +76,11 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
         }
 
         try {
+            const admin_cpf = await localStorage.getItem('cpf_User')
             const response = await axios.post('http://localhost:3001/motorista', {
                 nome,
                 cpf_motorista,
+                admin_cpf
             });
 
             if (onSuccess) onSuccess();

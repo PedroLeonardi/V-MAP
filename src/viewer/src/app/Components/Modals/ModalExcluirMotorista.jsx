@@ -57,8 +57,12 @@ export default function ModalExcluirMotorista({ isVisible, onClose, onSuccess })
 
         try {
             setLoading(true);
-
-            const response = await axios.delete(`http://localhost:3001/motorista/${motorista.id_motorista}`);
+const admin_cpf = await localStorage.getItem('cpf_User')
+            const response = await axios.delete(`http://localhost:3001/motorista/${motorista.id_motorista}`, {
+                data:{
+                    admin_cpf
+                }
+            });
 
             if (response.status === 200) {
                 toast.success('Motorista excluído com sucesso!');
