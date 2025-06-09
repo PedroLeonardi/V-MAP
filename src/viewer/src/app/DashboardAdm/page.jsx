@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from 'sonner';
 import axios from 'axios';
 
@@ -39,6 +39,7 @@ import ModalContatoAlunos from '../Components/Modals/ModalContato';
 import ModalRelatorioVeiculo from '../Components/Modals/ModalRelatorioVeiculo';
 import ModalRelatorioRotas from '../Components/Modals/ModalRelatorioRota';
 import ModalHistoricoAdm from "../Components/Modals/ModalHistoricoAdm";
+import ModalMapa from '../Components/MapaRota/MapWrapper'
 
 // hooks
 import useFetchTotalAlunos from '../Hooks/TotalAlunos';
@@ -69,6 +70,7 @@ const cardTitleStyle = "font-semibold text-slate-100 text-base sm:text-lg mb-1 m
 const cardDescriptionStyle = "text-slate-400 text-xs sm:text-sm flex-grow";
 const cardValueStyle = `font-bold text-2xl sm:text-3xl mb-1 ${cardIconColor}`;
 
+
 export default function PageAdmin() {
   const [abaAtiva, setAbaAtiva] = useState('Administradores');
 
@@ -93,6 +95,15 @@ export default function PageAdmin() {
   const [showModalRelatorioVeiculos, setShowModalRelatorioVeiculos] = useState(false);
   const [showModalRelatorioRotas, setShowModalRelatorioRotas] = useState(false);
   const [showModalHistorico, setShowModalHistorico] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
+
+  useEffect(() => {
+    // Se quiser mostrar o modal automaticamente quando o componente montar
+    setMostrarModal(true);
+    
+    // Ou você pode adicionar alguma lógica condicional aqui
+  }, []);
+
 
   // data hooks
   const { totalAlunos, refetchAlunos } = useFetchTotalAlunos();
@@ -128,17 +139,10 @@ export default function PageAdmin() {
 
   return (
     <ProtegendoRota requiredRole='admin'>
-      <div className="sm:hidden">
-        <Header />
-      </div>
-
-      <div className="flex min-h-screen w-full bg-slate-900">
-        <div className="hidden md:block">
-          <Sidebar />
-        </div>
+      
 
 
-        <div className='flex-1 min-h-screen text-slate-300 p-4 sm:p-6 lg:p-8 font-sans overflow-y-auto'>
+        <div className='flex-1 min-h-screen text-slate-300 p-4 sm:p-6 lg:p-8 font-sans overflow-y-auto bg-slate-800'>
           <header className="mb-8">
             <h1 className='font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white underline underline-offset-6 font-mono'>Painel de Coordenação</h1>
           </header>
@@ -425,6 +429,9 @@ export default function PageAdmin() {
                   />
                   {/* Cards de Cadastrar, Editar, Excluir Rota podem ser adicionados aqui */}
                 </div>
+                <div className="h-80 w-full">
+                {mostrarModal && <ModalMapa />}
+              </div>
                 <ModalRelatorioRotas isVisible={showModalRelatorioRotas} onClose={() => setShowModalRelatorioRotas(false)} />
               </>
             )}
@@ -501,7 +508,7 @@ export default function PageAdmin() {
           </section>
         </div>
         <ChatBox />
-      </div>
+     
     </ProtegendoRota>
   );
 }
