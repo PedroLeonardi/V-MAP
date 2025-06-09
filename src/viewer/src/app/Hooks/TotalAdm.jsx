@@ -9,7 +9,7 @@ export default function useFetchTotalAdm() {
       const response = await axios.get('http://localhost:3001/admin');
       setTotal(response.data.length);
     } catch (error) {
-      console.error("Erro ao buscar total de administradores", error);
+      console.log("Erro ao buscar total de administradores", error);
     }
   };
 

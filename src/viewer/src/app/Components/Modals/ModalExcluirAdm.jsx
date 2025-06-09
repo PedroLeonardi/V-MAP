@@ -42,7 +42,7 @@ export default function ModalExcluirAdm({ isVisible, onClose, onSuccess }) {
             toast.success('Administrador encontrado!');
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Administrador não encontrado. Verifique o CPF.');
             setAdm(null);
         } finally {
@@ -71,7 +71,7 @@ export default function ModalExcluirAdm({ isVisible, onClose, onSuccess }) {
             }
 
         } catch (err) {
-            console.error('Erro na exclusão:', err);
+            console.log('Erro na exclusão:', err);
 
             let errorMessage = 'Erro ao excluir responsável';
 

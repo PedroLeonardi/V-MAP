@@ -139,7 +139,7 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
             console.log('Dados enviados: ', response)
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             // aqui eu envio uma requisição ao meu controller
             // que conversa com meu model, por isso consigo tratar o toast

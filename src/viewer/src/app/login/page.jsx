@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
@@ -14,6 +14,12 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuarioType');
+    localStorage.removeItem('cpf_User');
+  }, []);
+
   // Formatando cpf para front-end
   function formatarCPF(valor) {
     valor = valor.replace(/\D/g, '');
@@ -22,18 +28,11 @@ export default function Login() {
     if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
     return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   }
-
-  function formatarCPF(valor) {
-    valor = valor.replace(/\D/g, '');
-    if (valor.length <= 3) return valor;
-    if (valor.length <= 6) return valor.replace(/(\d{3})(\d)/, '$1.$2');
-    if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
-    return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
-  }
-
+  
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+
 
 
     if (!cpf.trim() || !senha.trim()) {
@@ -78,7 +77,7 @@ export default function Login() {
             break;
           }
         } catch (err) {
-          console.error('Não foi possível efetuar login com:', url);
+          console.log('Não foi possível efetuar login com:', url);
         }
       }
 
@@ -93,16 +92,15 @@ export default function Login() {
       localStorage.setItem('usuarioType', usuarioType);
       localStorage.setItem('cpf_User', cpf_User);
 
-      setTimeout(() => {
+      
         if (usuarioType === 'admin') {
-          router.push('/dashboardAdm');
+          router.push('/DashboardAdm');
         } else if (usuarioType === 'responsavel') {
           router.push('/dashboardResponsavel');
         } else if (usuarioType === 'aluno') {
           router.push('/dashboardAluno');
         }
-      }, 300);
-
+     
     } catch (err) {
       const message = get(err, 'response.data.message', '');
 

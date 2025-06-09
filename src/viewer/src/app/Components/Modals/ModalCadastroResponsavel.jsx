@@ -120,7 +120,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
             onClose();
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             // aqui eu envio uma requisição ao meu controller
             // que conversa com meu model, por isso consigo tratar o toast

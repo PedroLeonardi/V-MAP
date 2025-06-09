@@ -15,7 +15,7 @@ export default function ModalRelatorioAlunos({ isVisible, onClose }) {
           setAlunos(response.data)
         })
         .catch((err) => {
-          console.error('Erro ao buscar alunos: ', err)
+          console.log('Erro ao buscar alunos: ', err)
         })
     }
   }, [isVisible])
@@ -69,6 +69,7 @@ export default function ModalRelatorioAlunos({ isVisible, onClose }) {
                 <th className="px-4 py-2 border border-gray-600">ID</th>
                 <th className="px-4 py-2 border border-gray-600">Nome</th>
                 <th className="px-4 py-2 border border-gray-600">CPF</th>
+                <th className="px-4 py-2 border border-gray-600">ROTA</th>
               </tr>
             </thead>
             <tbody>
@@ -78,6 +79,7 @@ export default function ModalRelatorioAlunos({ isVisible, onClose }) {
                   <td className="px-4 py-2 border border-gray-600">{aluno.id_aluno}</td>
                   <td className="px-4 py-2 border border-gray-600">{aluno.nome}</td>
                   <td className="px-4 py-2 border border-gray-600">{aluno.cpf_aluno}</td>
+                  <td className="px-4 py-2 border border-gray-600">{aluno.id_rota_onibus}</td>
                 </tr>
               ))}
             </tbody>

@@ -10,7 +10,7 @@ export default function ModalRelatorioRotas({ isVisible, onClose }) {
     if (isVisible) {
       axios.get('http://localhost:3001/rota')
         .then(response => setRotas(response.data))
-        .catch(err => console.error('Erro ao buscar rotas: ', err));
+        .catch(err => console.log('Erro ao buscar rotas: ', err));
     }
   }, [isVisible]);
 

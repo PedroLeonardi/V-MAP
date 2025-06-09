@@ -40,7 +40,7 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
             setNome(motoristaEncontrado.nome);
             toast.success('Motorista encontrado!');
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Motorista não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
@@ -76,7 +76,7 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
             setCpfBusca('');
             setNome('');
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             if (err.response && err.response.status === 404) {
                 toast.error('Motorista não encontrado.');

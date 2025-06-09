@@ -5,6 +5,7 @@ export default function Footer() {
         {/* Logo e descrição */}
         <div className="md:col-span-2 lg:col-span-2">
           <div className="flex items-center justify-center md:justify-start mb-4">
+            <a href="./">
             <img 
               src="./Logo.png" 
               alt="Logo" 
@@ -13,6 +14,7 @@ export default function Footer() {
             <span className="text-2xl font-bold text-white">
               VMAP
             </span>
+              </a>
           </div>
           <p className="text-gray-300 font-bold text-sm text-center md:text-left max-w-md lg:text-[20px]">
             Sistema de Gestão de Transporte Escolar

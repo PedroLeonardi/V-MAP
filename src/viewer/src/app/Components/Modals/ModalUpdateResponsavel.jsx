@@ -51,7 +51,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
             setNome(responsavelEncontrado.nome);
             toast.success('Responsável encontrado!');
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Responsável não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
@@ -94,7 +94,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
             setSenha('');
             setNome('');
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             // mandando errs response para meu controller do back-end
             // usado para tratar meus erros no toast.
