@@ -84,16 +84,24 @@ const create = async (data) => {
 };
 
 // atualizar
-const update = async (id_aluno, data, cpf_admin) => {
+const update = async (id_aluno, data) => {
     try {
         if (data.senha) {
             data.senha = await bcrypt.hash(data.senha, saltRounds);
         }
 
         const alunoAntigo = await knex("Alunos").where({ id_aluno }).first();
-        const dataUpdate = await knex("Alunos").where({ id_aluno }).update(data);
 
-        await logAlteracao("Alunos", "UPDATE", alunoAntigo, data, data.cpf_admin);
+        const dataSimples = {
+            nome: data.nome,
+            cpf_aluno: alunoAntigo.cpf_aluno,
+            senha: data.senha,
+            cpf_responsavel: alunoAntigo.cpf_responsavel,
+            id_rota_onibus: alunoAntigo.id_rota_onibus
+        }
+        const dataUpdate = await knex("Alunos").where({ id_aluno }).update(dataSimples);
+
+        await logAlteracao("Alunos", "UPDATE", alunoAntigo, dataSimples, data.admin_cpf);
 
         return dataUpdate;
     } catch (err) {

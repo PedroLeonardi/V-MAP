@@ -1,4 +1,4 @@
-import userModel from '../models/alunoModels.js'
+import userModel from '../Models/alunoModels.js'
 
 // get
 const getAlunoAllController = async (req, res) => {
@@ -49,8 +49,8 @@ const createAlunoController = async (req, res) => {
 const updateAlunoController = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const cpf_admin = req.adminCpf;
-        const aluno = await userModel.update(id, req.body, cpf_admin);
+        
+        const aluno = await userModel.update(id, req.body);
 
         if (!aluno) {
             return res.status(404).json({ message: 'Aluno não encontrado' });
@@ -66,7 +66,7 @@ const updateAlunoController = async (req, res) => {
 const deleteAlunoController = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const cpf_admin = req.body.adminCpf;
+        const cpf_admin = req.body.admin_cpf;
         const aluno = await userModel.deleteRecord(id, cpf_admin);
 
         if (!aluno) {

@@ -57,8 +57,12 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
 
         try {
             setLoading(true);
-
-            const response = await axios.delete(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`);
+            const admin_cpf = await localStorage.getItem('cpf_User')
+            const response = await axios.delete(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`, {
+                data:{
+                    admin_cpf
+                }
+            });
 
             if (response.status === 200) {
                 if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado

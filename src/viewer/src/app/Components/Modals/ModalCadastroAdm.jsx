@@ -117,12 +117,13 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
 
         // caso aprovado...
         try {
-
+            const admin_cpf = await localStorage.getItem('cpf_User')
             const response = await axios.post('http://localhost:3001/admin', {
                 nome,
                 cpf,
                 cargo,
                 senha,
+                admin_cpf
             });
 
             setNome('');
