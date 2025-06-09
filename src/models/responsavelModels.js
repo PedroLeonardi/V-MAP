@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 const saltRounds = 10; // gerando caracteres aleatorios
 
-// select *from
+// select * from responsaveis
 const getAll = async () => {
   try {
     const responsaveis = await knex('responsaveis').select('*');
@@ -25,22 +25,37 @@ const getById = async (id_responsavel) => {
   }
 };
 
+// verifica se CPF existe em qualquer tabela 
+const cpfExisteEmQualquerTabela = async (cpf) => {
+  try {
+    const admin = await knex('administrador').where({ cpf }).first();
+    if (admin) return true;
+
+    const aluno = await knex('alunos').where({ cpf_aluno: cpf }).first();
+    if (aluno) return true;
+
+    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
+    if (responsavel) return true;
+
+    return false;
+  } catch (err) {
+    console.error('Erro ao verificar CPF nas tabelas:', err);
+    throw err;
+  }
+};
+
 // create
 const create = async (data) => {
   try {
 
-    // checkando se responsavel ja existe
-    const responsavelExistente = await knex('responsaveis').where({ cpf_responsavel: data.cpf_responsavel })  .first();
-
-    // aqui eu faço com que se o responsavel existir
-    // eu mando ele pro meu controller 
-    if (responsavelExistente) {
-      const error = new Error('Responsável já cadastrado');
+    // checkando se cpf ja existe no bd
+    const cpfJaExiste = await cpfExisteEmQualquerTabela(data.cpf_responsavel);
+    if (cpfJaExiste) {
+      const error = new Error('CPF já cadastrado em algum usuário do sistema.');
       error.status = 400;
-      throw error
+      throw error;
     }
 
-    // atribuindo senha hash
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
 
     const [id_responsavel] = await knex('responsaveis').insert({
@@ -60,13 +75,12 @@ const update = async (id_responsavel, data) => {
   try {
     const dataUpdate = { ...data };
 
-    // se tiver senha faz o hash antes
     if (data.senha) {
       dataUpdate.senha = await bcrypt.hash(data.senha, saltRounds);
     }
 
     if (data.cpf) {
-      dataUpdate.cpf_responsavel = data.cpf.replace(/\D/g, '');
+      dataUpdate.cpf_responsavel = data.cpf;
       delete dataUpdate.cpf;
     }
 
@@ -89,11 +103,9 @@ const deleteRecord = async (id_responsavel) => {
   }
 };
 
-// pescando o cpf do responsavel
+// get by CPF
 const getByCPF = async (cpf) => {
   try {
-
-    // capturando o cpf do meu responsavel
     const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
     return responsavel;
   } catch (err) {
@@ -102,4 +114,4 @@ const getByCPF = async (cpf) => {
   }
 };
 
-export default { getAll, getById, create, update, deleteRecord, getByCPF };
+export default { getAll, getById, create, update, deleteRecord, getByCPF, cpfExisteEmQualquerTabela };
