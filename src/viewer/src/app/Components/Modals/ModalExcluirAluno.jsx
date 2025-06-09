@@ -61,9 +61,13 @@
 
             try {
                 setLoading(true);
-
+                const admin_cpf = await localStorage.getItem('cpf_User')
                 // aplicando logica para deletar
-                const response = await axios.delete(`http://localhost:3001/aluno/${aluno.id_aluno}`);
+                const response = await axios.delete(`http://localhost:3001/aluno/${aluno.id_aluno}`, {
+                    data: {
+                        admin_cpf
+                    }
+                });
 
                 if (response.status === 200) {
                     toast.success('Aluno excluído com sucesso!');
