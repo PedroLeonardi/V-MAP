@@ -94,11 +94,11 @@ export default function Login() {
 
       
         if (usuarioType === 'admin') {
-          router.push('/DashboardAdm');
+          router.push('/dashboardAdm');
         } else if (usuarioType === 'responsavel') {
           router.push('/dashboardResponsavel');
         } else if (usuarioType === 'aluno') {
-          router.push('/dashboardAluno');
+          router.push('/DashboardAluno');
         }
      
     } catch (err) {
@@ -123,7 +123,7 @@ export default function Login() {
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-40"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-80 brightness-140"
       >
         <source src="/login/bg-login.mp4" type="video/mp4" />
         Seu navegador não suporta vídeo.
@@ -136,10 +136,10 @@ export default function Login() {
           </Link>
         </div>
 
-        <div className="bg-slate-800/70 backdrop-blur-md border border-slate-700 rounded-xl pt-20 pb-8 px-6 sm:px-10 w-full max-w-sm text-white shadow-2xl">
+        <div className="bg-slate-800/70 backdrop-blur-md border border-slate-700 rounded-xl pt-10 pb-10 px-6 sm:px-10 w-full max-w-md text-white shadow-2xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-sky-400">Bem-vindo(a)!</h1>
-            <p className="text-slate-300 mt-2">Acesse sua conta para continuar</p>
+            <h1 className="text-3xl font-bold text-sky-400 pb-10">Bem-vindo(a)!</h1>
+            <p className="text-slate-300 -mt-6">Acesse sua conta para continuar</p>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>

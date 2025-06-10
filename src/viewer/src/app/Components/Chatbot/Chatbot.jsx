@@ -78,31 +78,31 @@ export default function ChatBox() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 font-sans">
+    <div className="fixed bottom-20 lg:bottom-5 right-5 z-50 font-sans">
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
           className="bg-blue-500 text-white px-4 py-3 rounded-full font-medium shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
         >
-          <span>Precisa de ajuda?</span>
+          <span className="hidden lg:flex">Precisa de ajuda?</span>
           <IoChatbubbleEllipsesSharp size={20} />
         </button>
       ) : (
-        <div className="w-80 h-[500px] flex flex-col bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+        <div className="w-70 lg:w-80 h-[400px] lg:h-[500px] flex flex-col bg-gray-800 rounded-lg shadow-xl overflow-hidden">
           <div className="bg-gray-900 text-white p-3 flex justify-between items-center border-b border-gray-700">
-            <h3 className="font-semibold">Chat de Ajuda</h3>
+            <h3 className="text-sm lg:text-md font-semibold">Chat de Ajuda</h3>
             <button 
               onClick={fecharChat} 
               className="text-gray-400 hover:text-white transition-colors"
             >
-              <IoClose size={20} />
+              <IoClose size={30} />
             </button>
           </div>
 
           <div className="flex-1 p-4 overflow-y-auto bg-gray-900 flex flex-col gap-3">
             {messages.length === 0 ? (
               <div className="flex flex-col gap-2">
-                <p className="text-gray-400 mb-2">Olá! Como posso te ajudar?</p>
+                <p className="text-sm lg:text-md text-gray-400 mb-2">Olá! Como posso te ajudar?</p>
                 {perguntas.map((faq, i) => (
                   <button
                     key={i}
@@ -169,7 +169,7 @@ export default function ChatBox() {
 
                 <button
                   type="submit"
-                  className="w-full mt-3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition font-medium"
+                  className=" text-sm lg:text-md  w-full mt-3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition font-medium"
                 >
                   Enviar mensagem
                 </button>

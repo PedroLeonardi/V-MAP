@@ -43,6 +43,14 @@ const create = async (data) => {
       throw error;
     }
 
+        const cpfJaExiste = await cpfExisteEmQualquerTabela(data.cpf_motorista);
+
+    if (cpfJaExiste) {
+      const error = new Error('CPF já cadastrado em algum usuário do sistema.');
+      error.status = 400;
+      throw error;
+    }
+
     const [id_motorista] = await knex('funcionario_motorista').insert({
       nome: data.nome,
       cpf_motorista: data.cpf_motorista,
@@ -52,6 +60,8 @@ const create = async (data) => {
       nome: data.nome,
       cpf_motorista: data.cpf_motorista,
     }, data.admin_cpf);
+
+
 
     return id_motorista;
   } catch (err) {
@@ -106,4 +116,26 @@ const getByCPF = async (cpf) => {
   }
 };
 
-export default { getAll, getById, create, update, deleteRecord, getByCPF };
+const cpfExisteEmQualquerTabela = async (cpf) => {
+  try {
+    const admin = await knex('administrador').where({ cpf }).first();
+    if (admin) return true;
+
+    const aluno = await knex('alunos').where({ cpf_aluno: cpf }).first();
+    if (aluno) return true;
+
+    const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
+    if (responsavel) return true;
+
+    const motorista = await knex('funcionario_motorista').where({ cpf_motorista: cpf }).first();
+    if (motorista) return true;
+
+    return false;
+  } catch (err) {
+    console.error('Erro ao verificar CPF nas tabelas:', err);
+    throw err;
+  }
+};
+
+
+export default { getAll, getById, create, update, deleteRecord, getByCPF, cpfExisteEmQualquerTabela };

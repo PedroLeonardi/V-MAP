@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="w-full bg-slate-800 text-white px-6 py-12 border-t border-slate-700">
+    <footer className="hidden lg:flex w-full bg-gradient-to-t from-gray-900 via-gray-800 to-gray-900 text-white px-6 py-12 border-t border-gray-700">
       <div className="max-w-7xl mx-auto grid gap-8 md:grid-cols-4 lg:grid-cols-4">
         {/* Logo e descrição */}
         <div className="md:col-span-2 lg:col-span-2">
@@ -9,8 +9,8 @@ export default function Footer() {
             <img 
               src="./Logo.png" 
               alt="Logo" 
-              className="h-20 w-18 mr-3"
-              />
+              className="h-24 w-18 mr-3"
+            />
             <span className="text-2xl font-bold text-white">
               VMAP
             </span>
@@ -47,10 +47,10 @@ export default function Footer() {
             Links Úteis
           </h3>
           <ul className="space-y-3 text-sm text-gray-400">
-            {['Termos de Uso', 'Política de Privacidade', 'FAQ'].map((link) => (
+            {['FAQ', 'Sobre Nós'].map((link) => (
               <li key={link}>
                 <a 
-                  href="#" 
+                  href="" 
                   className="hover:text-white transition-colors duration-300 flex items-center justify-center md:justify-start group"
                 >
                   <span className="group-hover:translate-x-1 transition-transform">
