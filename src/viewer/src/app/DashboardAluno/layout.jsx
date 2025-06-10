@@ -1,7 +1,7 @@
 'use client';
 
 import SidebarAluno from '../Components/Sidebar/SidebarAluno';
-import SidebarMobile from '../Components//SidebarMobile/SidebarAluno'
+import SidebarMobile from '../Components/SidebarMobile/SidebarAluno'
 
 export default function DashboardLayout({ children }) {
   return (
