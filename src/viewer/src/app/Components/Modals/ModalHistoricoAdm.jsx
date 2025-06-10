@@ -63,7 +63,7 @@ export default function ModalHistoricoAdm({ isVisible, onClose }) {
           </button>
   
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-1">Lista de Administradores Cadastrados</h2>
+            <h2 className="text-2xl font-bold text-white mb-1">Historico de Ações</h2>
             <div className="w-1 h-1 bg-blue-500 rounded-full"></div>
           </div>
   

@@ -14,10 +14,10 @@ export default function SidebarAluno() {
   const [menuAtivo, setMenuAtivo] = useState("./");
 
    const menus = [
-        { icon: <RiDashboardFill />, link: "./DashboardResponsavel" },
-        { icon: <PiStudentFill />, link: "./AlunoLog" },
-        { icon: <IoPerson />, link: "./ResponsavelPerf" },
-        { icon: <MdDirectionsBus />, link: "./RotaResponsavel" },
+        { icon: <RiDashboardFill />, link: "./dashboardResponsavel" },
+        { icon: <PiStudentFill />, link: "./alunoLog" },
+        { icon: <IoPerson />, link: "./responsavelPerf" },
+        { icon: <MdDirectionsBus />, link: "./rotaResponsavel" },
     ];
 
   return (
