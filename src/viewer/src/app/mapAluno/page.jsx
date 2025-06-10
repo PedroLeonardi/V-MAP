@@ -26,7 +26,7 @@ useEffect(()=> {
   useEffect(() => {
     const fetchAcaoAluno = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/log/alunoLast/000.000.000-00');
+        const response = await axios.get(`http://localhost:3001/log/alunoLast/${cpf_user}`);
         const acao = response.data.evento;
         if (acao === 'subir') {
           setAcaoAluno('descer');
@@ -43,7 +43,7 @@ useEffect(()=> {
    useEffect(() => {
     const fetchAcaoAluno = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/log/alunoLast/000.000.000-00');
+        const response = await axios.get(`http://localhost:3001/log/alunoLast/${cpf_user}`);
         const acao = response.data.evento;
 
         if (acao === 'subir') {
