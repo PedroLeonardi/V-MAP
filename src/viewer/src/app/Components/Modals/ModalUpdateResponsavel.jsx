@@ -11,7 +11,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
     const [cpfBusca, setCpfBusca] = useState('');
     const [responsavel, setResponsavel] = useState(null);
     const [nome, setNome] = useState('');
-    const [cpf_responsavel, setCpf] = useState('');
+    const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false);
 
     // função para formatar CPF
@@ -29,8 +29,13 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
+    // maior que 6 e menor que 255
+    function validarSenha(senha) {
+        return senha.length >= 6 && senha.length <= 255;
+    }
+
     const buscarResponsavel = async () => {
-    
+
         // precisa informar um cpf
         if (!cpfBusca) return toast.warning('Informe o CPF para buscar.');
 
@@ -42,11 +47,11 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
             console.log('Responsável encontrado:', responsavelEncontrado);
 
             setResponsavel(responsavelEncontrado);
-            setCpf(formatarCPF(responsavelEncontrado.cpf_responsavel)); 
+            setSenha(responsavelEncontrado.senha)
             setNome(responsavelEncontrado.nome);
             toast.success('Responsável encontrado!');
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Responsável não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
@@ -58,7 +63,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf_responsavel.trim()) {
+        if (!nome.trim() || !senha.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -68,23 +73,29 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
             formsErrors = true;
         }
 
+        if (!validarSenha(senha)) {
+            toast.error('Senha deve conter entre 6 a 255 caracteres');
+            formsErrors = true;
+        }
+
         if (formsErrors) return;
 
         try {
             setLoading(true);
-
+            const admin_cpf = await localStorage.getItem('cpf_User')
             await axios.put(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`, {
-                cpf_responsavel,
+                senha,
                 nome,
+                admin_cpf
             });
 
             toast.success('Responsável atualizado com sucesso!');
             setResponsavel(null);
             setCpfBusca('');
-            setCpf('');
+            setSenha('');
             setNome('');
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             // mandando errs response para meu controller do back-end
             // usado para tratar meus erros no toast.
@@ -103,7 +114,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="p-6 max-w-md w-full mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl shadow-2xl border border-gray-700 relative">
                 <button
                     onClick={onClose}
@@ -142,7 +153,7 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
 
                             <div className="space-y-3">
                                 <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome Completo</label>
                                     <input
                                         type="text"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -154,10 +165,10 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
                                 <div>
                                     <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF</label>
                                     <input
-                                        type="text"
+                                        type="password"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={cpf_responsavel}
-                                        onChange={(e) => setCpf(formatarCPF(e.target.value))}
+                                        value={senha}
+                                        onChange={(e) => setSenha(e.target.value)}
                                         maxLength={14}
                                     />
                                 </div>
@@ -165,9 +176,8 @@ export default function ModalUpdateResponsavel({ isVisible, onClose }) {
 
                             <button
                                 onClick={atualizarResponsavel}
-                                className={`w-full mt-4 bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${
-                                    loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-green-700 hover:to-green-900 hover:shadow-green-900/30'
-                                }`}
+                                className={`w-full mt-4 bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-lg font-bold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800 text-sm sm:text-base ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-green-700 hover:to-green-900 hover:shadow-green-900/30'
+                                    }`}
                                 disabled={loading}
                             >
                                 {loading ? "Atualizando..." : "Confirmar Atualização"}

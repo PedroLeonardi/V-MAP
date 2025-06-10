@@ -42,7 +42,7 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
             toast.success('Responsável encontrado!');
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Responsável não encontrado. Verifique o CPF.');
             setResponsavel(null);
         } finally {
@@ -57,8 +57,12 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
 
         try {
             setLoading(true);
-
-            const response = await axios.delete(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`);
+            const admin_cpf = await localStorage.getItem('cpf_User')
+            const response = await axios.delete(`http://localhost:3001/responsavel/${responsavel.id_responsavel}`, {
+                data:{
+                    admin_cpf
+                }
+            });
 
             if (response.status === 200) {
                 if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
@@ -70,7 +74,7 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
             }
 
         } catch (err) {
-            console.error('Erro na exclusão:', err);
+            console.log('Erro na exclusão:', err);
 
             let errorMessage = 'Erro ao excluir responsável';
 

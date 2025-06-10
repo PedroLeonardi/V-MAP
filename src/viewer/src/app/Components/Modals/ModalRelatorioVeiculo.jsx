@@ -4,17 +4,17 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function ModalRelatorioVeiculo({ isVisible, onClose }) {
-  const [veiculos, setVeiculo] = useState([]);
+  const [veiculos, setVeiculos] = useState([]);
   const [busca, setBusca] = useState('');
 
   useEffect(() => {
     if (isVisible) {
       axios.get('http://localhost:3001/veiculo')
         .then((response) => {
-          setVeiculo(response.data);
+          setVeiculos(response.data);
         })
         .catch((err) => {
-          console.error('Erro ao buscar veículos: ', err);
+          console.log('Erro ao buscar veículos: ', err);
         });
     }
   }, [isVisible]);

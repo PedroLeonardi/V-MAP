@@ -16,6 +16,26 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
         valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
         return valor;
     }
+       // validar cpf real segundo a RF
+       function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, '');
+
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        const calcDV = (cpfSlice, factor) => {
+            let total = 0;
+            for (let i = 0; i < cpfSlice.length; i++) {
+                total += parseInt(cpfSlice[i]) * (factor - i);
+            }
+            const resto = total % 11;
+            return resto < 2 ? 0 : 11 - resto;
+        };
+
+        const dv1 = calcDV(cpf.slice(0, 9), 10);
+        const dv2 = calcDV(cpf.slice(0, 10), 11);
+
+        return dv1 === parseInt(cpf[9]) && dv2 === parseInt(cpf[10]);
+    }
 
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
@@ -23,9 +43,9 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
 
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
-            onClose();
             setCpfMotorista('');
             setNome('');
+            onClose();
         }
     };
 
@@ -45,6 +65,11 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
             formsErrors = true;
         }
 
+        // if(!validarCPF(cpf_motorista)){
+        //     toast.error('CPF inválido');
+        //     formsErrors = true;
+        // }
+
         if (formsErrors) {
             setLoading(false);
             return;
@@ -63,7 +88,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
             setNome('');
             onClose();
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             if (err.response && err.response.status === 400) {
                 toast.error('CPF já cadastrado.');
@@ -79,7 +104,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
 
     return (
         <div
-            className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 p-4"
+            className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 p-4"
             onClick={handleClose}
         >
             <div className="w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-700 relative transform transition-all duration-300 scale-100 hover:scale-[1.01] max-h-[90vh] overflow-y-auto">
@@ -97,7 +122,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
 
                 <form className="flex flex-col gap-3 sm:gap-5" onSubmit={handleSubmit}>
                     <div className="flex flex-col">
-                        <label htmlFor="nome" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome</label>
+                        <label htmlFor="nome" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome Completo</label>
                         <input
                             id="nome"
                             type="text"

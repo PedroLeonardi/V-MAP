@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
+import ChatBox from "./Components/Chatbot/Chatbot";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -11,6 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [closingMenu, setClosingMenu] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   
 
 
@@ -19,8 +21,8 @@ export default function Home() {
       setFadeOut(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1200);
-    }, 2000);
+      }, 900);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -40,10 +42,23 @@ export default function Home() {
     }, 300);
   };
 
+ 
+
+useEffect(() => {
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 10);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
   return (
     <>
       {loading && (
-        <div className={`fixed inset-0 bg-black flex items-center justify-center z-50 transition-opacity duration-1000 ${loading ? 'opacity-90' : 'opacity-15 pointer-events-none'}`}>
+        <div className={`fixed inset-0 bg-black flex items-center justify-center z-50 transition-opacity duration-1500 ease-out
+          ${fadeOut ? 'opacity-0' : 'opacity-80'}`}>
           <img src="/Logo.png" alt="Logo" className="w-70 animate-pulse" />
         </div>
       )}
@@ -59,15 +74,14 @@ export default function Home() {
         >
       <div className="flex justify-between items-center mb-4">
         <img src="/Logo.png" alt="Logo" className="w-28 cursor-pointer" />
-        <button onClick={handleCloseMenu} className="text-white text-2xl">&times;</button>
+        <button onClick={handleCloseMenu} className="text-black text-2xl">&times;</button>
       </div>
       <a href="#sobrenos"  onClick={() => scrollToSection('sobrenos')} className="text-black text-lg font-semibold">Sobre Nós</a>
       <a href="#faq" onClick={() => scrollToSection('faq')} className="text-black text-lg font-semibold">FAQ</a>
       <button
         onClick={() => setMobileLoginOpen(!mobileLoginOpen)}
         className="text-black text-lg font-semibold flex justify-between items-center w-full"
-      >
-        Login
+      > Login
         <svg
           className={`w-5 h-5 transition-transform ${mobileLoginOpen ? "rotate-180" : ""}`}
           fill="none"
@@ -87,19 +101,25 @@ export default function Home() {
 )}
 
 
-<main className="conteudo relative flex w-full h-screen overflow-hidden flex-col lg:flex-row">
+<main className="conteudo relative flex w-full overflow-hidden flex-col lg:flex-row">
   <div
-    className="w-full lg:w-1/2 flex flex-col justify-center px-10 z-10 h-290 md:h-290 lg:h-289 relative py-10 md:py-0"
+    className="w-full lg:w-1/2  flex-col px-10 z-10  relative py-10 md:py-0 h-230"
     style={{ background: 'linear-gradient(to right, #0F0F0F, #171717, #1E1E1E)' }}
   >
-    <div className="absolute top-6 right-6 lg:hidden z-30">
+    <div
+  className={`fixed top-0 left-0 w-full h-20 z-90 transition-colors duration-300 lg:hidden ${
+    scrolled ? "bg-black/80 backdrop-blur-md" : "bg-transparent"
+  }`}
+/>
+    <div className="fixed top-6 right-6 lg:hidden z-95">
       <button onClick={() => setOpenMenu(true)} className="text-white text-3xl font-bold">&#9776;</button>
     </div>
-    <div className="-mt-40 md:-mt-70 lg:-mt-100 hidden md:block">
+    <div className="">
+      {/* ---------------------------------------------------------- */}
     <Link href="/"><img src="/Logo.png" alt="Logo" className="w-30 md:w-40 lg:w-45"></img> </Link>
     </div>
 
-    <div className="-mt-5 md:mt-30 lg:mt-35">
+    <div className="-mt-5 md:mt-10 lg:mt-15">
       <h1 className="text-white font-bold text-4xl pl-0 md:pl-10 lg:pl-10 md:text-5xl lg:text-6xl leading-tight">
         Gestão Inteligente para Transporte Escolar
       </h1>
@@ -109,7 +129,7 @@ export default function Home() {
         e gerenciar de forma prática, segura e digital.
       </p>
       <div className="flex gap-4 pl-0 md:pl-12 lg:pl-12 mt-10 flex-wrap">
-        <button
+      <Link href="./login">  <button
           className="text-white font-semibold px-6 py-3 rounded flex items-center gap-2 transition duration-200 hover:brightness-110 cursor-pointer"
           style={{ background: 'linear-gradient(to right, #00305E, #0355A3)' }}
         >
@@ -117,16 +137,16 @@ export default function Home() {
           <svg className="w-5 h-5 transition-transform duration-200 hover:-rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
-        </button>
-        <button
+        </button> </Link>
+        <Link href="./login"> <button
           className="text-white font-semibold px-6 py-3 rounded flex items-center gap-2 transition duration-200 hover:brightness-110 cursor-pointer"
           style={{ background: 'linear-gradient(to right, #00305E, #0355A3)' }}
-        >
+        > 
           Pai/Responsável
           <svg className="w-5 h-5 transition-transform duration-200 hover:-rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
-        </button>
+        </button> </Link>
       </div>
     </div>
   </div>
@@ -135,7 +155,12 @@ export default function Home() {
     className="w-1/2 relative bg-cover bg-center overflow-hidden hidden lg:block"
     style={{ backgroundImage: "url('/BG-BUS.jpg')" }}
   >
-    <div className="absolute top-20 right-10 text-white font-bold text-3xl flex gap-8 z-20">
+  <div
+  className={`fixed top-0 left-0 w-full z-40 h-35 transition-colors duration-300 ${
+    scrolled ? "bg-black/80 backdrop-blur-md" : "bg-transparent"
+  }`}
+/>
+<div className="fixed top-0 right-0 w-full text-white font-bold text-3xl flex gap-8 justify-end pr-10 py-4 z-50 transition-colors duration-300 mt-10">
       <a onClick={() => scrollToSection('sobrenos')}className="hover:text-gray-300 cursor-pointer">Sobre Nós</a>
       <a onClick={() => scrollToSection('faq')} className="hover:text-gray-300 cursor-pointer">FAQ</a>
       <div className="relative group">
@@ -157,18 +182,11 @@ export default function Home() {
         )}
       </div>
     </div>
-    <div className="absolute inset-0 flex items-center justify-center z-10 mt-35">
-      <img
-        src="/Celular.png"
-        alt="Celular"
-        className="max-w-900 max-h-full mr-120 -mt-20 object-contain"
-      />
-    </div>
   </div>
 </main>
 
       <div
-        className="relative w-full px-10 py-10 md:py-0 h-200"
+        className="relative w-full px-10 py-10 md:py-0 "
         style={{
           background: 'linear-gradient(to right, #00305E, #00305E, #01488D,rgb(3, 78, 153), #0355A3)',
           zIndex: 1,
@@ -191,7 +209,7 @@ export default function Home() {
   <h1 id="sobrenos" className="text-white font-bold text-6xl md:text-6xl lg:text-8xl leading-tight pt-10 md:pt-20 lg:pt-40  -pl-20 md:pl-20 lg:pl-40 text-center md:text-start">
     Quem Somos?
   </h1>
-  <p className="text-white font-semibold text-[19px] md:text-md lg:text-3xl md:mt-20 lg:-mt-10 mt-1 md:py-0 lg:py-20 lg:pr-150 pt-10 -pl-10 md:pl-20 lg:pl-40 text-start md:text-start">
+  <p className="text-white font-semibold text-[19px] md:text-md lg:text-3xl md:mt-20 lg:-mt-10 mt-1 md:py-0 lg:py-20 lg:pr-100 pt-10 -px-10 md:px-20 lg:px-40 text-start md:text-start">
     Somos fruto de uma iniciativa que nasceu da necessidade 
     real de tornar o transporte escolar mais transparente,
     seguro e acessível. Acreditamos que a tecnologia
@@ -294,9 +312,7 @@ export default function Home() {
       zIndex: 0,
     }}
   />
-
-  {/* Card amarelo, para ficar em cima do degradê, FAC do site*/}
-  <div id="faq" className="relative z-10 max-w-6xl mx-auto bg-yellow-400 text-black rounded-3xl shadow-xl px-6 md:px-20 py-20 mt-[6rem] mb-[6rem]">
+  <div id="faq" className="relative z-1 max-w-6xl mx-auto bg-yellow-400 text-black rounded-3xl shadow-xl px-6 md:px-20 py-20 mt-[6rem] mb-[6rem]">
     <h2 className="text-4xl md:text-6xl font-bold text-center mb-16">Dúvidas Frequentes</h2>
     <div className="flex flex-col gap-8">
       {[
@@ -358,7 +374,7 @@ export default function Home() {
         <textarea
           id="mensagem"
           name="mensagem"
-          placeholder="Escreva aqui sua dúvida ou problema"
+          placeholder="Escreva aqui sua mensagem"
           rows="5"
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 resize-none"
           required
@@ -374,6 +390,8 @@ export default function Home() {
   </div>
   </div>
 </section>
+  <ChatBox/>
+
 
 
 

@@ -23,7 +23,7 @@ export default function RotaProtegidaAdm({ children, requiredRole = 'admin' }) {
     }, [router, requiredRole]);
 
     if (typeof window === 'undefined' || isLoading) {
-        return null; // Ou um componente de loading
+        return null; 
     }
 
     if (!isAuthorized) {

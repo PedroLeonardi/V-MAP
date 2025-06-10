@@ -15,7 +15,7 @@ export default function ModalRelatorioMotorista({ isVisible, onClose }) {
           setMotorista(response.data)
         })
         .catch((err) => {
-          console.error('Erro ao buscar motorista: ', err)
+          console.log('Erro ao buscar motorista: ', err)
         })
     }
   }, [isVisible])

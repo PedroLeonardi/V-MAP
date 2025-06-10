@@ -42,7 +42,7 @@ export default function ModalExcluirAdm({ isVisible, onClose, onSuccess }) {
             toast.success('Administrador encontrado!');
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Administrador não encontrado. Verifique o CPF.');
             setAdm(null);
         } finally {
@@ -57,20 +57,25 @@ export default function ModalExcluirAdm({ isVisible, onClose, onSuccess }) {
 
         try {
             setLoading(true);
-
-            const response = await axios.delete(`http://localhost:3001/admin/${admin.id_admin}`);
+            const admin_cpf = await localStorage.getItem('cpf_User')
+            const response = await axios.delete(`http://localhost:3001/admin/${admin.id_admin}`, {
+                data:{
+                    admin_cpf
+                }
+            });
 
             if (response.status === 200) {
                 toast.success('Administrador excluído com sucesso!');
-            if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
+            if (onSuccess) onSuccess(); 
                 setAdm(null);
                 setCpfBusca('');
+                onClose();
             } else {
                 throw new Error('Erro ao excluir responsável');
             }
 
         } catch (err) {
-            console.error('Erro na exclusão:', err);
+            console.log('Erro na exclusão:', err);
 
             let errorMessage = 'Erro ao excluir responsável';
 

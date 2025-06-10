@@ -1,6 +1,6 @@
 'use client'
 import { use, useEffect, useState } from 'react';
-import DashboardCard from '../Components/DashboardCard/Dashboard';
+import DashboardCard from '../Components/DashboardCard/Card';
 import { CiViewList } from "react-icons/ci";
 import axios from 'axios';
 import ModalContatoAlunos from '../Components/Modals/ModalContato';
@@ -19,13 +19,13 @@ export default function contato() {
                 const responseCount = await axios.get('http://localhost:3001/contato/0')
                 setCountContatos(responseCount.data.mensagem.length)
             } catch (err) {
-                console.error("Erro ao acessar a rota de contatos: ", err)
+                console.log("Erro ao acessar a rota de contatos: ", err)
             } //============================================================================================POSSIVELMENTE REDUZIR
             try {
                 const responseData = await axios.get('http://localhost:3001/contato/0')
                 setDataContatos(responseData.data.mensagem)
             } catch (err) {
-                console.error("Erro ao acessar a rota de contatos: ", err)
+                console.log("Erro ao acessar a rota de contatos: ", err)
             }
         }
         readContatos()
@@ -36,7 +36,7 @@ export default function contato() {
             axios.put(`http://localhost:3001/contato/${id_mensagem_suporte}`).then(response => {console.log(response.data)})
             setStatusUseEffect([])
         } catch (err) {
-            console.error("Houve um erro ao ataulizar o status: ", err)
+            console.log("Houve um erro ao ataulizar o status: ", err)
         }
     }
 

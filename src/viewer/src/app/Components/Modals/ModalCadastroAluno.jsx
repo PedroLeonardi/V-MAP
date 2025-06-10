@@ -11,8 +11,12 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
     const [senha, setSenha] = useState('');
     const [cpf_aluno, setCPF] = useState('');
     const [cpf_responsavel, setCpfResponsavel] = useState('');
+    const [id_rota_onibus, setid_rota_onibus] = useState('')
+    // const [cpf_admin, setCpf_admin] = useState('111.111.111-11')
     const [loading, setLoading] = useState(false)
 
+
+    // setCpf_admin('111.111.111-11')
     // formatando o front do cpf
     function formatarCPF(valor) {
         valor = valor.replace(/\D/g, '');
@@ -22,15 +26,37 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         return valor
     }
 
+    // validar cpf real segundo a RF
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, '');
+
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        const calcDV = (cpfSlice, factor) => {
+            let total = 0;
+            for (let i = 0; i < cpfSlice.length; i++) {
+                total += parseInt(cpfSlice[i]) * (factor - i);
+            }
+            const resto = total % 11;
+            return resto < 2 ? 0 : 11 - resto;
+        };
+
+        const dv1 = calcDV(cpf.slice(0, 9), 10);
+        const dv2 = calcDV(cpf.slice(0, 10), 11);
+
+        return dv1 === parseInt(cpf[9]) && dv2 === parseInt(cpf[10]);
+    }
+
     // nao pode numero e caracter especial
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // maior que 6
+    // maior que 6 e menor que 255
     function validarSenha(senha) {
-        return senha.length >= 6;
+        return senha.length >= 6 && senha.length <= 255;
     }
+
 
     // modal
     if (!isVisible) return null;
@@ -38,16 +64,15 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
     // modal close
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
-            onClose();
             setCPF('');
             setNome('');
             setSenha('');
             setCpfResponsavel('');
+            setid_rota_onibus('')
             onClose();
         }
     };
 
-    // envio do form
     // envio do form
     async function handleSubmit(e) {
         e.preventDefault();
@@ -55,10 +80,16 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim()) {
+        if (!nome.trim() || !cpf_aluno.trim() || !senha.trim() || !cpf_responsavel.trim() || !id_rota_onibus.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
+
+        // if(!validarCPF(cpf_aluno)){
+        //     toast.error('CPF inválido');
+        //     formsErrors = true;
+        //     return;
+        // }
 
         if (!validarNome(nome)) {
             toast.error('Nome Inválido. O nome deve conter apenas letras e espaços.');
@@ -66,7 +97,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
         }
 
         if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
+            toast.error('Senha deve conter entre 6 e 255 caracteres.');
             formsErrors = true;
         }
 
@@ -74,9 +105,10 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             setLoading(false);
             return;
         }
-
+        
         // definindo uma função para buscar se ja existe um responsavel
         const buscarResponsavel = async (cpf) => {
+            const admin_cpf = await localStorage.getItem('cpf_User')
             try {
                 await axios.get(`http://localhost:3001/responsavel/cpf/${cpf}`);
 
@@ -84,9 +116,11 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                     nome,
                     cpf_aluno,
                     senha,
-                    cpf_responsavel
+                    cpf_responsavel,
+                    id_rota_onibus,
+                    admin_cpf
                 });
-                if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
+                if (onSuccess) onSuccess();
                 console.log('Dados recebidos: ', response);
                 toast.success('Aluno cadastrado com sucesso.');
 
@@ -94,6 +128,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                 setNome('');
                 setSenha('');
                 setCpfResponsavel('');
+                setid_rota_onibus('')
                 onClose();
             } catch (err) {
 
@@ -116,7 +151,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
 
     return (
         <div
-            className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 p-4"
+            className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 p-4"
             onClick={handleClose}
         >
             <div className="w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-700 relative transform transition-all duration-300 scale-100 hover:scale-[1.01] max-h-[90vh] overflow-y-auto">
@@ -169,6 +204,22 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
                             className="text-sm sm:text-base border border-gray-600 p-2 sm:p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             placeholder="000.000.000-00"
                         />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="id_rota_onibus" className="text-xs sm:text-sm font-medium text-gray-300 mb-1">
+                            Rota do Ônibus
+                        </label>
+                        <select
+                            id="id_rota_onibus"
+                            className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            value={id_rota_onibus}
+                            onChange={e => setid_rota_onibus(e.target.value)}
+                        >
+                            <option value="">Selecione a rota</option>
+                            <option value="1">Rota 1</option>
+                            <option value="2">Rota 2</option>
+                        </select>
                     </div>
 
                     <div className="flex flex-col">

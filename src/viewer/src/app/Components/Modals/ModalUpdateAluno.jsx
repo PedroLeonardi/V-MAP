@@ -8,10 +8,8 @@ import { IoClose } from "react-icons/io5";
 export default function ModalUpdateAluno({ isVisible, onClose}) {
     const [cpfBusca, setCpfBusca] = useState('');
     const [aluno, setAluno] = useState(null);
-
     const [nome, setNome] = useState('');
-    const [cpf_aluno, setCpfAluno] = useState('');
-    // const [cpf_responsavel, setCpfResponsavel] = useState('');
+    const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false);
 
     // função para formatar CPF (
@@ -28,6 +26,10 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
+    function validarSenha(senha) {
+        return senha.length >= 6 && senha.length <= 255;
+    }
+
     const buscarAluno = async () => {
 
         // enviando cpf limpo para o db/back-end
@@ -42,13 +44,12 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
 
             // atribuindo ele...
             setAluno(alunoEncontrado);
-            setCpfAluno(formatarCPF(alunoEncontrado.cpf_aluno));
+            setSenha(alunoEncontrado.senha);
             setNome(alunoEncontrado.nome);
-            // setCpfResponsavel(formatarCPF(alunoEncontrado.cpf_responsavel));
             toast.success('Aluno encontrado!');
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Aluno não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
@@ -61,7 +62,7 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
         // Validações (mesmas do ModalCadastro)
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf_aluno.trim() /*|| || !cpf_responsavel.trim()*/) {
+        if (!nome.trim() || !senha.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -70,16 +71,21 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
             toast.error('Nome Inválido. O nome deve conter apenas letras e espaços.');
             formsErrors = true;
         }
+        if(!validarSenha(senha)){
+            toast.error('Senha deve conter entre 6 a 255 caracteres.');
+            formsErrors = true;
+        }
 
         if (formsErrors) return;
 
         try {
             setLoading(true);
-
+            const admin_cpf = await localStorage.getItem('cpf_User')
             await axios.put(`http://localhost:3001/aluno/${aluno.id_aluno}`, {
-                cpf_aluno,
+                senha,
                 nome,
-                // cpf_responsavel
+                admin_cpf
+                
             });
             
             toast.success('Aluno atualizado com sucesso!');
@@ -87,7 +93,7 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
             setCpfBusca('');
             onClose();
         } catch (err) {
-            console.error(err);
+            console.log(err);
         
             // tratamentros de erros
             // nele envio as msg do controller atraves de uma requisicao ao back-end
@@ -107,7 +113,7 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="p-6 max-w-md w-full mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl shadow-2xl border border-gray-700 relative">
                 <button 
                     onClick={onClose}
@@ -156,26 +162,17 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF do Aluno</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Senha</label>
                                     <input
-                                        type="text"
+                                        type="password"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={cpf_aluno}
-                                        onChange={(e) => setCpfAluno(formatarCPF(e.target.value))}
+                                        value={senha}
+                                        onChange={(e) => setSenha(e.target.value)}
                                         maxLength={14}
                                     />
                                 </div>
 
-                                {/* <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF do Responsável</label>
-                                    <input
-                                        type="text"
-                                        className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={cpf_responsavel}
-                                        onChange={(e) => setCpfResponsavel(formatarCPF(e.target.value))}
-                                        maxLength={14}
-                                    />
-                                </div> */}
+            
                             </div>
 
                             <button

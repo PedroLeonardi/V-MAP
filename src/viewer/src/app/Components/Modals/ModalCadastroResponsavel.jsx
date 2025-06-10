@@ -21,14 +21,35 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
         return valor
     }
 
+    // validar cpf real segundo a RF
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, '');
+
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        const calcDV = (cpfSlice, factor) => {
+            let total = 0;
+            for (let i = 0; i < cpfSlice.length; i++) {
+                total += parseInt(cpfSlice[i]) * (factor - i);
+            }
+            const resto = total % 11;
+            return resto < 2 ? 0 : 11 - resto;
+        };
+
+        const dv1 = calcDV(cpf.slice(0, 9), 10);
+        const dv2 = calcDV(cpf.slice(0, 10), 11);
+
+        return dv1 === parseInt(cpf[9]) && dv2 === parseInt(cpf[10]);
+    }
+
     // nao pode numero e caracter especial
     function validarNome(nome) {
         return /^[A-Za-zÀ-ú\s]+$/.test(nome);
     }
 
-    // maior que 6
+    // maior que 6 e menor que 255
     function validarSenha(senha) {
-        return senha.length >= 6;
+        return senha.length >= 6 && senha.length <= 255;
     }
 
     // modal
@@ -37,7 +58,6 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
     // modal close
     const handleClose = (e) => {
         if (e.target === e.currentTarget) {
-            onClose();
             setCPF('');
             setNome('');
             setSenha('');
@@ -64,9 +84,15 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
             formsErrors = true;
         }
 
+        // valid
+        // if (!validarCPF(cpf_responsavel)) {
+        //     toast.error('CPF inválido');
+        //     formsErrors = true;
+        // }
+
         // validação 
         if (!validarSenha(senha)) {
-            toast.error('Senha deve conter pelo menos 6 caracteres');
+            toast.error('Senha deve conter entre 6 e 255 caracteres.');
             formsErrors = true;
         }
 
@@ -78,11 +104,12 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
 
         // caso aprovado...
         try {
-
+            const admin_cpf = await localStorage.getItem('cpf_User')
             const response = await axios.post('http://localhost:3001/responsavel', {
                 nome,
                 cpf_responsavel,
                 senha,
+                admin_cpf
             });
             if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
             toast.success('Responsável cadastrado com sucesso.');
@@ -94,7 +121,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
             onClose();
 
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             // aqui eu envio uma requisição ao meu controller
             // que conversa com meu model, por isso consigo tratar o toast

@@ -9,7 +9,7 @@ export default function useFetchTotalResponsaveis() {
       const response = await axios.get('http://localhost:3001/responsavel');
       setTotal(response.data.length);
     } catch (error) {
-      console.error("Erro ao buscar total de responsavel", error);
+      console.log("Erro ao buscar total de responsavel", error);
     }
   };
 

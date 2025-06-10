@@ -8,7 +8,6 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
     const [cpfBusca, setCpfBusca] = useState('');
     const [motorista, setMotorista] = useState(null);
     const [nome, setNome] = useState('');
-    const [cpf_motorista, setCpf] = useState('');
     const [loading, setLoading] = useState(false);
 
     // função para formatar CPF
@@ -38,11 +37,10 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
             console.log('Motorista encontrado:', motoristaEncontrado);
 
             setMotorista(motoristaEncontrado);
-            setCpf(formatarCPF(motoristaEncontrado.cpf_motorista));
             setNome(motoristaEncontrado.nome);
             toast.success('Motorista encontrado!');
         } catch (err) {
-            console.error(err);
+            console.log(err);
             toast.error('Motorista não encontrado ou erro na busca.');
         } finally {
             setLoading(false);
@@ -54,7 +52,7 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
 
         let formsErrors = false;
 
-        if (!nome.trim() || !cpf_motorista.trim()) {
+        if (!nome.trim()) {
             toast.error('Preencha todos os campos');
             formsErrors = true;
         }
@@ -70,17 +68,15 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
             setLoading(true);
 
             await axios.put(`http://localhost:3001/motorista/${motorista.id_motorista}`, {
-                cpf_motorista,
                 nome,
             });
 
             toast.success('Motorista atualizado com sucesso!');
             setMotorista(null);
             setCpfBusca('');
-            setCpf('');
             setNome('');
         } catch (err) {
-            console.error(err);
+            console.log(err);
 
             if (err.response && err.response.status === 404) {
                 toast.error('Motorista não encontrado.');
@@ -97,7 +93,7 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="p-6 max-w-md w-full mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl shadow-2xl border border-gray-700 relative">
                 <button
                     onClick={onClose}
@@ -136,7 +132,7 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
 
                             <div className="space-y-3">
                                 <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Nome Completo</label>
                                     <input
                                         type="text"
                                         className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -144,18 +140,6 @@ export default function ModalUpdateMotorista({ isVisible, onClose, onSuccess }) 
                                         onChange={(e) => setNome(e.target.value)}
                                     />
                                 </div>
-
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1">CPF</label>
-                                    <input
-                                        type="text"
-                                        className="w-full text-sm sm:text-base border border-gray-600 p-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value={cpf_motorista}
-                                        onChange={(e) => setCpf(formatarCPF(e.target.value))}
-                                        maxLength={14}
-                                    />
-                                </div>           
-                             
                             </div>
 
                             <button

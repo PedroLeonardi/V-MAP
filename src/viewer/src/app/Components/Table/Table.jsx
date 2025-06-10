@@ -12,7 +12,7 @@ export default function tabela({rota}) {
                 console.log(response.data)
                 return []
             } catch (err) {
-                console.error(err)
+                console.log(err)
                 return []
             }
         }   
