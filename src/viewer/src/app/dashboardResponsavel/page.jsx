@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
+import ChatBox from '../Components/Chatbot/Chatbot'
 
 export default function DashResponsa() {
   const [loading, setLoading] = useState(true);
@@ -87,7 +88,7 @@ export default function DashResponsa() {
             />
           </div>
         </section>
-
+ <ChatBox />
       </main>
     </>
   );

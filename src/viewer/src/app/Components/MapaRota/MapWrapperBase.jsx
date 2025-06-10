@@ -11,7 +11,7 @@ export default function MapWrapper() {
 
   // const rotaAtual = 1; // ou 2, dependendo da rota atual
   const logEnabledRef = useRef(false);
-  const [rotaAtual, setRotaAtual] = useState(0);
+  const [rotaAtual, setRotaAtual] = useState(1);
 
   const [selectedIndex, setSelectedIndex] = useState(1);
 

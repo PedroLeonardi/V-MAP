@@ -98,7 +98,7 @@ export default function Login() {
         } else if (usuarioType === 'responsavel') {
           router.push('/dashboardResponsavel');
         } else if (usuarioType === 'aluno') {
-          router.push('/dashboardAluno');
+          router.push('/DashboardAluno');
         }
      
     } catch (err) {

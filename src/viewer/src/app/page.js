@@ -103,7 +103,7 @@ useEffect(() => {
 
 <main className="conteudo relative flex w-full overflow-hidden flex-col lg:flex-row">
   <div
-    className="w-full lg:w-1/2  flex-col px-10 z-10  relative py-10 md:py-0"
+    className="w-full lg:w-1/2  flex-col px-10 z-10  relative py-10 md:py-0 h-230"
     style={{ background: 'linear-gradient(to right, #0F0F0F, #171717, #1E1E1E)' }}
   >
     <div

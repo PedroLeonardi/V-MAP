@@ -1,5 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
+import ChatBox from '../Components/Chatbot/Chatbot'
+
 
 export default function DashAluno() {
   const [loading, setLoading] = useState(true);
@@ -87,7 +89,7 @@ export default function DashAluno() {
             />
           </div>
         </section>
-
+ <ChatBox />
       </main>
     </>
   );

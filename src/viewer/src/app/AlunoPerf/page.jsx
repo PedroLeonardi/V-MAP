@@ -1,3 +1,4 @@
+import ChatBox from '../Components/Chatbot/Chatbot'
 export default function alunoPerf() {
     return (
         <main className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-500 flex items-center justify-center p-4">
@@ -65,6 +66,7 @@ export default function alunoPerf() {
                     </form>
                 </div>
             </div>
+             <ChatBox />
         </main>
     );
 }
