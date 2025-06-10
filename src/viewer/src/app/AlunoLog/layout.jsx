@@ -1,12 +1,12 @@
 'use client';
 
-import SidebarAluno from '../Components/Sidebar/SidebarAluno';
-import SidebarMobile from '../Components//SidebarMobile/SidebarAluno'
+import SidebarResponsavel from '../Components/Sidebar/SidebarResponsavel';
+import SidebarMobile from '../Components/SidebarMobile/SidebarResponsavel'
 
 export default function DashboardLayout({ children }) {
   return (
     <div className="flex h-screen">
-      <SidebarAluno />
+      <SidebarResponsavel />
       <SidebarMobile />
       <main className="flex-1 overflow-hidden">
         {children}

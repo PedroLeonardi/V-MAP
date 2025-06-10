@@ -51,7 +51,6 @@ import useFetchTotalAdm from '../Hooks/TotalAdm';
 import useFetchTotalMotorista from "../Hooks/TotalMotoristas";
 import useFetchTotalVeiculo from "../Hooks/TotalVeiculos";
 import useFetchTotalRotas from "../Hooks/TotalRotas";
-import Sidebar from "../Components/Sidebar/SidebarAdm";
 import Footer from "../Components/Footer/Footer";
 
 const menu = [
