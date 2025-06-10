@@ -5,7 +5,7 @@ import { Toaster } from "sonner";
 // import Header from "./Components/Header/Header";
 // import Sidebar from "./Components/Sidebar/SidebarAdm";
 import Footer from "./Components/Footer/Footer";
-import SplashScreen from "./Components/SplashScreen/SplashScreen";
+// import SplashScreen from "./Components/SplashScreen/SplashScreen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,7 +62,8 @@ export default function RootLayout({ children }) {
           </div> */}
 
           {/* conteudo principal */}
-        <SplashScreen>
+          {/*Comentei por enquanto porque no meu pc estava ficando meio pesado */}
+        {/* <SplashScreen> */}
 
           <main className="flex-1">{children}</main>
         {/* </div> */}
@@ -85,7 +86,7 @@ export default function RootLayout({ children }) {
           />
         <Footer/>
 
-          </SplashScreen>
+          {/* </SplashScreen> */}
       </body>
     </html>
   );

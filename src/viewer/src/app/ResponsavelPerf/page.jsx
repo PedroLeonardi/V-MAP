@@ -1,4 +1,4 @@
-import ChatBox from '../Components/Chatbot/Chatbot'
+import ChatBox from '../Components/Chatbot/ChatbotResponsa'
 
 export default function responsaPerf() {
     return (

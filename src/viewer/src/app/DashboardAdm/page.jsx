@@ -17,7 +17,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 // components
 import DashboardCard from '../Components/DashboardCard/Card';
 import ProtegendoRota from '../Components/ProtegendoRota/ProtectRoute';
-import ChatBox from '../Components/Chatbot/Chatbot'
+import ChatBox from '../Components/Chatbot/ChatbotResponsa'
 import Header from "../Components/Header/Header";
 
 // modals

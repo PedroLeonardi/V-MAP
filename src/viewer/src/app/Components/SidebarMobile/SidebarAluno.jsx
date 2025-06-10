@@ -12,8 +12,8 @@ export default function SidebarAluno() {
 
   const menus = [
     { icon: <RiDashboardFill />, link: "./dashboardAluno" },
-    { icon: <FaGraduationCap />, link: "./AlunoPerf" },
-    { icon: <MdDirectionsBus />, link: "./RotaAluno" },
+    { icon: <FaGraduationCap />, link: "./alunoPerf" },
+    { icon: <MdDirectionsBus />, link: "./rotaAluno" },
   ];
 
   return (

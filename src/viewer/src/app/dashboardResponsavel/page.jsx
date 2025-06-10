@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import dynamic from 'next/dynamic';
-const ChatBox = dynamic(() => import('../Components/Chatbot/Chatbot'), { ssr: false });
+const ChatBox = dynamic(() => import('../Components/Chatbot/ChatbotResponsa'), { ssr: false });
 
 export default function DashResponsa() {
   const [loading, setLoading] = useState(true);

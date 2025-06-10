@@ -7,13 +7,17 @@ export default function ChatBox() {
   // perguntas frequentes
   const perguntas = [
     { 
-      question: 'Como contratar o serviço?', 
-      answer: 'Para contratar nossos serviços, entre em contato através da aba "Contatos" ou envie sua dúvida por este chat.' 
+      question: 'Como alterar minha senha?', 
+      answer: 'Nas suas informações você pode mandar um pedido para sua instituição ensino altera-la' 
     },
     {
-      question: 'Como cadastrar meu filho no sistema?',
-      answer: 'O cadastro de alunos é feito pela equipe da coordenação. Envie uma mensagem aqui para iniciarmos o processo.',
+      question: 'Que horas o primeiro onibus passa',
+      answer: 'Ele começa as 6h e passa a cada 15 minutos nos respectivos pontos',
     },
+    {
+      question: 'Quantos pontos tem na minha rota?',
+      answer: 'Se sua rota for 1 alguns e se for 2 mais alguns',
+    }
   ];
 
   const [messages, setMessages] = useState([]);
@@ -82,7 +86,7 @@ export default function ChatBox() {
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-blue-500 text-white px-4 py-3 rounded-full font-medium shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
+          className="cursor-pointer bg-blue-500 text-white px-4 py-3 rounded-full font-medium shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
         >
           <span className="hidden lg:flex">Precisa de ajuda?</span>
           <IoChatbubbleEllipsesSharp size={20} />
@@ -95,7 +99,7 @@ export default function ChatBox() {
               onClick={fecharChat} 
               className="text-gray-400 hover:text-white transition-colors"
             >
-              <IoClose size={30} />
+              <IoClose className="cursor-pointer" size={30} />
             </button>
           </div>
 
@@ -107,7 +111,7 @@ export default function ChatBox() {
                   <button
                     key={i}
                     onClick={() => handleFAQClick(faq)}
-                    className="w-full text-left bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition"
+                    className="w-full text-left bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition cursor-pointer"
                   >
                     {faq.question}
                   </button>
@@ -193,7 +197,7 @@ export default function ChatBox() {
                 disabled={!input.trim()}
                 className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition disabled:bg-gray-600 disabled:cursor-not-allowed"
               >
-                <IoSend size={18} />
+                <IoSend className="cursor-pointer" size={18} />
               </button>
             </div>
           </div>
