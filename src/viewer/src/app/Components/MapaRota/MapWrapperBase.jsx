@@ -16,6 +16,10 @@ export default function MapWrapper() {
   const [selectedIndex, setSelectedIndex] = useState(1);
 
 
+  useEffect(() =>{
+    axios.get
+  })
+
   useEffect(() => {
 
     

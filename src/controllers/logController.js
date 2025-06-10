@@ -48,18 +48,40 @@ const readLogAlunosLast = async (req, res) =>{
 
 const readLogAlunosByCpf = async (req, res) =>{
     try {
-        const data = await log.readLogAlunosLast(req.params.cpf)
+        const data = await log.readLogAlunosByCpf(req.params.cpf)
 
         if(!data)
             {
             res.status(404).json({mensagem: 'log com cpf do aluno não encontrado'})
             return
         }
-        res.status(200).json( data)
+        res.status(200).json(data)
     } catch (err) {
         res.status(500).json({mensagem:"Não foi possivel ler a LOG"})
         console.error("Houve um erro ao ler o LOG da mensagem: ",err)
     }
 }
 
-export default {sendLonOnibus, sendLogAluno, readLogAlunos, readLogAlunosLast, readLogAlunosByCpf}
+const readLogAdmin = async (req, res) =>{
+    try {
+        const data = await log.readLogAdmim()
+        if (!data) {return res.status(404).json({menssagem:'Não existe Logs'})}
+        res.status(200).json(data)
+    } catch (err) {
+        res.status(500).json({mensagem:"Não foi possivel ler a LOG"})
+        console.error("Houve um erro ao ler o LOG da mensagem: ",err)
+    }
+}
+
+const readViewResponsavel = async (req, res) =>{
+    try {
+        const data = await log.readViewResponsavel(req.params.cpf)
+        if (!data) {return res.status(404).json({menssagem:'Não existe Logs'})}
+        res.status(200).json(data)
+    } catch (err) {
+        res.status(500).json({mensagem:"Não foi possivel ler a LOG"})
+        console.error("Houve um erro ao ler o LOG da mensagem: ",err)
+    }
+}
+
+export default {sendLonOnibus, sendLogAluno, readLogAlunos, readLogAlunosLast, readLogAlunosByCpf, readLogAdmin, readViewResponsavel}

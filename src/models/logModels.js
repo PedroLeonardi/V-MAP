@@ -74,5 +74,26 @@ const readLogAlunosLast = async (cpf_aluno) => {
     }
 }
 
+const readLogAdmim = async () => {
+    try {
+        const dataLog = await knex('Log_Alteracoes').select('*')
+        return dataLog 
+    } catch (err) {
+        console.error("Houve um erro ao listar todos os log: ", err)
+        return []
+    }
+}
+
+const readViewResponsavel = async (CPF_Responsavel) => {
+    try {
+        const dataLog = await knex('painel_responsavel').where({CPF_Responsavel})
+        return dataLog 
+    } catch (err) {
+        console.error("Houve um erro ao listar todos os log: ", err)
+        return []
+    }
+}
+
+
 // -------------------------
-export default { createLogOnibus, createLogAluno, readLogAlunos, readLogAlunosLast , readLogAlunosByCpf}
+export default { createLogOnibus, createLogAluno, readLogAlunos, readLogAlunosLast , readLogAlunosByCpf, readLogAdmim, readViewResponsavel}
