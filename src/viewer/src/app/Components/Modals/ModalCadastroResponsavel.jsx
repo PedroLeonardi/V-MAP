@@ -104,11 +104,12 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
 
         // caso aprovado...
         try {
-
+            const admin_cpf = await localStorage.getItem('cpf_User')
             const response = await axios.post('http://localhost:3001/responsavel', {
                 nome,
                 cpf_responsavel,
                 senha,
+                admin_cpf
             });
             if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
             toast.success('Responsável cadastrado com sucesso.');

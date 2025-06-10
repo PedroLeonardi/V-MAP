@@ -57,8 +57,12 @@ export default function ModalExcluirAdm({ isVisible, onClose, onSuccess }) {
 
         try {
             setLoading(true);
-
-            const response = await axios.delete(`http://localhost:3001/admin/${admin.id_admin}`);
+            const admin_cpf = await localStorage.getItem('cpf_User')
+            const response = await axios.delete(`http://localhost:3001/admin/${admin.id_admin}`, {
+                data:{
+                    admin_cpf
+                }
+            });
 
             if (response.status === 200) {
                 toast.success('Administrador excluído com sucesso!');

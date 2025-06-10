@@ -80,10 +80,11 @@ export default function ModalUpdateAluno({ isVisible, onClose}) {
 
         try {
             setLoading(true);
-
+            const admin_cpf = await localStorage.getItem('cpf_User')
             await axios.put(`http://localhost:3001/aluno/${aluno.id_aluno}`, {
                 senha,
                 nome,
+                admin_cpf
                 
             });
             
