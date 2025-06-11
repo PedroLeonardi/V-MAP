@@ -88,7 +88,7 @@ export default function ChatBox() {
           <IoChatbubbleEllipsesSharp size={20} />
         </button>
       ) : (
-        <div className="w-70 lg:w-80 h-[400px] lg:h-[500px] flex flex-col bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+        <div className="w-70 md:w-90 lg:w-80 h-[400px] md:h-[450px] lg:h-[500px] flex flex-col bg-gray-800 rounded-lg shadow-xl overflow-hidden">
           <div className="bg-gray-900 text-white p-3 flex justify-between items-center border-b border-gray-700">
             <h3 className="text-sm lg:text-md font-semibold">Chat de Ajuda</h3>
             <button 

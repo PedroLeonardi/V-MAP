@@ -91,16 +91,15 @@ export default function Login() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('usuarioType', usuarioType);
       localStorage.setItem('cpf_User', cpf_User);
-
-
-      if (usuarioType === 'admin') {
-        router.push('/DashboardAdm');
-      } else if (usuarioType === 'responsavel') {
-        router.push('/dashboardResponsavel');
-      } else if (usuarioType === 'aluno') {
-        router.push('/DashboardAluno');
-      }
-
+      
+        if (usuarioType === 'admin') {
+          router.push('/dashboardAdm');
+        } else if (usuarioType === 'responsavel') {
+          router.push('/dashboardResponsavel');
+        } else if (usuarioType === 'aluno') {
+          router.push('/dashboardAluno');
+        }
+     
     } catch (err) {
       const message = get(err, 'response.data.message', '');
 

@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import ChatBox from '../Components/Chatbot/Chatbot'
+
+
+import ChatBox from '../Components/Chatbot/ChatBotResponsa'
+
 
 export default function DashAluno() {
   const [data, setAdm] = useState([])                     // Dados do aluno
@@ -59,7 +62,10 @@ setAdm(dados)
   }, [viewResponsavel])
 
   return (
-    <main className="h-screen bg-gradient-to-r from-gray-300 to-gray-400">
+     <main
+    className="min-h-screen bg-cover bg-center bg-no-repeat px-4 py-10 sm:px-6 md:px-10 flex flex-col items-center"
+    style={{ backgroundImage: `url('/BG-log.jpg')` }}
+  >
       <div className="text-black">
         <h1 className="pt-20 pl-20 text-7xl">Bem-vindo aos logs do aluno</h1>
         <p className="pt-10 pl-20 text-xl">
@@ -68,7 +74,7 @@ setAdm(dados)
       </div>
 
       <div className="w-full flex justify-center mt-50">
-        <div className="w-[85%] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-700 relative transform transition-all duration-300 scale-100 overflow-y-auto">
+        <div className="w-full max-w-6xl overflow-x-auto rounded-xl shadow-2xl border border-gray-700 bg-gradient-to-r from-[#00305E] via-[#01488D] to-[#0355A3] p-4 sm:p-6">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-white mb-1">Registro do Transporte do seu filho</h2>
             <div className="w-12 h-1 bg-blue-500 rounded-full"></div>
@@ -79,9 +85,9 @@ setAdm(dados)
               <thead className="bg-gray-800 text-gray-300 uppercase text-xs">
                 <tr>
 
-                  <th className="px-4 py-2 border border-gray-600">ID ONIBUS</th>
-                  <th className="px-4 py-2 border border-gray-600">AÇÃO</th>
-                  <th className="px-4 py-2 border border-gray-600">DATA E HORA</th>
+                  <th className="px-4 py-2 border border-gray-600 bg-gradient-to-l from-[#00305E] via-[#01488D] to-[#0355A3]">ID ONIBUS</th>
+                  <th className="px-4 py-2 border border-gray-600 bg-gradient-to-l from-[#00305E] via-[#01488D] to-[#0355A3]">AÇÃO</th>
+                  <th className="px-4 py-2 border border-gray-600 bg-gradient-to-l from-[#00305E] via-[#01488D] to-[#0355A3]">DATA E HORA</th>
                 </tr>
               </thead>
               <tbody>
@@ -104,7 +110,9 @@ setAdm(dados)
         </div>
       </div>
 
-      <ChatBox />
-    </main>
+
+    <ChatBox />
+  </main>
+
   )
 }

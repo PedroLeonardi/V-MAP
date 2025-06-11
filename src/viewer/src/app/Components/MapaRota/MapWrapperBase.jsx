@@ -75,17 +75,34 @@ export default function MapWrapper() {
     setRotaAtual(novaRota);
     setSelectedIndex(0); // opcional: reiniciar a posição da nova rota
   };
-  return ( 
+
+  return (
     <>
-    <div className="flex justify-center mb-4">
-        
+      <div className="w-full max-w-4xl mx-auto flex flex-col items-center">
+        <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] md:w-[650px] ">
+          <MapComponent selectedIndex={selectedIndex} logEnabledRef={logEnabledRef} />
+        </div>
+        <div
+          className="mt-4 w-full flex justify-between px-4 py-3 rounded-md md:justify-center gap-130"> <button
+            onClick={handlePrevious}
+            className="text-white font-semibold px-4 py-2 rounded-md hover:brightness-110 transition cursor-pointer" style={{
+              background: 'linear-gradient(to right, #00305E, #00305E, #01488D, rgb(3,78,153), #0355A3)',
+              zIndex: 1
+            }}
+          >
+            Menos
+          </button>
+          <button
+            onClick={handleNext}
+            className="text-white font-semibold px-4 py-2 rounded-md hover:brightness-110 transition cursor-pointer" style={{
+              background: 'linear-gradient(to right, #00305E, #00305E, #01488D, rgb(3,78,153), #0355A3)',
+              zIndex: 1
+            }}
+          >
+            Mais
+          </button>
+        </div>
       </div>
-<div className="grid grid-cols-[1fr_700px_1fr] gap-4 items-center h-full">
-  <button onClick={handlePrevious}>Mais</button>
-  <MapComponent selectedIndex={selectedIndex} logEnabledRef={logEnabledRef} />
-  <button onClick={handleNext}>Menos</button>
-</div>
-    
     </>
-  )
+  );
 }
