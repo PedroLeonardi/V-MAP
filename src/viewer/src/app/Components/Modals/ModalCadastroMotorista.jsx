@@ -65,10 +65,7 @@ export default function ModalCadastroMotorista({ isVisible, onClose, onSuccess }
             formsErrors = true;
         }
 
-        // if(!validarCPF(cpf_motorista)){
-        //     toast.error('CPF inválido');
-        //     formsErrors = true;
-        // }
+        
 
         if (formsErrors) {
             setLoading(false);

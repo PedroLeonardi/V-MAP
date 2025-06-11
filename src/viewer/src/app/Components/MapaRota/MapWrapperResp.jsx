@@ -32,29 +32,12 @@ export default function MapWrapper() {
   }, []);
 
   useEffect(() => {
-    // localStorage.setItem('rotaAtual', rotaAtual.toString());
+    
      window.dispatchEvent(new Event('rotaAtualChanged'));
      
   }, [rotaAtual]);
 
-  // axios.get('http://localhost:3001/aluno/cpf/000.000.000-00')
-
-
-  // ✅ Lê do localStorage depois que o componente monta no navegador
-  // useEffect(() => {
-  //   const saved = localStorage.getItem(`currentIndex_rota_${rotaAtual}`);
-  //   if (saved !== null) {
-  //     setSelectedIndex(Number(saved));
-  //   }
-  // }, [rotaAtual]);
-
-  // // ✅ Salva o selectedIndex sempre que mudar
-  // useEffect(() => {
-  //   localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
-  // }, [selectedIndex, rotaAtual]);
-
-  // Salva no localStorage quando mudar
-
+  
 
 
   return ( 

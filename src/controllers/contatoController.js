@@ -3,7 +3,7 @@ import contato from "../models/contatoModels.js"
 const sendMensage = async (req, res) => {
     try {
         console.log("DADOS RECEBIDOS:", req.body); // debug
-        await contato.create(req.body); // <-- Aqui está o ajuste!
+        await contato.create(req.body); // Aqui está o ajuste!
         res.status(201).json({ mensagem: "Mensagem enviada com sucesso" });
     } catch (err) {
         console.error("Houve um erro ao enviar a mensagem: ", err);

@@ -12,11 +12,11 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
     const [cpf_aluno, setCPF] = useState('');
     const [cpf_responsavel, setCpfResponsavel] = useState('');
     const [id_rota_onibus, setid_rota_onibus] = useState('')
-    // const [cpf_admin, setCpf_admin] = useState('111.111.111-11')
+    
     const [loading, setLoading] = useState(false)
 
 
-    // setCpf_admin('111.111.111-11')
+    
     // formatando o front do cpf
     function formatarCPF(valor) {
         valor = valor.replace(/\D/g, '');
@@ -85,11 +85,7 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
 
-        // if(!validarCPF(cpf_aluno)){
-        //     toast.error('CPF inválido');
-        //     formsErrors = true;
-        //     return;
-        // }
+       
 
         if (!validarNome(nome)) {
             toast.error('Nome Inválido. O nome deve conter apenas letras e espaços.');

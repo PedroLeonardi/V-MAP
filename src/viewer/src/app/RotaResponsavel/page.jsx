@@ -7,7 +7,7 @@ import ChatBox from '../Components/Chatbot/ChatBotResponsa';
 import { toast, Toaster } from "sonner";
 
 export default function RotaAluno() {
-    const [acaoAluno, setAcaoAluno] = useState('');
+
     const [cpf_user, setCpf_user] = useState('');
     const [coordenada, setCoordenada] = useState('');
     const [girando, setGirando] = useState(false);
@@ -15,7 +15,7 @@ export default function RotaAluno() {
     const [fadeOut, setFadeOut] = useState(false);
     const [viewResponsavel, setViewResponsavel] = useState([])
 
-// ---------------------
+
     useEffect(() => {
         async function lerViewerResponsavel() {
           const cpf_User = await localStorage.getItem('cpf_User')

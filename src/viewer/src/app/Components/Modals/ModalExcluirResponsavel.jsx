@@ -65,7 +65,7 @@ export default function ModalExcluirResponsavel({ isVisible, onClose, onSuccess 
             });
 
             if (response.status === 200) {
-                if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
+                if (onSuccess) onSuccess(); 
                 toast.success('Responsável excluído com sucesso!');
                 setResponsavel(null);
                 setCpfBusca('');
