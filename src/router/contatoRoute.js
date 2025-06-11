@@ -7,4 +7,9 @@ router.get('/:status', contato.readMensageByStatus)
 router.post('/', contato.sendMensage)
 router.put('/:id', contato.updateMensageStatus)
 
+router.options('/' , (req, res) => {
+    res.setHeader('Allow', 'GET, POST, PUT');
+    res.status(204).send();
+})
+
 export default router

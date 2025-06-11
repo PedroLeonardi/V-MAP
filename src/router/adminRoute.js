@@ -10,4 +10,9 @@ router.post('/', admin.createAdminController);
 router.put('/:id', admin.updateAdminController);     
 router.delete('/:id', admin.deleteAdminController); 
 
+router.options('/' , (req, res) => {
+    res.setHeader('Allow', 'GET, POST, PUT, DELETE');
+    res.status(204).send();
+})
+
 export default router;

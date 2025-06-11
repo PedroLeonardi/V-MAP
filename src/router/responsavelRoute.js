@@ -9,4 +9,9 @@ router.post('/', responsavel.createResponsavelController);
 router.put('/:id', responsavel.updateResponsavelController); 
 router.delete('/:id', responsavel.deleteResponsavelController)
 
+router.options('/' , (req, res) => {
+    res.setHeader('Allow', 'GET, POST, PUT, DELETE');
+    res.status(204).send();
+})
+
 export default router;

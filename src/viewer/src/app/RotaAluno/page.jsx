@@ -3,7 +3,7 @@
 import axios from 'axios';
 import MapWrapper from '../Components/MapaRota/MapWrapperBase';
 import { useEffect, useState } from 'react';
-import ChatBox from '../Components/Chatbot/ChatbotAluno';
+import ChatBox from '../Components/Chatbot/ChatBotAluno';
 
 export default function RotaAluno() {
     const [acaoAluno, setAcaoAluno] = useState('');

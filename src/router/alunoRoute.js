@@ -10,4 +10,9 @@ router.put('/:id', aluno.updateAlunoController);
 router.post('/', aluno.createAlunoController);
 router.delete('/:id', aluno.deleteAlunoController); 
 
+router.options('/' , (req, res) => {
+    res.setHeader('Allow', 'GET, POST, PUT, DELETE');
+    res.status(204).send();
+})
+
 export default router;
