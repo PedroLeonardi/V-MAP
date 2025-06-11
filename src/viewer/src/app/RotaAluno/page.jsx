@@ -1,106 +1,97 @@
-'use client'
+'use client';
 
 import axios from 'axios';
 import MapWrapper from '../Components/MapaRota/MapWrapperBase';
-import { use, useEffect, useState } from 'react';
-import ChatBox from '../Components/Chatbot/Chatbot'
+import { useEffect, useState } from 'react';
+import ChatBox from '../Components/Chatbot/ChatbotAluno';
 
 export default function RotaAluno() {
-    const [acaoAluno, setAcaoAluno] = useState('')
-    const [cpf_user, setCpf_user] = useState('')
-    const [coordenada, setCoordenada] = useState('')
-    const [girando, setGirando] = useState('0');
+    const [acaoAluno, setAcaoAluno] = useState('');
+    const [cpf_user, setCpf_user] = useState('');
+    const [coordenada, setCoordenada] = useState('');
+    const [girando, setGirando] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [fadeOut, setFadeOut] = useState(false);
 
     useEffect(() => {
-
-        setCpf_user(localStorage.getItem("cpf_User"))
-        let local = JSON.parse(localStorage.getItem('currentLocation'));
-        setCoordenada(local)
-
-    }, [])
-
-    useEffect(() => {
-        const fetchAcaoAluno = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3001/log/alunoLast/${cpf_user}`);
-                const acao = response.data.evento;
-                if (acao === 'subir') {
-                    setAcaoAluno('descer');
-                } else if (acao === 'descer') {
-                    setAcaoAluno('subir');
-                }
-            } catch (err) {
-                console.log('Erro ao buscar ação do aluno:', err);
-            }
-        };
-
-        fetchAcaoAluno();
+        const timer = setTimeout(() => {
+            setFadeOut(true);
+            setTimeout(() => setLoading(false), 800);
+        }, 1200);
+        return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        setCpf_user(localStorage.getItem("cpf_User"));
+        const local = JSON.parse(localStorage.getItem('currentLocation'));
+        setCoordenada(local);
+    }, []);
+
     useEffect(() => {
         const fetchAcaoAluno = async () => {
+            if (!cpf_user) return;
             try {
                 const response = await axios.get(`http://localhost:3001/log/alunoLast/${cpf_user}`);
                 const acao = response.data.evento;
-
-                if (acao === 'subir') {
-                    setAcaoAluno('descer');
-                } else if (acao === 'descer') {
-                    setAcaoAluno('subir');
-                }
-                if (!acao) {
-                    setAcaoAluno('subir');
-                }
-
+                setAcaoAluno(acao === 'subir' ? 'descer' : 'subir');
             } catch (err) {
                 console.log('Erro ao buscar ação do aluno:', err);
+                setAcaoAluno('subir');
             }
         };
-
         fetchAcaoAluno();
-    }, [cpf_user]); 
+    }, [cpf_user]);
 
-    if (!acaoAluno) { setAcaoAluno('subir') }
-    const inverterAcao = () => {
-        if (acaoAluno === 'subir') { setAcaoAluno('descer') } else if (acaoAluno === 'descer') { setAcaoAluno('subir') }
-
-
-    }
-
+    const inverterAcao = () => setAcaoAluno(prev => (prev === 'subir' ? 'descer' : 'subir'));
 
     const sendLog = async () => {
         const idRota = localStorage.getItem('rotaAtual');
-
-        if (idRota && idRota.trim() !== '') {
+        if (idRota?.trim()) {
             axios.post('http://localhost:3001/log/aluno', {
-                cpf_user: cpf_user,
+                cpf_user,
                 id_rota_onibus: idRota,
                 evento: acaoAluno,
                 lat: coordenada[0],
                 lgt: coordenada[1]
-            })
-                .catch(err => console.log('Houve um erro ao enviar o Log (Front)', err));
+            }).catch(err => console.log('Houve um erro ao enviar o Log (Front)', err));
         } else {
             console.warn('idRota não está disponível no localStorage');
         }
-    }
+    };
 
     return (
-        <main className="bg-gradient-to-r from-gray-900 to-gray-500 h-screen">
-
-            <main>
-                <h1 className="text-4xl pt-15 pl-185">Rota do onibus</h1>
-                <div className='h-100 mb-10 w-[50%] pl-115'>
-                    <MapWrapper />
+        <>
+            {loading && (
+                <div className={`fixed inset-0 bg-black/90 backdrop-blur-3xl flex items-center justify-center z-50 transition-opacity duration-1500 ease-out ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>
+                    <img src="/Logo.png" alt="Logo" className="w-40 animate-pulse" />
                 </div>
-                <div className="pl-200"><button onClick={() => setGirando(prev => !prev)} className={`text-white font-semibold px-6 py-3 rounded flex items-center gap-2 transition duration-200 hover:brightness-110 cursor-pointer`} style={{ background: 'linear-gradient(to right, #00305E, #0355A3)' }} onClick={() => { sendLog(), inverterAcao() }} >
-                    {acaoAluno}
-                    <svg onClick={() => setGirando(prev => !prev)} className={`w-5 h-5 cursor-pointer transition-transform duration-300 ease-in-out transform ${girando ? 'rotate-180' : 'rotate-0'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            )}
+            <main className="bg-gradient-to-r from-gray-900 to-gray-500 min-h-screen p-4 md:p-8">
+                <div className="max-w-7xl mx-auto flex flex-col items-center">
+                    <h1 className="text-2xl md:text-4xl font-bold text-white mb-6 text-center">Rota do ônibus</h1>
+                    <div className="w-full max-w-4xl h-[300px] sm:h-[400px] md:h-[500px] mb-4">
+                        <MapWrapper />
+                    </div>
+                    <div
+                        className="w-full max-w-4xl flex justify-between px-6 py-4 rounded-md mt-4"
+                      
                     >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button> </div>
+                    </div>
+                    <div className="flex justify-center mt-6">
+                        <button
+                            onClick={() => { sendLog(); inverterAcao(); setGirando(prev => !prev); }}
+                            className="text-white font-semibold px-6 py-3 rounded flex items-center gap-2 transition duration-200 hover:brightness-110"
+                            style={{ background: 'linear-gradient(to right, #00305E, #0355A3)' }}
+                        >
+                            {acaoAluno}
+                            <svg className={`w-5 h-5 transition-transform duration-300 ${girando ? 'rotate-180' : 'rotate-0'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <ChatBox />
+                </div>
             </main>
-            <ChatBox />
-        </main >
+        </>
     )
-}
+    }
