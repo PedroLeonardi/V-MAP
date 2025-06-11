@@ -18,10 +18,10 @@ export default function SidebarAluno() {
 
     // map items
     const menus = [
-        { title: "Dashboard", icon: <RiDashboardFill />, link: "./dashboardResponsavel" },
-        { title: "Meu aluno", icon: <PiStudentFill />, link: "./alunoLog" },
-        { title: "Minhas informações", icon: <IoPerson />, link: "./responsavelPerf" },
-        { title: "Rota", icon: <MdDirectionsBus />, link: "./rotaResponsavel" },
+        { title: "Dashboard", icon: <RiDashboardFill />, link: "./DashboardResponsavel" },
+        { title: "Meu aluno", icon: <PiStudentFill />, link: "./AlunoLog" },
+        { title: "Minhas informações", icon: <IoPerson />, link: "./ResponsavelPerf" },
+        { title: "Rota", icon: <MdDirectionsBus />, link: "./RotaResponsavel" },
     ];
 
     return (

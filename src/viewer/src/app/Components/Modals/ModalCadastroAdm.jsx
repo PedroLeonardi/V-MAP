@@ -98,11 +98,6 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
 
-        // if (!validarCPF(cpf)) {
-        //     toast.error('CPF inválido.');
-        //     formsErrors = true;
-        //     return;
-        // }
 
         if (!validarSenha(senha)) {
             toast.error('Senha deve conter entre 6 e 255 caracteres.');
@@ -142,9 +137,7 @@ export default function ModalCadastroAdmin({ isVisible, onClose, onSuccess }) {
         } catch (err) {
             console.log(err);
 
-            // aqui eu envio uma requisição ao meu controller
-            // que conversa com meu model, por isso consigo tratar o toast
-            // da forma que eu quero
+            
             if (err.response && err.response.status === 400) {
                 toast.error('CPF já cadastrado.');
             } else {

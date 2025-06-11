@@ -71,7 +71,7 @@
 
                 if (response.status === 200) {
                     toast.success('Aluno excluído com sucesso!');
-                    if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
+                    if (onSuccess) onSuccess(); 
                     setAluno(null);
                     setCpfBusca('');
                 } else {
@@ -93,7 +93,7 @@
                     }
                 }
 
-                toast.error(errorMessage); // aq recebe a msg do back-end
+                toast.error(errorMessage); 
             } finally {
                 setLoading(false);
             }

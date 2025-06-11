@@ -7,7 +7,6 @@ import { get } from 'lodash'
 
 export default function VeiculoCadastro() {
     const [n_rota, setNRota] = useState('')
-    // const [idMotorista, setIdMotorista] = useState('')
     const [coordenadasInicio, setCoordenadasInicio] = useState('')
     const [coordenadasParadas, setCoordenadasParadas] = useState('')
     const [coordenadasFim, setCoordenadasFim] = useState('')

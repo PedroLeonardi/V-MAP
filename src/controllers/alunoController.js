@@ -32,8 +32,7 @@ const getAlunoController = async (req, res) => {
 const createAlunoController = async (req, res) => {
     try {
         
-        await userModel.create(req.body);
-        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", req.body)
+
 
         return res.status(201).json({ message: 'Aluno criado com sucesso' });
     } catch (err) {

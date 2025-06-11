@@ -84,11 +84,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
             formsErrors = true;
         }
 
-        // valid
-        // if (!validarCPF(cpf_responsavel)) {
-        //     toast.error('CPF inválido');
-        //     formsErrors = true;
-        // }
+       
 
         // validação 
         if (!validarSenha(senha)) {
@@ -111,7 +107,7 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
                 senha,
                 admin_cpf
             });
-            if (onSuccess) onSuccess(); // <-- AQUI: só chama se for passado
+            if (onSuccess) onSuccess(); 
             toast.success('Responsável cadastrado com sucesso.');
             console.log('Dados enviados: ', response)
 

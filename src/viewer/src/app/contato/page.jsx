@@ -50,13 +50,13 @@ export default function contato() {
                     title=""
                     description="Mensagens não respondidas"
                     value={countContatos}
-                    // onClick={() => setShowModalCadastro(true)}
+                    
                     color="text-blue-700"
 
                 />
 
                 <DashboardCard
-                    // icon={<PiListChecksBold size={30} />}
+                    
                     title="Relatório de Mensagens"
                     description="Visualizar mensagens já respondidas e ainda pendentes"
                     onClick={() => setShowModalRelatorioContatos(true)}

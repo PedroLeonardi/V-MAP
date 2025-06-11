@@ -4,15 +4,14 @@ import axios from 'axios';
 import { IoChatbubbleEllipsesSharp, IoClose, IoSend } from "react-icons/io5";
 
 export default function ChatBox() {
-  // perguntas frequentes
   const perguntas = [
     { 
       question: 'Como alterar minha senha?', 
       answer: 'Nas suas informações você pode mandar um pedido para sua instituição ensino altera-la' 
     },
     {
-      question: 'Que horas o primeiro onibus passa',
-      answer: 'Ele começa as 6h e passa a cada 15 minutos nos respectivos pontos',
+      question: 'Que horas o primeiro onibus passa?',
+      answer: 'Ele começa às 5h e passa a cada 15 minutos nos respectivos pontos',
     },
     {
       question: 'Quantos pontos tem na minha rota?',
@@ -37,7 +36,16 @@ export default function ChatBox() {
 
   const handleFAQClick = (faq) => {
     addMessage(faq.question, 'user');
-    setTimeout(() => addMessage(faq.answer, 'bot'), 500);
+    setTimeout(() => {
+      addMessage(faq.answer, 'bot');
+      if (faq.question.toLowerCase().includes('senha')) {
+        setTimeout(() => {
+          addMessage('Por favor, preencha o formulário abaixo com seu CPF na mensagem para que possamos ajudar com a alteração da senha.', 'bot');
+          setShowForm(true);
+          setFormData(prev => ({ ...prev, mensagem: faq.question }));
+        }, 700);
+      }
+    }, 500);
   };
 
   const sendMessage = () => {
@@ -47,18 +55,30 @@ export default function ChatBox() {
     addMessage(text, 'user');
     setInput('');
 
-    const isPerguntas = perguntas.some(faq => 
-      faq.question.toLowerCase().includes(text.toLowerCase()) || 
+    const matchedFAQ = perguntas.find(faq =>
+      faq.question.toLowerCase().includes(text.toLowerCase()) ||
       text.toLowerCase().includes(faq.question.toLowerCase())
     );
 
-    if (!isPerguntas) {
-      setTimeout(() => {
-        addMessage('Não encontrei essa resposta. Por favor, preencha seus dados para enviarmos sua pergunta ao nosso time.', 'bot');
-        setShowForm(true);
-        setFormData(prev => ({ ...prev, mensagem: text }));
-      }, 500);
+    if (matchedFAQ) {
+      addMessage(matchedFAQ.answer, 'bot');
+
+      if (matchedFAQ.question.toLowerCase().includes('senha') || text.toLowerCase().includes('senha')) {
+        setTimeout(() => {
+          addMessage('Por favor, preencha o formulário abaixo para que possamos ajudar com a alteração da senha.', 'bot');
+          setShowForm(true);
+          setFormData(prev => ({ ...prev, mensagem: text }));
+        }, 700);
+      }
+
+      return;
     }
+
+    setTimeout(() => {
+      addMessage('Não encontrei essa resposta. Por favor, preencha seus dados para enviarmos sua pergunta ao nosso time.', 'bot');
+      setShowForm(true);
+      setFormData(prev => ({ ...prev, mensagem: text }));
+    }, 500);
   };
 
   const submitForm = async (e) => {
@@ -173,7 +193,7 @@ export default function ChatBox() {
 
                 <button
                   type="submit"
-                  className=" text-sm lg:text-md  w-full mt-3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition font-medium"
+                  className="text-sm lg:text-md w-full mt-3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition font-medium"
                 >
                   Enviar mensagem
                 </button>
@@ -206,4 +226,3 @@ export default function ChatBox() {
     </div>
   );
 }
-    

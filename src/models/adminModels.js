@@ -18,7 +18,7 @@ const logAlteracao = async (tabela_nome, operacao_tipo, dados_antigos, dados_nov
   }
 };
 
-// select * from
+
 const getAll = async () => {
   try {
     const dataGetAll = await knex("administrador").select('*');
@@ -136,6 +136,9 @@ const cpfExisteEmQualquerTabela = async (cpf) => {
 
     const responsavel = await knex('responsaveis').where({ cpf_responsavel: cpf }).first();
     if (responsavel) return true;
+
+    const motorista = await knex('funcionario_motorista').where({ cpf_motorista: cpf }).first();
+    if (motorista) return true;
 
     return false;
   } catch (err) {

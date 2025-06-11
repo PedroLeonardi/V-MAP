@@ -9,9 +9,5 @@ const knexInstance = knex(config[environment]);
 export default knexInstance;
 
 
-// const environment = process.env.NODE_ENV || 'development';
 
-// import config from ('../../config/knexfile')[environment]
-// import knex from 'knex';(config);
-// export default knex;
 
