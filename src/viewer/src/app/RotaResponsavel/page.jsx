@@ -37,7 +37,7 @@ export default function RotaAluno() {
       useEffect(() => {
         const rotaOnibus = viewResponsavel[0]?.Rota_Onibus
         if (!rotaOnibus) return
-        console.log('----------------',rotaOnibus)
+
         
       }, [])
 

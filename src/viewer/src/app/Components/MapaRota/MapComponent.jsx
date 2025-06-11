@@ -297,7 +297,7 @@ ${Array.isArray(feature.geometry.coordinates)
       id_rota_onibus: idOnibusAtual
 
     };
-    //  console.log("-----------------------------------------", dataLog)
+    
     axios.post('http://localhost:3001/log/onibus', dataLog)
       // .then(() => console.log("Log enviado"))
       .catch(err => console.log("Erro ao enviar log:", err));

@@ -8,7 +8,6 @@ const knex = knexInstance;
 
 const createLogOnibus = async (cordenadas) => {
 
-    console.log('-----------------------------------------------', cordenadas)
     try {
         const sendLogOnibus = await knex('Log_onibus').insert({
             localizacao: knex.raw(`ST_GeomFromText('POINT(${cordenadas.localizacao[0]} ${cordenadas.localizacao[1]})', 4326)`),
@@ -23,7 +22,6 @@ const createLogOnibus = async (cordenadas) => {
 }
 
 const createLogAluno = async (data) => {
-    console.log("-----------------------------------------", data)
     try {
 
         const dataAtualizado = await knex('Log_Alunos').insert({
