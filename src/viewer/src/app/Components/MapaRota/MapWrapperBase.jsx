@@ -40,32 +40,21 @@ export default function MapWrapper() {
     
   }, [rotaAtual]);
 
-  // axios.get('http://localhost:3001/aluno/cpf/000.000.000-00')
+ 
 
   useEffect(() => {
     localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
   }, [selectedIndex, rotaAtual]);
-  // ✅ Lê do localStorage depois que o componente monta no navegador
-  // useEffect(() => {
-  //   const saved = localStorage.getItem(`currentIndex_rota_${rotaAtual}`);
-  //   if (saved !== null) {
-  //     setSelectedIndex(Number(saved));
-  //   }
-  // }, [rotaAtual]);
 
-  // // ✅ Salva o selectedIndex sempre que mudar
-  // useEffect(() => {
-  //   localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
-  // }, [selectedIndex, rotaAtual]);
+  
 
-  // Salva no localStorage quando mudar
   const handleNext = () => {
-    logEnabledRef.current = true; // ✅ ativa envio do log
+    logEnabledRef.current = true; 
     setSelectedIndex(prev => prev + 1);
   };
 
   const handlePrevious = () => {
-    logEnabledRef.current = true; // ✅ ativa envio do log
+    logEnabledRef.current = true; 
     setSelectedIndex(prev => Math.max(prev - 1, 0));
   };
 
@@ -73,19 +62,36 @@ export default function MapWrapper() {
   const handleChangeRota = () => {
     const novaRota = rotaAtual === 1 ? 2 : 1;
     setRotaAtual(novaRota);
-    setSelectedIndex(0); // opcional: reiniciar a posição da nova rota
+    setSelectedIndex(0); 
   };
-  return ( 
+
+  return (
     <>
-    <div className="flex justify-center mb-4">
-        
+      <div className="w-full max-w-4xl mx-auto flex flex-col items-center">
+        <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] md:w-[650px] ">
+          <MapComponent selectedIndex={selectedIndex} logEnabledRef={logEnabledRef} />
+        </div>
+        <div
+          className="mt-4 w-full flex justify-between px-4 py-3 rounded-md md:justify-center gap-130"> <button
+            onClick={handlePrevious}
+            className="text-white font-semibold px-4 py-2 rounded-md hover:brightness-110 transition cursor-pointer" style={{
+              background: 'linear-gradient(to right, #00305E, #00305E, #01488D, rgb(3,78,153), #0355A3)',
+              zIndex: 1
+            }}
+          >
+            Menos
+          </button>
+          <button
+            onClick={handleNext}
+            className="text-white font-semibold px-4 py-2 rounded-md hover:brightness-110 transition cursor-pointer" style={{
+              background: 'linear-gradient(to right, #00305E, #00305E, #01488D, rgb(3,78,153), #0355A3)',
+              zIndex: 1
+            }}
+          >
+            Mais
+          </button>
+        </div>
       </div>
-<div className="grid grid-cols-[1fr_700px_1fr] gap-4 items-center h-full">
-  <button onClick={handlePrevious}>Mais</button>
-  <MapComponent selectedIndex={selectedIndex} logEnabledRef={logEnabledRef} />
-  <button onClick={handleNext}>Menos</button>
-</div>
-    
     </>
-  )
+  );
 }

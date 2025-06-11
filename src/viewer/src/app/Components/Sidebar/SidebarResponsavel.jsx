@@ -5,16 +5,29 @@ import Link from 'next/link'
 import { toast } from 'sonner';
 import { BsArrowLeftCircle } from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
+import { useRouter } from 'next/navigation'; 
 import { PiStudentFill } from "react-icons/pi";
 import { IoPerson } from "react-icons/io5";
 import { IoLogOut, IoChatboxEllipses } from "react-icons/io5";
 import { MdDirectionsBus } from "react-icons/md";
 
 
-export default function SidebarAluno() {
+export default function SidebarResponsa() {
     // função para dashboard
     const [open, setOpen] = useState(false);
-    const [menuAtivo, setMenuAtivo] = useState("./");
+     const [menuAtivo, setMenuAtivo] = useState("./");
+       const router = useRouter();
+   
+     const handleLogout = () => {
+      
+       // removendo 
+     localStorage.removeItem('authToken');
+     localStorage.removeItem('userRole'); 
+     toast.success('Logout realizado com sucesso!');
+     
+     // redirecionando
+     router.push('/login');
+   };
 
     // map items
     const menus = [
@@ -79,15 +92,16 @@ export default function SidebarAluno() {
           </div>
     
           <div className="pb-4">
-            <li
-              title={!open ? "Logout" : ""}
-              className="flex items-center gap-4 cursor-pointer text-red-400 text-sm p-2 rounded-md duration-200 hover:bg-red-500 hover:text-white"
-              onClick={() => toast.success('Logout')}
-            >
-              <span className="text-xl"><IoLogOut /></span>
-              <span className={`text-base duration-200 ${!open && "hidden"}`}>Logout</span>
-            </li>
-          </div>
+        <li
+          title={!open ? "Logout" : ""}
+          className="flex items-center gap-4 cursor-pointer text-red-400 text-sm p-2 rounded-md duration-200 hover:bg-red-500 hover:text-white"
+
+          onClick={handleLogout}
+        >
+          <span className="text-xl"><IoLogOut /></span>
+          <span className={`text-base duration-200 ${!open && "hidden"}`}>Logout</span>
+        </li>
+      </div>
         </div>
       );
     }

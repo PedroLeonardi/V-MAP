@@ -1,4 +1,4 @@
-// pages/api/directions.js
+
 export default async function handler(req, res) {
     const { waypoints } = req.query;
   

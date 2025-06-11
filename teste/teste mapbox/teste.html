@@ -19,12 +19,12 @@
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v12',
-    center: [-43.1729, -22.9068], // Centro inicial (Rio de Janeiro como exemplo)
-    // maxBounds: [ [-48.6700, -20.9300],[-48.6100, -20.8900] ],
+    center: [-43.1729, -22.9068], 
+    
     zoom: 12
   });
 
-  // Coordenadas: origem, parada1, parada2, destino
+ 
   const coords = [
     [-43.1729, -22.9068], // A - Origem
     [-43.1785, -22.9129], // Parada 1
@@ -83,82 +83,3 @@
 
 
 
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Rota com Paradas - Mapbox</title>
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
-  <style>
-    body { margin: 0; padding: 0; }
-    #map { width: 100%; height: 100vh; }
-  </style>
-</head>
-<body>
-<div id="map"></div>
-<script>
-  mapboxgl.accessToken = 'SUA_CHAVE_MAPBOX_AQUI';
-
-  const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v12',
-    center: [-43.1729, -22.9068], // Centro inicial (Rio de Janeiro como exemplo)
-    zoom: 12
-  });
-
-  // Coordenadas: origem, parada1, parada2, destino
-  const coords = [
-    [-43.1729, -22.9068], // A - Origem
-    [-43.1785, -22.9129], // Parada 1
-    [-43.1825, -22.9165], // Parada 2
-    [-43.2094, -22.9035]  // B - Destino
-  ];
-
-  map.on('load', async () => {
-    // Chamada para a Directions API
-    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${coords.map(c => c.join(',')).join(';')}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
-
-    const response = await fetch(url);
-    const json = await response.json();
-    const data = json.routes[0];
-
-    // Adiciona rota ao mapa
-    map.addSource('route', {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: data.geometry
-      }
-    });
-
-    map.addLayer({
-      id: 'route',
-      type: 'line',
-      source: 'route',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round'
-      },
-      paint: {
-        'line-color': '#007cbf',
-        'line-width': 6
-      }
-    });
-
-    // Adiciona marcadores
-    coords.forEach((coord, index) => {
-      new mapboxgl.Marker({ color: index === 0 ? 'green' : (index === coords.length - 1 ? 'red' : 'orange') })
-        .setLngLat(coord)
-        .setPopup(new mapboxgl.Popup().setText(`Ponto ${index + 1}`))
-        .addTo(map);
-    });
-
-    // Centraliza o mapa na rota
-    const bounds = data.geometry.coordinates.reduce((b, coord) => b.extend(coord), new mapboxgl.LngLatBounds(coords[0], coords[0]));
-    map.fitBounds(bounds, { padding: 50 });
-  });
-</script>
-</body>
-</html>  -->

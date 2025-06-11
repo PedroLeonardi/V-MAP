@@ -2,8 +2,7 @@ import { Geist, Geist_Mono, Archivo_Black } from "next/font/google";
 import Header from "./Components/Header/Header";
 import "./globals.css";
 import { Toaster } from "sonner";
-// import Header from "./Components/Header/Header";
-// import Sidebar from "./Components/Sidebar/SidebarAdm";
+
 import Footer from "./Components/Footer/Footer";
 import SplashScreen from "./Components/SplashScreen/SplashScreen";
 
@@ -28,44 +27,18 @@ export const metadata = {
   description: "Sistema de Gestão de Transporte Escolar",
 };
 
-// export default function RootLayout({ children }) {
-//   return (
-//     <html lang="pt-br">
-//       <body className={`${geistSans.variable} ${geistMono.variable} ${archivoBlack.variable}`}>
-//         <div className="flex flex-col min-h-screen">
-//           {/* <Header /> */}
-//           <main className="flex-grow">
-//             {children}
-//           </main>
+
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${archivoBlack.variable}`}> 
 
-        {/* 
-          estrutura diferente de layout para poder encaixar meus toast, 
-          header e sidebar...
-        */}
 
-
-        {/* header para telas pequenas */}
-        {/* <div className="block lg:hidden">
-          <Header />
-        </div> */}
-
-        {/* estrutura sidebar em telas grandes */}
-        {/* <div className="flex"> */}
-          {/* visivel apenas para telas grandes*/}
-          {/* <div className="hidden lg:block">
-            <Sidebar />
-          </div> */}
-
-          {/* conteudo principal */}
         <SplashScreen>
 
           <main className="flex-1">{children}</main>
-        {/* </div> */}
+        
 
         <Toaster
           position="top-right"

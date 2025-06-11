@@ -4,12 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios'
 import dynamic from 'next/dynamic';
 
-// Importa o componente de mapa desabilitando SSR
+
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 
 export default function MapWrapper() {
 
-  // const rotaAtual = 1; // ou 2, dependendo da rota atual
+ 
   const logEnabledRef = useRef(false);
   const [rotaAtual, setRotaAtual] = useState(0);
 
@@ -36,32 +36,23 @@ export default function MapWrapper() {
     
   }, [rotaAtual]);
 
-  // axios.get('http://localhost:3001/aluno/cpf/000.000.000-00')
+ 
 
   useEffect(() => {
     localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
   }, [selectedIndex, rotaAtual]);
-  // ✅ Lê do localStorage depois que o componente monta no navegador
-  // useEffect(() => {
-  //   const saved = localStorage.getItem(`currentIndex_rota_${rotaAtual}`);
-  //   if (saved !== null) {
-  //     setSelectedIndex(Number(saved));
-  //   }
-  // }, [rotaAtual]);
 
-  // // ✅ Salva o selectedIndex sempre que mudar
-  // useEffect(() => {
-  //   localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
-  // }, [selectedIndex, rotaAtual]);
-
-  // Salva no localStorage quando mudar
+ 
   const handleNext = () => {
-    logEnabledRef.current = true; // ✅ ativa envio do log
+    logEnabledRef.current = true; 
+
     setSelectedIndex(prev => prev + 1);
   };
 
   const handlePrevious = () => {
-    logEnabledRef.current = true; // ✅ ativa envio do log
+
+    logEnabledRef.current = true; 
+
     setSelectedIndex(prev => Math.max(prev - 1, 0));
   };
 
@@ -69,7 +60,7 @@ export default function MapWrapper() {
   const handleChangeRota = () => {
     const novaRota = rotaAtual === 1 ? 2 : 1;
     setRotaAtual(novaRota);
-    setSelectedIndex(0); // opcional: reiniciar a posição da nova rota
+    setSelectedIndex(0); 
   };
   return ( 
     <>

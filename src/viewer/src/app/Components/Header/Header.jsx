@@ -20,7 +20,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [menuAtivo, setMenuAtivo] = useState("Dashboard");
 
-    // toasttt
+    
   const handleLogout = () => {
     toast.success("Logout realizado com sucesso!");
   };

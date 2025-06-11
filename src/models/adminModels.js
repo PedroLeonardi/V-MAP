@@ -18,7 +18,7 @@ const logAlteracao = async (tabela_nome, operacao_tipo, dados_antigos, dados_nov
   }
 };
 
-// select * from
+
 const getAll = async () => {
   try {
     const dataGetAll = await knex("administrador").select('*');

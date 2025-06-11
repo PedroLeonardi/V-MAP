@@ -20,9 +20,11 @@ export default function MapComponent({ selectedIndex }) {
     const stored = localStorage.getItem('rotaAtual');
     const id = stored ? Number(stored) : null;
 
-    // 💥 Adicionado isNaN e id > 0 para garantir valor válido
+
+   
     if (stored !== null && !isNaN(id) && id > 0) {
-      setIdOnibusAtual(id); // 💥 Agora só atualiza se o valor for válido
+      setIdOnibusAtual(id); 
+
     }
   }, []);
 
@@ -52,12 +54,12 @@ export default function MapComponent({ selectedIndex }) {
     axios.get(`http://localhost:3001/mapa/${idOnibusAtual}`)
       .then((response) => {
         const pontos = response.data.mensagem;
-        const pontoInicial = [-48.63251, -20.90702];
-        const pontoEscola = [-48.65079, -20.92392];
+        const pontoInicial = [-48.63858, -20.91640];
+        const pontoEscola = [-48.65011, -20.91481];
 
         const checkpoints = pontos.map(p => [p.longitude, p.latitude]);
         const completa = [pontoInicial, ...checkpoints, pontoEscola];
-        const idOnibus = pontos.map(p => p.rota_id);
+        const idOnibus = pontos[0].rota_id
 
         setRouteCoordinates(completa);
         setIdOnibusAtual(idOnibus);
@@ -67,7 +69,7 @@ export default function MapComponent({ selectedIndex }) {
       .catch(err => console.error('Erro ao buscar o mapa: ', err));
   }, [idOnibusAtual]);
 
-
+  
   // 2. Inicializa o mapa
   useEffect(() => {
     if (routeCoordinates.length === 0) return;
@@ -76,7 +78,7 @@ export default function MapComponent({ selectedIndex }) {
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      zoom: 15.2,
+      zoom: 14.2,
       pitch: 0,
       bearing: -10,
       center: centerInicial,
@@ -176,10 +178,10 @@ export default function MapComponent({ selectedIndex }) {
           type: 'FeatureCollection',
           features: [{
             type: 'Feature',
-            properties: { parada: 'Escola Senai', identificacao: 'longe pra caralho', horario: '08:00' },
+            properties: { parada: 'Escola Senai', identificacao: 'Rua Élcio Delago', horario: '07:30' },
             geometry: {
               type: 'Point',
-              coordinates: [-48.65079, -20.92392]
+              coordinates: [-48.65011, -20.91481],
             }
           }]
         };
@@ -259,8 +261,6 @@ ${Array.isArray(feature.geometry.coordinates)
 
         });
 
-
-
         // Marcador do ônibus
         const el = document.createElement('div');
         el.style.backgroundImage = 'url(https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg)';
@@ -297,16 +297,16 @@ ${Array.isArray(feature.geometry.coordinates)
       id_rota_onibus: idOnibusAtual
 
     };
-    //  console.log("-----------------------------------------", dataLog)
+    
     axios.post('http://localhost:3001/log/onibus', dataLog)
-      // .then(() => console.log("Log enviado"))
+     
       .catch(err => console.log("Erro ao enviar log:", err));
 
     // Salva local no localStorage
     try {
       const localizacao = routeCoordinates[selectedIndex];
       localStorage.setItem("currentLocation", JSON.stringify(localizacao));
-      // console.log("Localização salva no localStorage:", localizacao);
+      
     } catch (err) {
       console.log("Erro ao salvar localização:", err);
     }
@@ -316,9 +316,9 @@ ${Array.isArray(feature.geometry.coordinates)
       const stored = localStorage.getItem("currentLocation");
       if (stored) {
         const local = JSON.parse(stored);
-        // console.log("Localização recuperada:", local);
+        
       } else {
-        // console.log("Nenhuma localização salva no localStorage.");
+        
       }
     } catch (err) {
       console.log("Erro ao recuperar localização:", err);
