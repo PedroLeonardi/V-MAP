@@ -93,11 +93,11 @@ export default function Login() {
       localStorage.setItem('cpf_User', cpf_User);
       
         if (usuarioType === 'admin') {
-          router.push('/dashboardAdm');
+          router.push('/DashboardAdm');
         } else if (usuarioType === 'responsavel') {
-          router.push('/dashboardResponsavel');
+          router.push('/DashboardResponsavel');
         } else if (usuarioType === 'aluno') {
-          router.push('/dashboardAluno');
+          router.push('/DashboardAluno');
         }
      
     } catch (err) {
@@ -122,7 +122,7 @@ export default function Login() {
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-80 brightness-140"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-100 brightness-160"
       >
         <source src="/login/bg-login.mp4" type="video/mp4" />
         Seu navegador não suporta vídeo.
@@ -131,7 +131,7 @@ export default function Login() {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         <div className="absolute top-[-20px] md:top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
           <Link href="/">
-            <img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" />
+            <img src="/Logo.png" alt="Logo" className="w-25 h-30 md:w-48 md:h-60 -mt-5 md:ml-10 sm:w-75 sm:h-50" />
           </Link>
         </div>
 
