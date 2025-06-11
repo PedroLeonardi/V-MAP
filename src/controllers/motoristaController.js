@@ -50,8 +50,9 @@ const updateMotorista = async (req, res) => {
 
 const deleteMotorista = async (req, res) => {
     try {
+        const admin_cpf = req.body.admin_cpf
         const id = parseInt(req.params.id);
-        const affected = await userModel.deleteRecord(id);
+        const affected = await userModel.deleteRecord(id, admin_cpf);
         if (!affected) {
             return res.status(404).json({ message: 'Motorista não encontrado' });
         }

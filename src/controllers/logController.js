@@ -84,4 +84,5 @@ const readViewResponsavel = async (req, res) =>{
     }
 }
 
+
 export default {sendLonOnibus, sendLogAluno, readLogAlunos, readLogAlunosLast, readLogAlunosByCpf, readLogAdmin, readViewResponsavel}

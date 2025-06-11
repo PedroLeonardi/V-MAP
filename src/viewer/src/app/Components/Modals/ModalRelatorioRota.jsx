@@ -21,7 +21,7 @@ export default function ModalRelatorioRotas({ isVisible, onClose }) {
   };
 
   const rotasFiltradas = rotas.filter(rota =>
-    rota.nome_rua?.toLowerCase().includes(busca.toLowerCase()) ||
+    rota.identificacao?.toLowerCase().includes(busca.toLowerCase()) ||
     rota.horario?.toLowerCase().includes(busca.toLowerCase()) ||
     rota.rota_id?.toString().includes(busca)
   );
@@ -101,7 +101,7 @@ export default function ModalRelatorioRotas({ isVisible, onClose }) {
                         </div>
                         <div className="col-span-2">
                           <p className="text-gray-400">Rua:</p>
-                          <p className="truncate">{rota.nome_rua || 'N/A'}</p>
+                          <p className="truncate">{rota.identificacao || 'N/A'}</p>
                         </div>
                         <div>
                           <p className="text-gray-400">Coordenadas:</p>
@@ -146,7 +146,7 @@ export default function ModalRelatorioRotas({ isVisible, onClose }) {
                           ? `${rota.coordenadas.x}, ${rota.coordenadas.y}`
                           : rota.coordenadas || 'N/A'}
                       </td>
-                      <td className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm">{rota.nome_rua || 'N/A'}</td>
+                      <td className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm">{rota.identificacao || 'N/A'}</td>
                       <td className="px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">{rota.horario || 'N/A'}</td>
                     </tr>
                   ))}
