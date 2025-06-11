@@ -24,7 +24,12 @@ export const loginAdminController = async (req, res) => {
       return res.status(401).json({ message: 'Senha incorreta.' });
     }
 
-    const token = gerarToken({ id: admin.id_admin, cpf: admin.cpf });
+   const token = gerarToken({
+  id: admin.id_admin,
+  cpf: admin.cpf,
+  tipo: 'admin' // <-- ADICIONAR ISSO
+});
+
     logger.info(`[LOGIN] Admin autenticado com sucesso (CPF: ${cpf}, ID: ${admin.id_admin})`);
     return res.status(200).json({ message: 'Login de ADM efetuado com sucesso.', token });
   } catch (err) {
@@ -49,7 +54,12 @@ export const loginAlunoController = async (req, res) => {
       return res.status(401).json({ message: 'Senha incorreta.' });
     }
 
-    const token = gerarToken({ id: aluno.id_aluno, cpf: aluno.cpf_aluno });
+   const token = gerarToken({
+  id: aluno.id_aluno,
+  cpf: aluno.cpf_aluno,
+  tipo: 'aluno'
+});
+
      logger.info(`[LOGIN] Aluno autenticado com sucesso (CPF: ${cpf}, ID: ${aluno.id_aluno})`);
     return res.status(200).json({ message: 'Login de aluno efetuado com sucesso.', token });
   } catch (err) {
@@ -75,7 +85,12 @@ export const loginResponsavelController = async (req, res) => {
       return res.status(401).json({ message: 'Senha incorreta.' });
     }
 
-    const token = gerarToken({ id: responsavel.id_responsavel, cpf_responsavel: responsavel.cpf_responsavel });
+    const token = gerarToken({
+  id: responsavel.id_responsavel,
+  cpf: responsavel.cpf_responsavel,
+  tipo: 'responsavel'
+});
+
  logger.info(`[LOGIN] Responsável autenticado com sucesso (CPF: ${cpf}, ID: ${responsavel.id_responsavel})`);
     return res.status(200).json({ message: 'Login do responsável efetuado com sucesso.', token });
   } catch (err) {

@@ -32,9 +32,9 @@ const getAlunoController = async (req, res) => {
 const createAlunoController = async (req, res) => {
     try {
         
-
-
-        return res.status(201).json({ message: 'Aluno criado com sucesso' });
+    await userModel.create(req.body);
+    return res.status(201).json({ message: 'Usuário criado com sucesso' });
+    
     } catch (err) {
         if (err.status === 400) {
             return res.status(400).json({ message: err.message });

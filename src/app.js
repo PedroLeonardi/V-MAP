@@ -19,6 +19,9 @@ import logger from "./logs/logger.js"
 const app = express();
 const port = 3001;
 
+app.use(express.json());
+app.use(cors())
+
 app.use((req, res, next) => {
   logger.info(`Acessando: ${req.method} da URL: ${req.originalUrl}`);
   next();
@@ -26,8 +29,6 @@ app.use((req, res, next) => {
 
 
 // middlewares
-app.use(express.json());
-app.use(cors())
 
 // rotas
 app.get('/', async (req, res) =>{
@@ -44,6 +45,7 @@ app.use('/rota', rotaRouter )
 app.use('/mapa', mapaRouter)
 app.use('/log', log)
 app.use('/painel', painelRouter)
+
 
 // options
 app.options('/' , (req, res) => {
