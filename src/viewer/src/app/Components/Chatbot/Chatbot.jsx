@@ -82,9 +82,9 @@ export default function ChatBox() {
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-blue-500 text-white px-4 py-3 rounded-full font-medium shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
+          className="bg-blue-500 text-white px-4 py-3 rounded-full font-medium shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all cursor-pointer"
         >
-          <span className="hidden lg:flex">Precisa de ajuda?</span>
+          <span className="hidden lg:flex ">Precisa de ajuda?</span>
           <IoChatbubbleEllipsesSharp size={20} />
         </button>
       ) : (
@@ -107,7 +107,7 @@ export default function ChatBox() {
                   <button
                     key={i}
                     onClick={() => handleFAQClick(faq)}
-                    className="w-full text-left bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition"
+                    className="w-full text-left bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition cursor-pointer"
                   >
                     {faq.question}
                   </button>
@@ -191,7 +191,7 @@ export default function ChatBox() {
               <button
                 onClick={sendMessage}
                 disabled={!input.trim()}
-                className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition disabled:bg-gray-600 disabled:cursor-not-allowed"
+                className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition disabled:bg-gray-600 disabled:cursor-not-allowed cursor-pointer"
               >
                 <IoSend size={18} />
               </button>
