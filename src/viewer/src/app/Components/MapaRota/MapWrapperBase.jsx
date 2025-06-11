@@ -45,7 +45,9 @@ export default function MapWrapper() {
   useEffect(() => {
     localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
   }, [selectedIndex, rotaAtual]);
+
   
+
   const handleNext = () => {
     logEnabledRef.current = true; 
     setSelectedIndex(prev => prev + 1);
