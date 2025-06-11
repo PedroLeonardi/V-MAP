@@ -8,7 +8,6 @@ const knex = knexInstance;
 
 const createLogOnibus = async (cordenadas) => {
 
-    console.log('-----------------------------------------------', cordenadas)
     try {
         const sendLogOnibus = await knex('Log_onibus').insert({
             localizacao: knex.raw(`ST_GeomFromText('POINT(${cordenadas.localizacao[0]} ${cordenadas.localizacao[1]})', 4326)`),
@@ -23,7 +22,6 @@ const createLogOnibus = async (cordenadas) => {
 }
 
 const createLogAluno = async (data) => {
-    console.log("-----------------------------------------", data)
     try {
 
         const dataAtualizado = await knex('Log_Alunos').insert({
@@ -56,7 +54,7 @@ const readLogAlunos = async () => {
 
 const readLogAlunosByCpf = async (cpf_aluno) => {
     try {
-        const dataLogAlunos = await knex('Log_Alunos').where({cpf_aluno})
+        const dataLogAlunos = await knex('Log_Alunos').where({cpf_aluno}).orderBy('n_LogAluno', 'desc').limit(180)
         return dataLogAlunos
     } catch (err) {
         console.error("Houve um erro ao listar todos os log de alunos: ", err)

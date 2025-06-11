@@ -57,7 +57,7 @@ export default function MapComponent({ selectedIndex }) {
 
         const checkpoints = pontos.map(p => [p.longitude, p.latitude]);
         const completa = [pontoInicial, ...checkpoints, pontoEscola];
-        const idOnibus = pontos.map(p => p.rota_id);
+        const idOnibus = pontos[0].rota_id
 
         setRouteCoordinates(completa);
         setIdOnibusAtual(idOnibus);
@@ -297,7 +297,7 @@ ${Array.isArray(feature.geometry.coordinates)
       id_rota_onibus: idOnibusAtual
 
     };
-    //  console.log("-----------------------------------------", dataLog)
+    
     axios.post('http://localhost:3001/log/onibus', dataLog)
       // .then(() => console.log("Log enviado"))
       .catch(err => console.log("Erro ao enviar log:", err));
