@@ -4,8 +4,10 @@ import axios from 'axios';
 import { IoChatbubbleEllipsesSharp, IoClose, IoSend } from "react-icons/io5";
 
 export default function ChatBox() {
-  // perguntas frequentes
   const perguntas = [
+    { 
+      question: 'Gostaria de alterar meus dados', 
+    },
     { 
       question: 'Como contratar o serviço?', 
       answer: 'Para contratar nossos serviços, entre em contato através da aba "Contatos" ou envie sua dúvida por este chat.' 
@@ -13,7 +15,7 @@ export default function ChatBox() {
     {
       question: 'Como cadastrar meu filho no sistema?',
       answer: 'O cadastro de alunos é feito pela equipe da coordenação. Envie uma mensagem aqui para iniciarmos o processo.',
-    },
+    }
   ];
 
   const [messages, setMessages] = useState([]);
@@ -33,7 +35,16 @@ export default function ChatBox() {
 
   const handleFAQClick = (faq) => {
     addMessage(faq.question, 'user');
-    setTimeout(() => addMessage(faq.answer, 'bot'), 500);
+    setTimeout(() => {
+      addMessage(faq.answer, 'bot');
+      if (faq.question.toLowerCase().includes('dados')) {
+        setTimeout(() => {
+          addMessage('Por favor, preencha o formulário abaixo com seu CPF na mensagem para que possamos ajudar com a alteração da senha.', 'bot');
+          setShowForm(true);
+          setFormData(prev => ({ ...prev, mensagem: faq.question }));
+        }, 700);
+      }
+    }, 500);
   };
 
   const sendMessage = () => {
@@ -43,18 +54,30 @@ export default function ChatBox() {
     addMessage(text, 'user');
     setInput('');
 
-    const isPerguntas = perguntas.some(faq => 
-      faq.question.toLowerCase().includes(text.toLowerCase()) || 
+    const matchedFAQ = perguntas.find(faq =>
+      faq.question.toLowerCase().includes(text.toLowerCase()) ||
       text.toLowerCase().includes(faq.question.toLowerCase())
     );
 
-    if (!isPerguntas) {
-      setTimeout(() => {
-        addMessage('Não encontrei essa resposta. Por favor, preencha seus dados para enviarmos sua pergunta ao nosso time.', 'bot');
-        setShowForm(true);
-        setFormData(prev => ({ ...prev, mensagem: text }));
-      }, 500);
+    if (matchedFAQ) {
+      addMessage(matchedFAQ.answer, 'bot');
+
+      if (matchedFAQ.question.toLowerCase().includes('senha') || text.toLowerCase().includes('senha')) {
+        setTimeout(() => {
+          addMessage('Por favor, preencha o formulário abaixo para que possamos ajudar com a alteração da senha.', 'bot');
+          setShowForm(true);
+          setFormData(prev => ({ ...prev, mensagem: text }));
+        }, 700);
+      }
+
+      return;
     }
+
+    setTimeout(() => {
+      addMessage('Não encontrei essa resposta. Por favor, preencha seus dados para enviarmos sua pergunta ao nosso time.', 'bot');
+      setShowForm(true);
+      setFormData(prev => ({ ...prev, mensagem: text }));
+    }, 500);
   };
 
   const submitForm = async (e) => {
@@ -82,7 +105,7 @@ export default function ChatBox() {
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-blue-500 text-white cursor-pointer px-4 py-3 rounded-full font-medium shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
+          className="cursor-pointer bg-blue-500 text-white px-4 py-3 rounded-full font-medium shadow-lg flex items-center gap-2 hover:bg-blue-600 transition-all"
         >
           <span className="hidden lg:flex">Precisa de ajuda?</span>
           <IoChatbubbleEllipsesSharp size={20} />
@@ -107,7 +130,7 @@ export default function ChatBox() {
                   <button
                     key={i}
                     onClick={() => handleFAQClick(faq)}
-                    className="w-full cursor-pointer text-left bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition"
+                    className="w-full text-left bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition cursor-pointer"
                   >
                     {faq.question}
                   </button>
@@ -169,7 +192,7 @@ export default function ChatBox() {
 
                 <button
                   type="submit"
-                  className=" text-sm lg:text-md  w-full mt-3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition font-medium"
+                  className="text-sm lg:text-md w-full mt-3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition font-medium"
                 >
                   Enviar mensagem
                 </button>
@@ -193,7 +216,7 @@ export default function ChatBox() {
                 disabled={!input.trim()}
                 className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition disabled:bg-gray-600 disabled:cursor-not-allowed"
               >
-                <IoSend className="cusor-pointer" size={18} />
+                <IoSend className="cursor-pointer" size={18} />
               </button>
             </div>
           </div>

@@ -4,15 +4,27 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { RiDashboardFill } from "react-icons/ri";
 import { FaGraduationCap } from "react-icons/fa";
+import { useRouter } from 'next/navigation'; 
 import { MdDirectionsBus } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
 
 export default function SidebarAluno() {
   const [menuAtivo, setMenuAtivo] = useState("./");
+  const router = useRouter();
+     
+  const handleLogout = () => {
+   
+    // removendo 
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userRole'); 
+  toast.success('Logout realizado com sucesso!');
+  
+  // redirecionando
+  router.push('/login');
+};
 
   const menus = [
     { icon: <RiDashboardFill />, link: "./DashboardAluno" },
-    { icon: <FaGraduationCap />, link: "./AlunoPerf" },
     { icon: <MdDirectionsBus />, link: "./RotaAluno" },
   ];
 
@@ -44,7 +56,7 @@ export default function SidebarAluno() {
         </Link>
       ))}
       <button
-        onClick={() => toast.success('Logout')}
+        onClick= {handleLogout}
         className="flex flex-col items-center justify-center text-md text-red-400 hover:text-white absolute ml-60"
       >
         <span className="text-[25px]"><IoLogOut /></span>

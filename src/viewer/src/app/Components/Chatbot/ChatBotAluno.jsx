@@ -6,8 +6,7 @@ import { IoChatbubbleEllipsesSharp, IoClose, IoSend } from "react-icons/io5";
 export default function ChatBox() {
   const perguntas = [
     { 
-      question: 'Como alterar minha senha?', 
-      answer: 'Nas suas informações você pode mandar um pedido para sua instituição ensino altera-la' 
+      question: 'Gostaria de alterar meus dados', 
     },
     {
       question: 'Que horas o primeiro onibus passa?',
@@ -15,7 +14,7 @@ export default function ChatBox() {
     },
     {
       question: 'Quantos pontos tem na minha rota?',
-      answer: 'Se sua rota for 1 alguns e se for 2 mais alguns',
+      answer: 'Sua rota tem 5 pontos',
     }
   ];
 
@@ -38,7 +37,7 @@ export default function ChatBox() {
     addMessage(faq.question, 'user');
     setTimeout(() => {
       addMessage(faq.answer, 'bot');
-      if (faq.question.toLowerCase().includes('senha')) {
+      if (faq.question.toLowerCase().includes('dados')) {
         setTimeout(() => {
           addMessage('Por favor, preencha o formulário abaixo com seu CPF na mensagem para que possamos ajudar com a alteração da senha.', 'bot');
           setShowForm(true);

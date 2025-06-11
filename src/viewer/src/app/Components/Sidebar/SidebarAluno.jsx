@@ -6,16 +6,28 @@ import { toast } from 'sonner';
 import { BsArrowLeftCircle } from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import { FaGraduationCap } from "react-icons/fa";
+import { useRouter } from 'next/navigation'; 
 import { IoLogOut } from "react-icons/io5";
 import { MdDirectionsBus } from "react-icons/md";
 
 export default function SidebarAluno() {
   const [open, setOpen] = useState(false);
   const [menuAtivo, setMenuAtivo] = useState("./");
+    const router = useRouter();
+
+  const handleLogout = () => {
+   
+    // removendo 
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userRole'); 
+  toast.success('Logout realizado com sucesso!');
+  
+  // redirecionando
+  router.push('/login');
+};
 
   const menus = [
     { title: "Dashboard", icon: <RiDashboardFill />, link: "./DashboardAluno" },
-    { title: "Minhas informações", icon: <FaGraduationCap />, link: "./AlunoPerf" },
     { title: "Rota", icon: <MdDirectionsBus />, link: "./RotaAluno" },
   ];
 
@@ -76,7 +88,8 @@ export default function SidebarAluno() {
         <li
           title={!open ? "Logout" : ""}
           className="flex items-center gap-4 cursor-pointer text-red-400 text-sm p-2 rounded-md duration-200 hover:bg-red-500 hover:text-white"
-          onClick={() => toast.success('Logout')}
+
+          onClick={handleLogout}
         >
           <span className="text-xl"><IoLogOut /></span>
           <span className={`text-base duration-200 ${!open && "hidden"}`}>Logout</span>
