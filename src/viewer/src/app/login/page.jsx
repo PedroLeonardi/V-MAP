@@ -95,7 +95,7 @@ export default function Login() {
         if (usuarioType === 'admin') {
           router.push('/DashboardAdm');
         } else if (usuarioType === 'responsavel') {
-          router.push('/DashboardResponsavel');
+          router.push('/dashboardResponsavel');
         } else if (usuarioType === 'aluno') {
           router.push('/DashboardAluno');
         }

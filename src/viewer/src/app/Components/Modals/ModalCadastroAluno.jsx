@@ -97,6 +97,12 @@ export default function ModalCadastro({ isVisible, onClose, onSuccess }) {
             formsErrors = true;
         }
 
+        
+        if(!validarCPF(cpf_aluno)){
+            toast.error('CPF inválido.');
+            formsErrors = true;
+        }
+
         if (formsErrors) {
             setLoading(false);
             return;

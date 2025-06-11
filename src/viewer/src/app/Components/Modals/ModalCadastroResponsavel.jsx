@@ -92,6 +92,12 @@ export default function ModalCadastroResponsavel({ isVisible, onClose, onSuccess
             formsErrors = true;
         }
 
+        
+        if(!validarCPF(cpf_responsavel)){
+            toast.error('CPF inválido.');
+            formsErrors = true;
+        }
+
         // se form conter erros, nao envie
         if (formsErrors) {
             setLoading(false);
