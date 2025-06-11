@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
-import ChatBox from '../Components/Chatbot/Chatbot'
+import ChatBox from '../Components/Chatbot/ChatBotAluno'
 
 
 export default function DashAluno() {
@@ -30,7 +30,10 @@ export default function DashAluno() {
         </div>
       )}
 
-      <main className=" h-screen bg-gradient-to-r from-gray-300 to-gray-400 overflow-hidden px-4 md:px-10 flex items-center justify-center">
+<main
+  className="h-screen bg-cover bg-center bg-no-repeat overflow-hidden px-4 md:px-10 flex items-center justify-center"
+  style={{ backgroundImage: `url('/BG-dash.jpg')` }}
+>
 
         {/* Versão desktop e mobile: visível fora do md */}
         <section className="flex-1 flex flex-col items-center justify-center text-center md:hidden px-6 sm:px-8">

@@ -99,4 +99,9 @@ const getAdmByCpfController = async (req, res) => {
   }
 };
 
+
+
+
+
+
 export default { getAdminController, getAdminAllController, createAdminController, updateAdminController, deleteAdminController, getAdmByCpfController };

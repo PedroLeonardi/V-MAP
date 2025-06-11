@@ -14,7 +14,7 @@ export default function SidebarAluno() {
   const [menuAtivo, setMenuAtivo] = useState("./");
 
   const menus = [
-    { title: "Dashboard", icon: <RiDashboardFill />, link: "./dashboardAluno" },
+    { title: "Dashboard", icon: <RiDashboardFill />, link: "./DashboardAluno" },
     { title: "Minhas informações", icon: <FaGraduationCap />, link: "./AlunoPerf" },
     { title: "Rota", icon: <MdDirectionsBus />, link: "./RotaAluno" },
   ];

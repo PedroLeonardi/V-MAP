@@ -74,6 +74,10 @@ const readLogAlunosLast = async (cpf_aluno) => {
     }
 }
 
+
+
+// -------------------------
+
 const readLogAdmim = async () => {
     try {
         const dataLog = await knex('Log_Alteracoes').select('*')
@@ -96,4 +100,4 @@ const readViewResponsavel = async (CPF_Responsavel) => {
 
 
 // -------------------------
-export default { createLogOnibus, createLogAluno, readLogAlunos, readLogAlunosLast , readLogAlunosByCpf, readLogAdmim, readViewResponsavel}
+export default { createLogOnibus, createLogAluno, readLogAlunos, readLogAlunosLast , readLogAlunosByCpf , readLogAdmim, readViewResponsavel}
