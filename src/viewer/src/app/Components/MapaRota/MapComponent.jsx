@@ -57,7 +57,7 @@ export default function MapComponent({ selectedIndex }) {
 
         const checkpoints = pontos.map(p => [p.longitude, p.latitude]);
         const completa = [pontoInicial, ...checkpoints, pontoEscola];
-        const idOnibus = pontos.map(p => p.rota_id);
+        const idOnibus = pontos[0].rota_id
 
         setRouteCoordinates(completa);
         setIdOnibusAtual(idOnibus);

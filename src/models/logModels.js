@@ -56,7 +56,7 @@ const readLogAlunos = async () => {
 
 const readLogAlunosByCpf = async (cpf_aluno) => {
     try {
-        const dataLogAlunos = await knex('Log_Alunos').where({cpf_aluno})
+        const dataLogAlunos = await knex('Log_Alunos').where({cpf_aluno}).orderBy('n_LogAluno', 'desc').limit(180)
         return dataLogAlunos
     } catch (err) {
         console.error("Houve um erro ao listar todos os log de alunos: ", err)
