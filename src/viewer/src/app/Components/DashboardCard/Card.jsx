@@ -96,7 +96,7 @@ export default function DashboardCard({
         )}
 
         {value !== undefined && (
-          <span className={`text-2xl sm:text-3xl font-bold ${color} mt-auto`}>
+          <span className={`text-4xl sm:text-5xl font-bold ${color} mt-auto`}>
             {value}
           </span>
         )}
