@@ -45,7 +45,7 @@ export default function MapWrapper() {
   useEffect(() => {
     localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
   }, [selectedIndex, rotaAtual]);
-  // ✅ Lê do localStorage depois que o componente monta no navegador
+  //  Lê do localStorage depois que o componente monta no navegador
   // useEffect(() => {
   //   const saved = localStorage.getItem(`currentIndex_rota_${rotaAtual}`);
   //   if (saved !== null) {
@@ -53,7 +53,7 @@ export default function MapWrapper() {
   //   }
   // }, [rotaAtual]);
 
-  // // ✅ Salva o selectedIndex sempre que mudar
+  // //  Salva o selectedIndex sempre que mudar
   // useEffect(() => {
   //   localStorage.setItem(`currentIndex_rota_${rotaAtual}`, selectedIndex);
   // }, [selectedIndex, rotaAtual]);
