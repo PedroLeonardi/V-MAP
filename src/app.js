@@ -8,6 +8,7 @@ import veiculoRoute from './router/veiculoRoute.js'
 import contatoRoute from './router/contatoRoute.js'
 import rotaRouter from './router/rotaRoute.js'
 import mapaRouter from './router/mapaRoute.js'
+import painelRouter from './router/painelRoute.js'
 import log from "./router/logRoute.js"
 import cors from 'cors';
 
@@ -40,6 +41,8 @@ app.use('/contato', contatoRoute)
 app.use('/rota', rotaRouter )
 app.use('/mapa', mapaRouter)
 app.use('/log', log)
+app.use('/painel', painelRouter)
+
 
 // se caso rota nao existir 
 app.use("/", (req,res) => {

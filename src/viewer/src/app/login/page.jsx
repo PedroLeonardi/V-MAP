@@ -28,7 +28,7 @@ export default function Login() {
     if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
     return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   }
-  
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -92,15 +92,15 @@ export default function Login() {
       localStorage.setItem('usuarioType', usuarioType);
       localStorage.setItem('cpf_User', cpf_User);
 
-      
-        if (usuarioType === 'admin') {
-          router.push('/dashboardAdm');
-        } else if (usuarioType === 'responsavel') {
-          router.push('/dashboardResponsavel');
-        } else if (usuarioType === 'aluno') {
-          router.push('/DashboardAluno');
-        }
-     
+
+      if (usuarioType === 'admin') {
+        router.push('/DashboardAdm');
+      } else if (usuarioType === 'responsavel') {
+        router.push('/dashboardResponsavel');
+      } else if (usuarioType === 'aluno') {
+        router.push('/DashboardAluno');
+      }
+
     } catch (err) {
       const message = get(err, 'response.data.message', '');
 
@@ -130,7 +130,7 @@ export default function Login() {
       </video>
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/70 to-blue-900/70 z-0" />
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
+        <div className="absolute top-[-20px] md:top-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0">
           <Link href="/">
             <img src="/login/logo-2.png" alt="Logo" className="w-60 h-40 md:w-90 md:h-55 sm:w-75 sm:h-50" />
           </Link>
