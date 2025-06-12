@@ -128,11 +128,12 @@ const deleteRecord = async (id_responsavel, cpf_admin) => {
   try {
     
     const responsavelAntigo = await knex("responsaveis").where({ id_responsavel }).first();
+    await logAlteracao("Responsaveis", "DELETE", responsavelAntigo, null, cpf_admin);
 
     const deletedRows = await knex('responsaveis').where({ id_responsavel }).delete();
 
 
-    await logAlteracao("Responsaveis", "DELETE", responsavelAntigo, null, cpf_admin);
+
     return deletedRows;
   } catch (err) {
     console.error('Houve um erro ao deletar um responsável: ', err);

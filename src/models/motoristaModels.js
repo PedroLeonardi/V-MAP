@@ -56,7 +56,7 @@ const create = async (data) => {
       cpf_motorista: data.cpf_motorista,
     });
 
-    await logAlteracao("funcionario_motorista", "INSERT", null, {
+    await logAlteracao("Motorista", "INSERT", null, {
       nome: data.nome,
       cpf_motorista: data.cpf_motorista,
     }, data.admin_cpf);
@@ -82,7 +82,7 @@ const update = async (id_motorista, data) => {
       }
     );
     
-    await logAlteracao("Alunos", "UPDATE", motoristaAntigo, {
+    await logAlteracao("Motorista", "UPDATE", motoristaAntigo, {
       nome: data.nome,
       cpf_motorista: motoristaAntigo.cpf_motorista
     }, data.admin_cpf);
@@ -98,7 +98,7 @@ const deleteRecord = async (id_motorista, admin_cpf) => {
   try {
     const motoristaAntigo = await knex("funcionario_motorista").where({ id_motorista }).first();
     const deletedRows = await knex('funcionario_motorista').where({ id_motorista }).delete();
-        await logAlteracao("Alunos", "DELETE", motoristaAntigo, null , admin_cpf);
+        await logAlteracao("Motorista", "DELETE", motoristaAntigo, null , admin_cpf);
     return deletedRows;
   } catch (err) {
     console.error('Houve um erro ao deletar um motorista: ', err);

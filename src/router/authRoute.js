@@ -7,4 +7,9 @@ router.post('/admin/login', loginAdminController);
 router.post('/aluno/login', loginAlunoController);
 router.post('/responsavel/login', loginResponsavelController);
 
+router.options('/' , (req, res) => {
+    res.setHeader('Allow', 'POST');
+    res.status(204).send();
+})
+
 export default router;

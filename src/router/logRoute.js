@@ -10,5 +10,9 @@ router.get('/alunoLast/:cpf', log.readLogAlunosLast)
 router.get('/admin', log.readLogAdmin)
 router.get('/resposavelView/:cpf', log.readViewResponsavel)
 
+router.options('/' , (req, res) => {
+    res.setHeader('Allow', 'GET, POST');
+    res.status(204).send();
+})
 
 export default router

@@ -55,12 +55,12 @@ const create = async (data) => {
     // aplicando senha hash para senha no bd
     const senhaHashed = await bcrypt.hash(data.senha, saltRounds);
 
-const dataSimples = {
-  cpf: data.cpf,
-  senha: senhaHashed,
-  nome: data.nome,
-  cargo: data.cargo
-}
+    const dataSimples = {
+      cpf: data.cpf,
+      senha: senhaHashed,
+      nome: data.nome,
+      cargo: data.cargo
+    }
 
     const [id_admin] = await knex("administrador").insert(dataSimples);
 
@@ -103,7 +103,7 @@ const deleteRecord = async (id_admin, admin_cpf) => {
   try {
 
     const admAntigo = await knex("administrador").where({ id_admin }).first();
- 
+
 
     const Delte = await knex("administrador").where({ id_admin }).delete();
 
@@ -150,4 +150,4 @@ const cpfExisteEmQualquerTabela = async (cpf) => {
 
 
 
-export default { getAll, getById, create, update, deleteRecord, getByCPF, cpfExisteEmQualquerTabela};
+export default { getAll, getById, create, update, deleteRecord, getByCPF, cpfExisteEmQualquerTabela };

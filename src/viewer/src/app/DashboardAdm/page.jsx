@@ -539,7 +539,7 @@ export default function PageAdmin() {
           )}
         </section>
       </div >
-    <ChatBox />
+    
 
     </ProtegendoRota >
   );
