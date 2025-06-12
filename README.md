@@ -48,29 +48,36 @@ O sistema visa transmitir segurança aos responsáveis ao monitorarem o percurso
 
 V-MAP/
 ├── backend/
+│ ├── config/
+-src
 │ ├── controllers/
+│ ├── logs/
 │ ├── middlewares/
 │ ├── models/
 │ ├── routes/
-│ ├── test/
-│ ├── config/
+│ ├── tests/
 │ └── app.js
 │
 ├── frontend/
+-viewer
 │ ├── components/
-│ ├── pages/
+│ ├── DashboardAdm/
+│ ├── DashboardAluno/
+│ ├── dashboardResponsavel/
 │ ├── hooks/
-│ ├── services/
-│ ├── assets/
-│ └── page.jsx
+│ ├── login/
+│ ├── RotaAluno/
+│ ├── RotaResponsavel/
+│ ├── publio/
+│ └── page.js
 
 
 ---
 
 ## 📌 Requisitos
 
-- Node.js 18+
-- MySQL 8+
+- Node.js
+- MySQL
 - npm ou yarn
 
 ---
@@ -79,22 +86,22 @@ V-MAP/
 
 ```bash
 # Backend
-cd backend
+cd v-map
 npm install
 npm start
 
 # Frontend
-cd frontend
+cd src/viewer
 npm install
 npm run dev
 
 👨‍💻 Desenvolvido por
-Equipe do projeto V-MAP — Projeto Semestral SENAI
+Equipe do projeto V-MAP — Projeto Integrador SENAI
 
 Davi Chagas
 
 Pedro Leonardi
 
-Gustavo
+Gustavo de Paula
 
 Nycolas
